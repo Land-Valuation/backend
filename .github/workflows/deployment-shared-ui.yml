@@ -1,0 +1,41 @@
+name: Build & Deployment LVIS UI Prototype
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+    - 'README.md'
+    - 'docs/**'
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: '0.0.1'
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.16.0
+        cache-dependency-path: './lvis-ui/package-lock.json'
+        cache: 'npm'
+    - name: Docker Login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: Install modules for lvis-ui
+      working-directory: ./lvis-ui
+      run: npm i
+    - name: Build lvis-ui
+      working-directory: ./lvis-ui
+      run: npm run build --if-present
+
+    - name: Build lvis-ui Image
+      working-directory: ./lvis-ui
+      run: docker build --no-cache -t thaihv/lvis-ui0:$VERSION --file Dockerfile .      
+    - name: Docker Push lvis-ui    
+      run: docker push thaihv/lvis-ui0:$VERSION
