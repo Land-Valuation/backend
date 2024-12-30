@@ -2,11 +2,12 @@ import {
   Box,
   Typography,
   useTheme,
+  Link,
 } from "@mui/material";
 import TopBox from "../../components/TopBox";
-import ChooserWidget from "../widgets/ChooserWidget";
+// import ChooserWidget from "../widgets/ChooserWidget";
 import { useTranslation } from "react-i18next";
-
+import '@fontsource/poppins/500.css'; 
 
 const notifications = [
   { title: '2024 Land Price Valuation Standards Update for Lao PDR', date: '2024-01-02' },
@@ -23,15 +24,16 @@ const NotificationBox = () => {
         alignItems: 'center',
         backgroundColor: '#f5f5f5',
         borderRadius: '10px',
-        padding: '16px',
+        padding: '24px 24px 24px 64px',
         gap: '50px',
+        position: 'relative',
       }}
     >
       {/* Icon on the left side */}
       <img
-        src="/notify_bell.png"
+        src="/noti icon.svg"
         alt="Notification Icon"
-        style={{ width: '40px', height: '40px' }}
+        style={{ width: '64px', height: '64px',position: 'absolute', left: '-15px', top: '-16px' }}
       />
 
       {/* Notifications list */}
@@ -78,31 +80,33 @@ const Middle = () => {
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        gap="30px"
+        gap="8px"
         sx={{
           "& .MuiTypography-root ": {
             lineHeight: '1.25',           
           },
         }} 
       >
-        <Typography fontSize="28px" fontWeight="bold" color={theme.palette.neutral.medium}>          
+        <Typography fontFamily="Poppins" fontSize="22px" fontWeight="500" color={theme.palette.neutral.medium}>          
         ລະບົບຂໍ້ມູນລາຄາທີ່ດິນໃນ ສປປ ລາວ
         </Typography>     
         <Typography 
               sx={{
                 color: theme.palette.neutral.medium,
-                fontSize: "45px",
-                fontWeight: "bold",
+                fontFamily: "Poppins",
+                fontSize: "30px",
+                fontWeight: "500",
                 position: 'relative',
                 paddingBottom: '15px', // Adjust padding to create space for the ::after text
                 '::after': {
                   content: '"in Lao PDR"',
                   position: 'absolute',
-                  right: -25,
-                  bottom: 0,
-                  backgroundColor: 'yellow',
-                  color: 'red',
+                  right: 200,
+                  bottom: -8,
+                  backgroundColor: '#BAE0FF',
+                  color: '#1677FF',
                   fontSize: '12px',
+                  fontFamily: 'Poppins',
                   padding: '2px 4px',
                   borderRadius: '4px',
                 },
@@ -112,7 +116,7 @@ const Middle = () => {
         </Typography>
       </Box>      
       <NotificationBox />
-      <Box
+      {/* <Box
         sx={{
           width: "100%",
           height: "21px",
@@ -122,7 +126,7 @@ const Middle = () => {
           mt: "3rem",
         }}     
       >
-      </Box>
+      </Box> */}
     </Box>
   );
 };
@@ -132,7 +136,7 @@ const Middle = () => {
 const HomePage = () => {
   const { t } = useTranslation();
   return (
-    <Box>
+    <Box sx={{backgroundImage: 'url(/homebg.svg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', height: '100vh', width: '100%'}}>
       <TopBox /> 
       <Middle />
       {/* MENU CHOOSER */}
@@ -141,49 +145,40 @@ const HomePage = () => {
         padding="1rem 6%"
         display="flex"
         flexWrap= 'wrap'
-        gap="0.5rem"
+        gap="24px"
         justifyContent='center'
         alignItems='center'
+        marginTop="55px"
       >
-        <Box>
-          <ChooserWidget 
-            image="u29.png" 
-            title={t("Land Price Explorer")}
-            description={t("Check easily land value information by region")}
-            link="montoring"
-          />
+        <Box className="menu-chooser">
+          <img src="/land-price.svg" alt="menu1" />
+          <Typography sx={{fontFamily:"Poppins", fontWeight:500,fontSize:18}}>Land Price Explorer</Typography>
+          <Typography sx={{fontFamily:"Poppins", fontWeight:400,fontSize:14, color:"#000000A6"}}>Lorem ipsum dolor sit amet consectetur. Molestie lacus...</Typography>
+          <Link sx={{color:"#1677FF", display: "flex", gap: "8px"}} href="/land-price-explorer" underline="hover"><img src="/arrow.svg" alt="arrow"/>See now</Link>
         </Box>
-        <Box>
-          <ChooserWidget 
-            image="u25.png" 
-            title={t("Land Valuation Documentation")} 
-            description={t("Support to manage various businesses of land valuation process")} 
-            link="Search"
-          />
+        <Box className="menu-chooser">
+        <img src="/land-valuation.svg" alt="menu2" />
+        <Typography sx={{fontFamily:"Poppins", fontWeight:500,fontSize:18}}>Land Valuation</Typography>
+          <Typography sx={{fontFamily:"Poppins", fontWeight:400,fontSize:14, color:"#000000A6"}}>Lorem ipsum dolor sit amet consectetur. Molestie lacus...</Typography>
+          <Link sx={{color:"#1677FF", display: "flex", gap: "8px"}} href="/land-price-explorer" underline="hover"><img src="/arrow.svg" alt="arrow"/>See now</Link>
         </Box>
-        <Box>
-          <ChooserWidget 
-            image="u26.png" 
-            title={t("Model-based Land Valuation")}
-            description={t("Calculate, analyze and compare land value by region")} 
-            link="Products"
-          />
+        <Box className="menu-chooser">
+        <img src="/model-based.svg" alt="menu3" />
+        <Typography sx={{fontFamily:"Poppins", fontWeight:500,fontSize:18}}>Model-based land Valuation</Typography>
+          <Typography sx={{fontFamily:"Poppins", fontWeight:400,fontSize:14, color:"#000000A6"}}>Lorem ipsum dolor sit amet consectetur. Molestie lacus...</Typography>
+          <Link sx={{color:"#1677FF", display: "flex", gap: "8px"}} href="/land-price-explorer" underline="hover"><img src="/arrow.svg" alt="arrow"/>See now</Link>
         </Box>                
-        <Box>
-          <ChooserWidget 
-            image="u27.png" 
-            title={t("Item 00")} 
-            description={t("Provides visualized and statistical analysis based on land value")}  
-            link="Dashboard"
-          />
+        <Box className="menu-chooser">
+        <img src="/parcel-survey.svg" alt="menu4" />
+        <Typography sx={{fontFamily:"Poppins", fontWeight:500,fontSize:18}}>Parcel Survey Management</Typography>
+          <Typography sx={{fontFamily:"Poppins", fontWeight:400,fontSize:14, color:"#000000A6"}}>Lorem ipsum dolor sit amet consectetur. Molestie lacus...</Typography>
+          <Link sx={{color:"#1677FF", display: "flex", gap: "8px"}} href="/land-price-explorer" underline="hover"><img src="/arrow.svg" alt="arrow"/>See now</Link>
         </Box>  
-        <Box>
-          <ChooserWidget 
-            image="u28.png" 
-            title={t("Admin")}
-            description={t("Implementation of monitoring changes of price in real time mode")} 
-            link="Customers"
-          />
+        <Box className="menu-chooser">
+        <img src="/admin.svg" alt="menu5" />
+        <Typography sx={{fontFamily:"Poppins", fontWeight:500,fontSize:18}}>Admin</Typography>
+          <Typography sx={{fontFamily:"Poppins", fontWeight:400,fontSize:14, color:"#000000A6"}}>Lorem ipsum dolor sit amet consectetur. Molestie lacus...</Typography>
+          <Link sx={{color:"#1677FF", display: "flex", gap: "8px"}} href="/land-price-explorer" underline="hover"><img src="/arrow.svg" alt="arrow"/>See now</Link>
         </Box>                  
       </Box>
     </Box>
