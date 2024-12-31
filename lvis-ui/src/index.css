@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
-@import url('https://fonts.googleapis.com/css?family=Yellowtail&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Aclonica&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Yellowtail&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aclonica&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap");
 
 html,
 body,
@@ -33,9 +33,14 @@ body,
   background: #21295c;
 }
 .menu-chooser {
-  background-color: #FFFFFF99;
+  background-color: #ffffff99;
   border-radius: 16px;
   height: 268px;
   width: 251px;
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(4px);
+  box-shadow: 0px 24px 24px 8px #0000001f;
 }
