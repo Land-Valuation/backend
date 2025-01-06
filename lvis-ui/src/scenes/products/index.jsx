@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Card,
@@ -11,9 +11,10 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import Header from "../../components/Header";
 import { useGetProductsQuery } from "../../state/prototypeApi";
-
+import AddIcon from '@mui/icons-material/Add';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import LayoutPageCommon from "../../components/LayoutPageCommon";
 const Product = ({
   _id,
   name,
@@ -89,9 +90,55 @@ const Products = () => {
   const { data, isLoading } = useGetProductsQuery();
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
 
+  const breadcrumbData = [
+    { name: 'Home', href: '/' },
+    { name: 'MODEL-BASED LAND VALUATION', href: '/products' },
+  ];
+
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="MODEL-BASED LAND VALUATION" subtitle="See your list of models." />
+      <LayoutPageCommon 
+        breadcrumbData={breadcrumbData} 
+        title="MODEL-BASED LAND VALUATION"
+        actions={ 
+          <>
+            <Button
+              sx={{
+                backgroundColor: "#1677FF",
+                color: "#fff",
+                textTransform: "none",
+                borderRadius: "6px",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "20px",
+              }}
+              variant="contained"
+              startIcon={<AddIcon />}
+            >
+              New Model
+            </Button>
+            <Button
+              sx={{
+                backgroundColor: "#fff",
+                color: "#00000073",
+                textTransform: "none",
+                borderRadius: "6px",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+                fontWeight: 400,
+                minWidth: '32px',
+                minHeight: '32px',
+                padding: 0,
+              }}
+              variant="contained"
+            >
+              <MoreVertIcon />
+            </Button>
+          </>
+        }
+      >
+      </LayoutPageCommon>
       {data || !isLoading ? (
         <Box
           mt="20px"
@@ -104,7 +151,7 @@ const Products = () => {
             "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
           }}
         >
-          {data.map(
+          {(data ?? []).map(
             ({
               _id,
               name,
