@@ -25,6 +25,7 @@ const ModelBase = () => {
               fontSize: "14px",
               fontWeight: 400,
               lineHeight: "20px",
+              boxShadow: 'none'
             }}
             variant="contained"
             startIcon={<AddIcon />}
@@ -43,6 +44,8 @@ const ModelBase = () => {
               minWidth: '32px',
               minHeight: '32px',
               padding: 0,
+              boxShadow: 'none',
+              border: '1px solid #0000001A'
             }}
             variant="contained"
           >

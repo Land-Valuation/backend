@@ -6,13 +6,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Box,
 } from '@mui/material';
 
 const CustomTable = ({ dataSource, columns }) => {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer  sx={{ border: '1px solid #F0F0F0' , borderRadius: '8px'}}>
       <Table aria-label="custom table">
         <TableHead>
           <TableRow sx={{ backgroundColor: '#FAFAFA' }}>
@@ -41,6 +40,11 @@ const CustomTable = ({ dataSource, columns }) => {
                   <TableCell
                     key={`${row.key || row.id}-${column.key}`}
                     align={column.align}
+                    sx={{
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      fontFamily: 'Poppins',
+                    }}
                   >
                     {column.render ? column.render(cellValue, row) : cellValue}
                   </TableCell>

@@ -116,9 +116,9 @@ const ListModel = () => {
       dataIndex: 'appliedArea',
       key: 'appliedArea',
       render: (appliedArea) => (
-        <span style={{ color: appliedArea.includes('/') ? '#1976d2' : 'inherit' }}>
+        <Box>
           {appliedArea}
-        </span>
+        </Box>
       ),
     },
     {
@@ -161,7 +161,6 @@ const ListModel = () => {
   ];
   
   const selectYear = (year) => {
-    console.log('Selected year:', year);
     setYearSelected(year);
   }
 
