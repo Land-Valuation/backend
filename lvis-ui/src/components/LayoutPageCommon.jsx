@@ -6,7 +6,13 @@ import Header from "./Header";
 
 const LayoutPageCommon = ({ breadcrumbData, title, actions, children }) => {
   return (
-    <Box>
+    <Box sx={{
+      padding: '12px 44px',
+      backgroundColor: '#fff',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
       {/* Breadcrumb */}
       {breadcrumbData && breadcrumbData.length > 0 && (
         <Box mb="8px" display="flex" alignItems="center">
@@ -14,12 +20,17 @@ const LayoutPageCommon = ({ breadcrumbData, title, actions, children }) => {
             <React.Fragment key={index}>
               <Link
                 to={item.href}
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                style={{ textDecoration: 'none' }}
               >
-                <Typography variant="body2">{item.name}</Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ color: index === breadcrumbData.length - 1 ? '#000000E0' : '#00000073' }}
+                >
+                  {item.name}
+                </Typography>
               </Link>
               {index < breadcrumbData.length - 1 && (
-                <Typography variant="body2" sx={{ mx: 0.5 }}>
+                <Typography variant="body2" sx={{ mx: 0.5, color: '#00000073' }}>
                   /
                 </Typography>
               )}
