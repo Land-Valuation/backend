@@ -6,7 +6,6 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "./theme";
 import Layout from "./scenes/layout";
 import Dashboard from "./scenes/dashboard";
-import Products from "./scenes/products";
 import Customers from "./scenes/customers";
 import Transactions from "./scenes/transactions";
 import Valuation from "./scenes/maps/valuation";
@@ -25,6 +24,7 @@ import translationKO from "./locales/ko/translation.json";
 import translationLO from "./locales/lo/translation.json";
 
 import Egis0 from "./scenes/egis0";
+import ModelBase from "./scenes/model-base";
 
 const resources = {
   en: {
@@ -77,7 +77,7 @@ function App() {
                   </NotRenderOnRole>
                 } />
                 <Route path="/search" element={<Valuation />} />
-                <Route path="/products" element={<Products />} />
+                <Route path="/products" element={<ModelBase />} />
                 <Route path="/customers" element={
                   <NotRenderOnRole roles={[]} showNotAllowed>
                     <Customers />
