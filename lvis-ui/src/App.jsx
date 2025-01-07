@@ -25,6 +25,7 @@ import translationLO from "./locales/lo/translation.json";
 
 import Egis0 from "./scenes/egis0";
 import ModelBase from "./scenes/model-base";
+import CreateNewModel from "./scenes/model-base/create-model";
 
 const resources = {
   en: {
@@ -77,7 +78,8 @@ function App() {
                   </NotRenderOnRole>
                 } />
                 <Route path="/search" element={<Valuation />} />
-                <Route path="/products" element={<ModelBase />} />
+                <Route path="/model-base" element={<ModelBase />} />
+                <Route path="/model-base/create-new-model" element={<CreateNewModel />} />
                 <Route path="/customers" element={
                   <NotRenderOnRole roles={[]} showNotAllowed>
                     <Customers />

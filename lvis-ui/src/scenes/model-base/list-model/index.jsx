@@ -4,11 +4,32 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CustomTable from "../../../components/customMUI/CustomTable";
 import { IOSSwitch } from "../../../components/customMUI/CustomIOSSwitch";
+import AppliedAreasModal from "../modal/AppliedAreasModal";
+import FeatureModal from "../modal/FeatureModal";
 
 const ListModel = () => {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 7 }, (_, i) => currentYear - i)
   const [yearSelected, setYearSelected] = useState(currentYear)
+
+  const [isAppliedAreasModalOpen, setIsAppliedAreasModalOpen] = useState(false);
+  const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
+
+  const handleOpenAppliedAreasModal = () => {
+    setIsAppliedAreasModalOpen(true);
+  };
+
+  const handleCloseAppliedAreasModal = () => {
+    setIsAppliedAreasModalOpen(false);
+  };
+
+  const handleOpenFeatureModal = () => {
+    setIsFeatureModalOpen(true);
+  };
+
+  const handleCloseFeatureModal = () => {
+    setIsFeatureModalOpen(false);
+  };
 
   const data = [
     {
@@ -116,7 +137,7 @@ const ListModel = () => {
       dataIndex: 'appliedArea',
       key: 'appliedArea',
       render: (appliedArea) => (
-        <Box>
+        <Box onClick={handleOpenAppliedAreasModal} style={{ cursor: 'pointer' }}>
           {appliedArea}
         </Box>
       ),
@@ -131,7 +152,7 @@ const ListModel = () => {
       dataIndex: 'features',
       key: 'features',
       render: (features) => (
-        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }}>
+        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }} onClick={handleOpenFeatureModal}>
           {features}
         </div>
       ),
@@ -225,6 +246,9 @@ const ListModel = () => {
         </Typography>
         <CustomTable dataSource={data} columns={columns} />
       </Box>
+
+      <AppliedAreasModal open={isAppliedAreasModalOpen} onClose={handleCloseAppliedAreasModal} />
+      <FeatureModal open={isFeatureModalOpen} onClose={handleCloseFeatureModal} />
     </Box>
   )
 }

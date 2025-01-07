@@ -3,12 +3,19 @@ import LayoutPageCommon from "../../components/LayoutPageCommon";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddIcon from '@mui/icons-material/Add';
 import ListModel from "./list-model";
+import { useNavigate } from "react-router-dom";
 
 const ModelBase = () => {
+  const navigate = useNavigate();
   const breadcrumbData = [
     { name: 'Home', href: '/' },
-    { name: 'MODEL-BASED LAND VALUATION', href: '/products' },
+    { name: 'MODEL-BASED LAND VALUATION', href: '/model-base' },
   ];
+
+  const createNewModel = () => {
+    navigate('/model-base/create-new-model');
+  }
+  
   return (
     <LayoutPageCommon
       breadcrumbData={breadcrumbData} 
@@ -29,6 +36,7 @@ const ModelBase = () => {
             }}
             variant="contained"
             startIcon={<AddIcon />}
+            onClick={createNewModel}
           >
             New Model
           </Button>
@@ -45,7 +53,10 @@ const ModelBase = () => {
               minHeight: '32px',
               padding: 0,
               boxShadow: 'none',
-              border: '1px solid #0000001A'
+              border: '1px solid #0000001A',
+              '&:hover': {
+                boxShadow: 'none',
+              },
             }}
             variant="contained"
           >

@@ -235,7 +235,7 @@ function Sidebar() {
     {
       src: "/model-based.svg",
       alt: "Model-based land valuation",
-      path: "/Products",
+      path: "/model-base",
     },
     {
       src: "/parcel-survey.svg",
