@@ -57,7 +57,7 @@ const NotificationBox = () => {
         mt: "32px",
         display: "flex",
         alignItems: "center",
-        backgroundColor: "#f5f5f5",
+        // backgroundColor: "#f5f5f5",
         borderRadius: "10px",
         padding: "24px 24px 24px 64px",
         gap: "50px",

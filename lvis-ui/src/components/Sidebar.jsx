@@ -378,7 +378,7 @@ function Sidebar() {
           open={open}
           anchorEl={anchorEl}
           sx={{
-            zIndex: 100,
+            zIndex: 1000,
             position: "absolute !important",
             bottom: "16px",
             top: "auto !important",
@@ -451,7 +451,7 @@ function Sidebar() {
             </div>
             <div
               style={{
-                display: "flex",
+                // display: "flex",
                 flexDirection: "row",
                 gap: "8px",
                 marginBottom: "10px",
