@@ -15,7 +15,7 @@ function SideMenu() {
   const menuItems = [
     { src: "/home ico.svg", alt: "Home", path: "/home" },
     { src: "/land-price.svg", alt: "Land Price Explorer", path: "/montoring" },
-    { src: "/land-valuation.svg", alt: "Land Valuation", path: "/Search" },
+    { src: "/land-valuation.svg", alt: "Land Valuation", path: "/land-valuation" },
     {
       src: "/model-based.svg",
       alt: "Model-based land valuation",
