@@ -7,7 +7,7 @@ import Header from "./Header";
 const LayoutPageCommon = ({ breadcrumbData, title, actions, children }) => {
   return (
     <Box sx={{
-      padding: '12px 44px',
+      padding: '32px 44px',
       backgroundColor: '#fff',
       minHeight: '100vh',
       display: 'flex',

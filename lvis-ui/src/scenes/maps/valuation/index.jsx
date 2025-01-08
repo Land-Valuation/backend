@@ -17,13 +17,16 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { borderColor, borderRadius, display, styled } from "@mui/system";
+import {
+  borderColor,
+  borderRadius,
+  display,
+  styled,
+  textTransform,
+} from "@mui/system";
 import Footer from "../../../components/Footer";
 import SvgIcon from "@mui/material/SvgIcon";
-
-const userRole = 'central';
-// const userRole = 'local';
-
+import { Link } from "react-router-dom";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -166,6 +169,52 @@ function createData(
 ) {
   return { year, status, province, issue, area, title, member, duration, date };
 }
+function createData2(
+  year,
+  status,
+  submit,
+  area,
+  title,
+  member,
+  duration,
+  date
+) {
+  return { year, status, submit, area, title, member, duration, date };
+}
+
+const getStatusStyleAndIcon2 = (status) => {
+  switch (status) {
+    case "Requested":
+      return {
+        style: {
+          backgroundColor: "#FFF",
+          border: "1px solid #FFE58F",
+          color: "#FAAD14",
+        },
+        icon: <DraftIcon sx={{ marginRight: "4px", width: "12px" }} />,
+      };
+    case "In Progress":
+      return {
+        style: {
+          backgroundColor: "#FFF",
+          border: "1px solid #91CAFF",
+          color: "#1677FF",
+        },
+        icon: <ProgressIcon sx={{ marginRight: "4px", width: "12px" }} />,
+      };
+    case "Completed":
+      return {
+        style: {
+          backgroundColor: "#FFF",
+          border: "1px solid #B7EB8F",
+          color: "#52C41A",
+        },
+        icon: <ApproveIcon sx={{ marginRight: "4px", width: "12px" }} />,
+      };
+    default:
+      return { style: {}, icon: null };
+  }
+};
 
 const getStatusStyleAndIcon = (status) => {
   switch (status) {
@@ -287,144 +336,219 @@ const rows = [
   ),
 ];
 
+const rows2 = [
+  createData2(
+    "2024",
+    "Requested",
+    false,
+    "0/15",
+    "Title A",
+    "000,000,000,0000,000,000,000,0000",
+    "01-09-2024 to 09-11-2024",
+    "N/A"
+  ),
+  createData2(
+    "2024",
+    "Requested",
+    false,
+    "0/15",
+    "Title B",
+    "000,000,000,0000,000,000,000,0000",
+    "01-09-2024 to 09-11-2024",
+    "N/A"
+  ),
+  createData2(
+    "2024",
+    "In Progress",
+    false,
+    "5/15",
+    "Title C",
+    "000,000,000,0000,000,000,000,0000",
+    "01-09-2024 to 09-11-2024",
+    "N/A"
+  ),
+  createData2(
+    "2020",
+    "Completed",
+    false,
+    "15/15",
+    "Title D",
+    "000,000,000,0000,000,000,000,0000",
+    "01-09-2020 to 09-11-2020",
+    "09-11-2020"
+  ),
+  createData2(
+    "2016",
+    "Completed",
+    true,
+    "15/15",
+    "Title E",
+    "000,000,000,0000,000,000,000,0000",
+    "01-09-2016 to 09-11-2016",
+    "09-11-2016"
+  ),
+  createData2(
+    "2014",
+    "Completed",
+    true,
+    "15/15",
+    "Title F",
+    "000,000,000,0000,000,000,000,0000",
+    "01-09-2014 to 09-11-2014",
+    "09-11-2014"
+  ),
+];
 const Valuation = () => {
   const theme = useTheme();
+  const userRole = "central";
+  // const userRole = 'local';
 
   return (
     <>
-      <Box
-        m="1.5rem 2.5rem"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          height: "calc(100% - 6.5rem)",
-        }}
-      >
-        <Box>
-          <Box
-            sx={{ display: "flex", flexDirection: "row", marginBottom: "32px" }}
-          >
-            <Header
-              title="Land Valuation"
-              subtitle="Find your land valuation materials."
-            />
-            <Box sx={{ display: "flex", flexDirection: "row", gap: "12px" }}>
-              <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                sx={{
-                  backgroundColor: "#1677FF",
-                  color: "#fff",
-                  textTransform: "none",
-                  borderRadius: "6px",
-                  fontFamily: "Poppins",
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  lineHeight: "20px",
-                  textWrap: "nowrap",
-                }}
-              >
-                New Valuation
-              </Button>
-              <Button
-                sx={{
-                  backgroundColor: "#fff",
-                  color: "#00000073",
-                  textTransform: "none",
-                  borderRadius: "6px",
-                  fontFamily: "Poppins",
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  minWidth: "32px",
-                  minHeight: "32px",
-                  padding: 0,
-                }}
-                variant="contained"
-              >
-                <MoreVertIcon />
-              </Button>
-            </Box>
-          </Box>
-          <TableContainer
-            sx={{ border: "1px solid #F0F0F0", borderRadius: "8px" }}
-            component={Paper}
-          >
-            <Table
+      {userRole === "central" ? (
+        <Box
+          m="1.5rem 2.5rem"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "calc(100% - 6.5rem)",
+          }}
+        >
+          <Box>
+            <Box
               sx={{
-                minWidth: 650,
+                display: "flex",
+                flexDirection: "row",
+                marginBottom: "32px",
               }}
-              aria-label="simple table"
             >
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>Base Year</StyledTableCell>
-                  <StyledTableCell>Status</StyledTableCell>
-                  <StyledTableCell>Province</StyledTableCell>
-                  <StyledTableCell>Issued to Local</StyledTableCell>
-                  <StyledTableCell>Applied Area</StyledTableCell>
-                  <StyledTableCell>Title</StyledTableCell>
-                  <StyledTableCell>Evaluation Member</StyledTableCell>
-                  <StyledTableCell>Committee Duration</StyledTableCell>
-                  <StyledTableCell>Decision Date</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => {
-                  const { style, icon } = getStatusStyleAndIcon(row.status);
-                  return (
-                    <TableRow
-                      key={row.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.year}
-                      </TableCell>
-                      <TableCell>
-                        <Box
-                          sx={{
-                            ...style,
-                            borderRadius: "4px",
-                            padding: "0 8px",
-                            fontWeight: 600,
-                            display: "flex",
-                            alignItems: "center",
-                            width: "fit-content",
-                            textWrap: "nowrap",
-                            fontFamily: "Poppins",
-                            fontSize: "12px",
-                            fontWeight: 400,
-                          }}
-                        >
-                          {icon} {row.status}
-                        </Box>
-                      </TableCell>
-                      <TableCell>{row.province}</TableCell>
-                      <TableCell>
-                        <AntSwitch
-                          checked={row.issue}
-                          // disabled
-                          inputProps={{ "aria-label": "ant design" }}
-                        />
-                      </TableCell>
-                      <TableCell>{row.area}</TableCell>
-                      <TableCell sx={{ textWrap: "nowrap" }}>
-                        {row.title}
-                      </TableCell>
-                      <TableCell>{row.member}</TableCell>
-                      <TableCell sx={{ textWrap: "nowrap" }}>
-                        {row.duration}
-                      </TableCell>
-                      <TableCell>{row.date}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+              <Header
+                title="Land Valuation"
+                subtitle="Find your land valuation materials."
+              />
+              <Box sx={{ display: "flex", flexDirection: "row", gap: "12px" }}>
+                <Button
+                  variant="contained"
+                  startIcon={<AddIcon />}
+                  sx={{
+                    backgroundColor: "#1677FF",
+                    color: "#fff",
+                    textTransform: "none",
+                    borderRadius: "6px",
+                    fontFamily: "Poppins",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    lineHeight: "20px",
+                    textWrap: "nowrap",
+                  }}
+                >
+                  New Valuation
+                </Button>
+                <Button
+                  sx={{
+                    backgroundColor: "#fff",
+                    color: "#00000073",
+                    textTransform: "none",
+                    borderRadius: "6px",
+                    fontFamily: "Poppins",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    minWidth: "32px",
+                    minHeight: "32px",
+                    padding: 0,
+                  }}
+                  variant="contained"
+                >
+                  <MoreVertIcon />
+                </Button>
+              </Box>
+            </Box>
+            <TableContainer
+              sx={{ border: "1px solid #F0F0F0", borderRadius: "8px" }}
+              component={Paper}
+            >
+              <Table
+                sx={{
+                  minWidth: 650,
+                }}
+                aria-label="simple table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Base Year</StyledTableCell>
+                    <StyledTableCell>Status</StyledTableCell>
+                    <StyledTableCell>Province</StyledTableCell>
+                    <StyledTableCell>Issued to Local</StyledTableCell>
+                    <StyledTableCell>Applied Area</StyledTableCell>
+                    <StyledTableCell>Title</StyledTableCell>
+                    <StyledTableCell>Evaluation Member</StyledTableCell>
+                    <StyledTableCell>Committee Duration</StyledTableCell>
+                    <StyledTableCell>Decision Date</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => {
+                    const { style, icon } = getStatusStyleAndIcon(row.status);
+                    return (
+                      <TableRow
+                        key={row.name}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.year}
+                        </TableCell>
+                        <TableCell>
+                          <Link
+                            to={`/land-valuation/detail`}
+                            style={{ textDecoration: "none" }}
+                          >
+                            <Box
+                              sx={{
+                                ...style,
+                                borderRadius: "4px",
+                                padding: "0 8px",
+                                fontWeight: 600,
+                                display: "flex",
+                                alignItems: "center",
+                                width: "fit-content",
+                                textWrap: "nowrap",
+                                fontFamily: "Poppins",
+                                fontSize: "12px",
+                                fontWeight: 400,
+                              }}
+                            >
+                              {icon} {row.status}
+                            </Box>
+                          </Link>
+                        </TableCell>
+                        <TableCell>{row.province}</TableCell>
+                        <TableCell>
+                          <AntSwitch
+                            checked={row.issue}
+                            inputProps={{ "aria-label": "ant design" }}
+                          />
+                        </TableCell>
+                        <TableCell>{row.area}</TableCell>
+                        <TableCell sx={{ textWrap: "nowrap" }}>
+                          {row.title}
+                        </TableCell>
+                        <TableCell>{row.member}</TableCell>
+                        <TableCell sx={{ textWrap: "nowrap" }}>
+                          {row.duration}
+                        </TableCell>
+                        <TableCell>{row.date}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
 
-        {/* <Box
+          {/* <Box
         mt="40px"
         height="75.25vh"
         border={`1px solid ${theme.palette.secondary[200]}`}
@@ -432,7 +556,145 @@ const Valuation = () => {
       >
         <BaseInside />        
       </Box> */}
-      </Box>
+        </Box>
+      ) : (
+        <Box
+          m="1.5rem 2.5rem"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "calc(100% - 6.5rem)",
+          }}
+        >
+          <Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                marginBottom: "32px",
+              }}
+            >
+              <Header
+                title="Land Valuation"
+                subtitle="Find your land valuation materials."
+              />
+              <Box>
+                <Button
+                  sx={{
+                    backgroundColor: "#fff",
+                    color: "#00000073",
+                    textTransform: "none",
+                    borderRadius: "6px",
+                    fontFamily: "Poppins",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    minWidth: "32px",
+                    minHeight: "32px",
+                    padding: 0,
+                  }}
+                  variant="contained"
+                >
+                  <MoreVertIcon />
+                </Button>
+              </Box>
+            </Box>
+            <TableContainer
+              sx={{ border: "1px solid #F0F0F0", borderRadius: "8px" }}
+              component={Paper}
+            >
+              <Table
+                sx={{
+                  minWidth: 650,
+                }}
+                aria-label="simple table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Base Year</StyledTableCell>
+                    <StyledTableCell>Status</StyledTableCell>
+                    <StyledTableCell>Submit to Central</StyledTableCell>
+                    <StyledTableCell>
+                      Number of Evaluation Areas
+                    </StyledTableCell>
+                    <StyledTableCell>Title</StyledTableCell>
+                    <StyledTableCell>Evaluation Member</StyledTableCell>
+                    <StyledTableCell>Committee Duration</StyledTableCell>
+                    <StyledTableCell>Decision Date</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows2.map((row) => {
+                    const { style, icon } = getStatusStyleAndIcon2(row.status);
+                    let backgroundColor;
+                    switch (row.status) {
+                      case "Requested":
+                        backgroundColor = "#FFFBE6";
+                        break;
+                      case "In Progress":
+                        backgroundColor = "#E6F7FF";
+                        break;
+                      case "Completed":
+                        backgroundColor = "#F0F9EB";
+                        break;
+                      default:
+                        backgroundColor = "#ffffff";
+                    }
+                    return (
+                      <TableRow
+                        key={row.name}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                          backgroundColor: backgroundColor,
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.year}
+                        </TableCell>
+                        <TableCell>
+                          <Box
+                            sx={{
+                              ...style,
+                              borderRadius: "4px",
+                              padding: "0 8px",
+                              // fontWeight: 600,
+                              display: "flex",
+                              alignItems: "center",
+                              width: "fit-content",
+                              textWrap: "nowrap",
+                              fontFamily: "Poppins",
+                              fontSize: "12px",
+                              fontWeight: 400,
+                            }}
+                          >
+                            {icon} {row.status}
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <AntSwitch
+                            checked={row.submit}
+                            // disabled
+                            inputProps={{ "aria-label": "ant design" }}
+                          />
+                        </TableCell>
+                        <TableCell>{row.area}</TableCell>
+                        <TableCell sx={{ textWrap: "nowrap" }}>
+                          {row.title}
+                        </TableCell>
+                        <TableCell>{row.member}</TableCell>
+                        <TableCell sx={{ textWrap: "nowrap" }}>
+                          {row.duration}
+                        </TableCell>
+                        <TableCell>{row.date}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        </Box>
+      )}
       <Box>
         <Divider />
         <Footer />

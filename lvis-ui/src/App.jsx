@@ -9,6 +9,7 @@ import Dashboard from "./scenes/dashboard";
 import Customers from "./scenes/customers";
 import Transactions from "./scenes/transactions";
 import Valuation from "./scenes/maps/valuation";
+import LandValuationDetail from "./scenes/maps/valuation/detail";
 import Utilities from "./scenes/utilities";
 import HomePage from "./scenes/home";
 import PageNotFound from "./scenes/pagenotfound"
@@ -76,7 +77,8 @@ function App() {
                     <Dashboard />
                   </NotRenderOnRole>
                 } />
-                <Route path="/search" element={<Valuation />} />
+                <Route path="/land-valuation" element={<Valuation />} />
+                <Route path="/land-valuation/detail" element={<LandValuationDetail />} />
                 <Route path="/products" element={<ModelBase />} />
                 <Route path="/customers" element={
                   <NotRenderOnRole roles={[]} showNotAllowed>

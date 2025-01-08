@@ -395,7 +395,7 @@ const HomePage = () => {
           </div>
           <Link
             sx={{ color: "#1677FF", display: "flex", gap: "8px" }}
-            href="/Search"
+            href="/land-valuation"
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
