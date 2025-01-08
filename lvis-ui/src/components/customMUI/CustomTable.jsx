@@ -9,22 +9,23 @@ import {
   Box,
 } from '@mui/material';
 
-const CustomTable = ({ dataSource, columns }) => {
+const CustomTable = ({ dataSource, columns, rowStyle, cellStyle }) => {
   return (
-    <TableContainer  sx={{ border: '1px solid #F0F0F0' , borderRadius: '8px'}}>
+    <TableContainer sx={{ border: '1px solid #F0F0F0', borderRadius: '8px' }}>
       <Table aria-label="custom table">
         <TableHead>
           <TableRow sx={{ backgroundColor: '#FAFAFA' }}>
             {columns.map((column) => (
               <TableCell key={column.key} align={column.align}>
-                <Box 
+                <Box
                   sx={{
                     fontFamily: 'Poppins !important',
                     fontSize: '14px',
                     fontWeight: 'bold !important',
                     lineHeight: '22px',
                     color: '#000000E0',
-                  }}>
+                  }}
+                >
                   {column.title}
                 </Box>
               </TableCell>
@@ -32,9 +33,12 @@ const CustomTable = ({ dataSource, columns }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {dataSource.map((row) => (
-            <TableRow key={row.key || row.id}>
-              {columns.map((column) => {
+          {dataSource.map((row, rowIndex) => (
+            <TableRow
+              key={row.key || row.id}
+              sx={rowStyle ? rowStyle(row, rowIndex) : {}}
+            >
+              {columns.map((column, colIndex) => {
                 const cellValue = row[column.dataIndex];
                 return (
                   <TableCell
@@ -44,6 +48,7 @@ const CustomTable = ({ dataSource, columns }) => {
                       fontSize: '14px',
                       fontWeight: 400,
                       fontFamily: 'Poppins',
+                      ...(cellStyle ? cellStyle(cellValue, row, rowIndex, column, colIndex) : {}),
                     }}
                   >
                     {column.render ? column.render(cellValue, row) : cellValue}
@@ -69,6 +74,8 @@ CustomTable.propTypes = {
       align: PropTypes.oneOf(['left', 'center', 'right', 'inherit', 'justify']),
     })
   ).isRequired,
+  rowStyle: PropTypes.func, // Hàm nhận row và trả về object style
+  cellStyle: PropTypes.func, // Hàm nhận cellValue, row và trả về object style
 };
 
 export default CustomTable;

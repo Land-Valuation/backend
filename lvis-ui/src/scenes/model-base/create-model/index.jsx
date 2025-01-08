@@ -6,9 +6,10 @@ import { useState } from 'react';
 import { Check } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import DefineModelArea from './DefineModelArea';
+import DefineModelArea from './define-model-area/DefineModelArea';
 import SaveIcon from '@mui/icons-material/Save';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import SelectSampleParcels from './select-sample-parcels/SelectSampleParcels';
 
 const steps = [
   'Define Model Area',
@@ -142,11 +143,11 @@ const CreateNewModel = () => {
   };
 
   const renderComponent = () => {
-    console.log('activeStep :>> ', activeStep);
     switch (activeStep) {
       case 0:
         return <DefineModelArea />;
-    
+      case 1:
+        return <SelectSampleParcels />;
       default:
         return null;
     }
@@ -277,7 +278,7 @@ const CreateNewModel = () => {
           </Box>
         </Box>
         <Box sx={{ width: '1px', height: '100%', backgroundColor: '#0000001A'}}></Box>
-        <Box>
+        <Box sx={{  width: '100%' }}>
           {renderComponent()}
         </Box>
       </Box>
