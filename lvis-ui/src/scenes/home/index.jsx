@@ -432,7 +432,7 @@ const HomePage = () => {
           </div>
           <Link
             sx={{ color: "#1677FF", display: "flex", gap: "8px" }}
-            href="/Products"
+            href="/products"
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
@@ -469,7 +469,7 @@ const HomePage = () => {
           </div>
           <Link
             sx={{ color: "#1677FF", display: "flex", gap: "8px" }}
-            href="/Dashboard"
+            href="/dashboard"
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
@@ -506,7 +506,7 @@ const HomePage = () => {
           </div>
           <Link
             sx={{ color: "#1677FF", display: "flex", gap: "8px" }}
-            href="/Customers"
+            href="/customers"
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />

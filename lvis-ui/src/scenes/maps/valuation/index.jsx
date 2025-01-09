@@ -510,7 +510,7 @@ const Valuation = () => {
                                 ...style,
                                 borderRadius: "4px",
                                 padding: "0 8px",
-                                fontWeight: 600,
+                                // fontWeight: 600,
                                 display: "flex",
                                 alignItems: "center",
                                 width: "fit-content",
