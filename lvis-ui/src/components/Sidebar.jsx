@@ -18,7 +18,6 @@
 // import { useTranslation } from "react-i18next";
 // import StyledListItemButton from "./custom/StyledListItemButton";
 
-
 // const Sidebar = ({
 //   user,
 //   drawerWidth,
@@ -45,16 +44,16 @@
 //           onClose={() => setIsSidebarOpen(false)}
 //           variant="persistent"
 //           anchor="left"
-//           sx={{            
-//             width: drawerWidth,            
+//           sx={{
+//             width: drawerWidth,
 //             "& .MuiDrawer-paper": {
 //               color: theme.palette.background.alt,
 //               backgroundImage: theme.palette.primary.gradient,
-//               borderLeft: "0",              
+//               borderLeft: "0",
 //               borderRight: "0",
 //               borderRadius: "20px 0 0 20px", // top-left top-right bottom-right bottom-left.
 //               transition: "0.5s",
-//               overflow: "hidden",              
+//               overflow: "hidden",
 //               width: drawerWidth,
 //             },
 //           }}
@@ -63,12 +62,12 @@
 //             <Box width="100%">
 //               <Box onClick={() => {navigate(`/`);}}>
 //                 <FlexBetween>
-//                   <Box 
+//                   <Box
 //                       m="3.5rem 2rem 2rem 1rem"
-//                       display="flex" 
-//                       alignItems="center"                 
+//                       display="flex"
+//                       alignItems="center"
 //                   >
-//                     <Typography 
+//                     <Typography
 //                       sx={{
 //                         display: "inline-block",
 //                         position: "relative",
@@ -76,7 +75,7 @@
 //                         fontSize: "20px",
 //                         fontWeight: "bold",
 //                         color: theme.palette.primary.light, //theme.palette.secondary[500],
-//                         "&::before": { 
+//                         "&::before": {
 //                           position: "absolute",
 //                           display:"inline-block",
 //                           top: "-2.75rem",
@@ -87,8 +86,8 @@
 //                           height: "45px",
 //                           width: "45px",
 //                           backgroundSize: "45px 45px",
-//                           zIndex: "-1"                                                    
-//                         },                        
+//                           zIndex: "-1"
+//                         },
 //                         "&::after": {
 //                           content: '""',
 //                           position: "absolute",
@@ -107,7 +106,7 @@
 //                         "&:hover::after": {
 //                           transform: "scaleX(1)",
 //                           transformOrigin: "bottom left",
-//                         },                                                   
+//                         },
 //                       }}
 //                     >
 //                       LVIS
@@ -125,8 +124,8 @@
 //                         onClick={() => {
 //                           navigate(`/${ref}`);
 //                           setActive(ref);
-//                         }}      
-//                         selected={active === ref}                
+//                         }}
+//                         selected={active === ref}
 //                       >
 //                         <ListItemIcon
 //                           sx={{
@@ -140,13 +139,13 @@
 //                         </ListItemIcon>
 //                         {isNonPortraitMode && (
 //                           <ListItemText>
-//                             <Box 
+//                             <Box
 //                               sx={{
 //                                 lineHeight: "15px",
 //                                 textAlign: "center"
-//                               }} 
+//                               }}
 //                             >
-//                               <Typography 
+//                               <Typography
 //                                 // variant="h7"
 //                                 // fontFamily="Aclonica, sans-serif"
 //                                 // fontStyle="normal"
@@ -154,7 +153,7 @@
 //                               >
 //                                 {t(text)}
 //                               </Typography>
-//                             </Box>                            
+//                             </Box>
 //                           </ListItemText>
 //                         )}
 //                       </StyledListItemButton>
@@ -166,9 +165,9 @@
 
 //             {/* <Box>
 //               <Divider sx={{ m: "4.5rem 1rem 1rem 1rem", borderColor: theme.palette.background.alt}}/>
-//               <FlexBetween 
+//               <FlexBetween
 //                 textTransform="none"
-//                 flexDirection="column" 
+//                 flexDirection="column"
 //                 overflow="auto"
 //               >
 //                 <Box
@@ -182,11 +181,11 @@
 //                   width="30px"
 //                   borderRadius="50%"
 //                   onClick={() => navigate(`/profile/${user._id}`)}
-//                   sx={{ 
+//                   sx={{
 //                     objectFit: "cover",
 //                     "&:hover": {
 //                       transform: "scale3d(1.25, 1.25, 1.25)",
-//                     }, 
+//                     },
 //                   }}
 //                 />
 //                 <Box textAlign="center">
@@ -202,7 +201,7 @@
 //                     sx={{ color: theme.palette.secondary[200] }}
 //                   >
 //                     {user.occupation}
-//                   </Typography>                  
+//                   </Typography>
 //                 </Box>
 //               </FlexBetween>
 //             </Box> */}
@@ -214,7 +213,7 @@
 // };
 
 // export default Sidebar;
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -222,30 +221,45 @@ import { Divider, Box, Popper, Typography, Tooltip } from "@mui/material";
 import UserService from "../state/UserService";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const drawerWidth = 64;
 
 function Sidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  useEffect(() => {
+    const currentIndex = menuItems.findIndex(item => 
+      location.pathname.includes(item.path.toLowerCase())
+    );
+    if (currentIndex !== -1) {
+      setActiveIndex(currentIndex);
+    }
+  }, [location.pathname]);
+
   const menuItems = [
     { src: "/home ico.svg", alt: "Home", path: "/home" },
     { src: "/land-price.svg", alt: "Land Price Explorer", path: "/montoring" },
-    { src: "/land-valuation.svg", alt: "Land Valuation", path: "/land-valuation" },
+    {
+      src: "/land-valuation.svg",
+      alt: "Land Valuation",
+      path: "/land-valuation",
+    },
     {
       src: "/model-based.svg",
       alt: "Model-based land valuation",
-      path: "/Products",
+      path: "/products",
     },
     {
       src: "/parcel-survey.svg",
       alt: "Parcel survey management",
-      path: "/Dashboard",
+      path: "/dashboard",
     },
-    { src: "/admin.svg", alt: "Admin", path: "/Customers" },
+    { src: "/admin.svg", alt: "Admin", path: "/customers" },
   ];
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -338,7 +352,7 @@ function Sidebar() {
                 button
                 key={item.alt}
                 onClick={() => {
-                  setActiveIndex(index);
+                  // setActiveIndex(index);
                   navigate(item.path);
                 }}
               >
