@@ -10,6 +10,7 @@ import DefineModelArea from './define-model-area/DefineModelArea';
 import SaveIcon from '@mui/icons-material/Save';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import SelectSampleParcels from './select-sample-parcels/SelectSampleParcels';
+import DataPreprocessing from './data-preprocessing/DataPreprocessing';
 
 const steps = [
   'Define Model Area',
@@ -148,6 +149,8 @@ const CreateNewModel = () => {
         return <DefineModelArea />;
       case 1:
         return <SelectSampleParcels />;
+      case 2:
+        return <DataPreprocessing />;
       default:
         return null;
     }
@@ -277,7 +280,7 @@ const CreateNewModel = () => {
             </Button>
           </Box>
         </Box>
-        <Box sx={{ width: '1px', height: '100%', backgroundColor: '#0000001A'}}></Box>
+        <Box sx={{ width: '1px', height: 'auto', backgroundColor: '#0000001A'}}></Box>
         <Box sx={{  width: '100%' }}>
           {renderComponent()}
         </Box>
