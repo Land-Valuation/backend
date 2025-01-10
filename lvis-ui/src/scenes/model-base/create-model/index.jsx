@@ -11,6 +11,8 @@ import SaveIcon from '@mui/icons-material/Save';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import SelectSampleParcels from './select-sample-parcels/SelectSampleParcels';
 import DataPreprocessing from './data-preprocessing/DataPreprocessing';
+import DataVerification from './data-verification/DataVerification';
+import SetModelVariables from './set-model-variables/SetModelVariables';
 
 const steps = [
   'Define Model Area',
@@ -151,6 +153,14 @@ const CreateNewModel = () => {
         return <SelectSampleParcels />;
       case 2:
         return <DataPreprocessing />;
+      case 3:
+        return <DataVerification />;
+      case 4:
+        return <SetModelVariables />;
+      // case 5:
+      //   return <SelectOptimalModel />;
+      // case 6:
+      //   return <FinalizeAdjustmentTable />;
       default:
         return null;
     }

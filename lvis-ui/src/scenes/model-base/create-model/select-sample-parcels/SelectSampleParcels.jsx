@@ -137,7 +137,7 @@ const SelectSampleParcels = () => {
               },
             }}
             variant="outlined"
-            startIcon={<ReplayRoundedIcon sx={{ color: '#00000073'}} />}
+            startIcon={<ReplayRoundedIcon sx={{ color: '#00000073', transform: 'scaleX(-1)'}} />}
           >
             Reload
           </Button>

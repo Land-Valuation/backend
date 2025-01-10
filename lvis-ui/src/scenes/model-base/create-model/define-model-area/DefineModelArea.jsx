@@ -53,9 +53,9 @@ const DefineModelArea = () => {
           onChange={handleProvinceChange}
           displayEmpty
           size="small"
-          sx={{ minWidth: '180px' }}
+          sx={{ minWidth: '180px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
         >
-          <MenuItem disabled value="">
+          <MenuItem sx={{ display: 'none' }} disabled value="">
             <Box>List of province</Box>
           </MenuItem>
           <MenuItem value={10}>Province A</MenuItem>
@@ -69,9 +69,9 @@ const DefineModelArea = () => {
           onChange={handleDistrictChange}
           size="small"
           displayEmpty
-          sx={{ minWidth: '180px' }}
+          sx={{ minWidth: '180px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
         >
-          <MenuItem disabled value="">
+          <MenuItem sx={{ display: 'none' }} disabled value="">
             <Box>List of district</Box>
           </MenuItem>
           <MenuItem value={10}>District A</MenuItem>
@@ -97,7 +97,7 @@ const DefineModelArea = () => {
               },
             }}
             variant="outlined"
-            startIcon={<ReplayRoundedIcon sx={{ color: '#00000073'}} />}
+            startIcon={<ReplayRoundedIcon sx={{ color: '#00000073', transform: 'scaleX(-1)'}} />}
           >
             Reload
           </Button>
