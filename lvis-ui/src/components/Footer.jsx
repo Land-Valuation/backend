@@ -11,7 +11,7 @@ const Footer = () => {
         justifyContent: "center",
         gap: "8px",
         // borderTop: "1px solid #F0F0F0",
-        padding: "16px 0 0 0",
+        padding: "16px 0 16px 0",
       }}
     >
       <Typography

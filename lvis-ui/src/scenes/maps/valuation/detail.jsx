@@ -11,14 +11,20 @@ import {
   FormControl,
   List,
   ListItem,
+  Divider,
   ListItemText,
 } from "@mui/material";
-import { fontSize, styled } from "@mui/system";
+import { styled } from "@mui/system";
 import LayoutPageCommon from "../../../components/LayoutPageCommon";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import Footer from "../../../components/Footer";
+import DateRangePicker from "@wojtekmaj/react-daterange-picker";
+import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
+import "react-calendar/dist/Calendar.css";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -32,6 +38,35 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+function CustomDateDivider(props) {
+  return (
+    <SvgIcon {...props} viewBox="0 0 16 16">
+      <path
+        d="M13.6422 9.31563L11.0797 6.06563C11.033 6.00629 10.9734 5.95832 10.9055 5.92531C10.8375 5.89229 10.763 5.87509 10.6875 5.875H9.675C9.57031 5.875 9.5125 5.99531 9.57656 6.07812L11.8313 8.9375H2.375C2.30625 8.9375 2.25 8.99375 2.25 9.0625V10C2.25 10.0687 2.30625 10.125 2.375 10.125H13.2484C13.6672 10.125 13.9 9.64375 13.6422 9.31563Z"
+        fill="black"
+        fill-opacity="0.25"
+      />
+    </SvgIcon>
+  );
+}
+function CalendarIcon(props) {
+  return (
+    <SvgIcon {...props} viewBox="0 0 16 16">
+      <g clip-path="url(#clip0_7280_6269)">
+        <path
+          d="M14.5717 2.14509H11.5717V1.00223C11.5717 0.923661 11.5074 0.859375 11.4289 0.859375H10.4289C10.3503 0.859375 10.286 0.923661 10.286 1.00223V2.14509H5.71457V1.00223C5.71457 0.923661 5.65028 0.859375 5.57171 0.859375H4.57171C4.49314 0.859375 4.42885 0.923661 4.42885 1.00223V2.14509H1.42885C1.11278 2.14509 0.857422 2.40045 0.857422 2.71652V14.5737C0.857422 14.8897 1.11278 15.1451 1.42885 15.1451H14.5717C14.8878 15.1451 15.1431 14.8897 15.1431 14.5737V2.71652C15.1431 2.40045 14.8878 2.14509 14.5717 2.14509ZM13.8574 13.8594H2.14314V7.07366H13.8574V13.8594ZM2.14314 5.85938V3.4308H4.42885V4.28795C4.42885 4.36652 4.49314 4.4308 4.57171 4.4308H5.57171C5.65028 4.4308 5.71457 4.36652 5.71457 4.28795V3.4308H10.286V4.28795C10.286 4.36652 10.3503 4.4308 10.4289 4.4308H11.4289C11.5074 4.4308 11.5717 4.36652 11.5717 4.28795V3.4308H13.8574V5.85938H2.14314Z"
+          fill="black"
+          fill-opacity="0.25"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_7280_6269">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </SvgIcon>
+  );
+}
 function AttachIcon(props) {
   return (
     <SvgIcon {...props} viewBox="0 0 16 16">
@@ -53,7 +88,16 @@ function AttachIcon2(props) {
     </SvgIcon>
   );
 }
-
+function UploadIcon(props) {
+  return (
+    <SvgIcon {...props} viewBox="0 0 16 16">
+      <path
+        d="M5.99986 4.53606H7.3195V10.5771C7.3195 10.6557 7.38379 10.72 7.46236 10.72H8.53379C8.61236 10.72 8.67665 10.6557 8.67665 10.5771V4.53606H9.99986C10.1195 4.53606 10.1856 4.39856 10.1124 4.30571L8.11236 1.77356C8.099 1.75649 8.08192 1.74268 8.06243 1.73318C8.04294 1.72369 8.02154 1.71875 7.99986 1.71875C7.97818 1.71875 7.95678 1.72369 7.93729 1.73318C7.9178 1.74268 7.90072 1.75649 7.88736 1.77356L5.88736 4.30392C5.81415 4.39856 5.88022 4.53606 5.99986 4.53606ZM14.5356 10.0414H13.4641C13.3856 10.0414 13.3213 10.1057 13.3213 10.1843V12.9343H2.67843V10.1843C2.67843 10.1057 2.61415 10.0414 2.53557 10.0414H1.46415C1.38557 10.0414 1.32129 10.1057 1.32129 10.1843V13.72C1.32129 14.0361 1.57665 14.2914 1.89272 14.2914H14.107C14.4231 14.2914 14.6784 14.0361 14.6784 13.72V10.1843C14.6784 10.1057 14.6141 10.0414 14.5356 10.0414Z"
+        fill="#1677FF"
+      />
+    </SvgIcon>
+  );
+}
 function CloseIcon(props) {
   return (
     <SvgIcon {...props} viewBox="0 0 16 16">
@@ -101,11 +145,73 @@ const LandValuationDetail = () => {
   const [landValuationStatus, setLandValuationStatus] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
+  const [dateRange, setDateRange] = useState([null, null]);
+
+  const columns = [
+    { field: "id", headerName: "ID", flex: 1, hide: true },
+    {
+      field: "firstName",
+      headerName: "Member Type",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "lastName",
+      headerName: "Organization",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "age",
+      headerName: "Name",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "fullName",
+      headerName: "Position",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      valueGetter: (value, row) =>
+        `${row.firstName || ""} ${row.lastName || ""}`,
+      flex: 1,
+    },
+    {
+      field: "phone",
+      headerName: "Phone Number",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      editable: true,
+      flex: 1,
+    },
+  ];
+
+  const rows = [
+    { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
+    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
+    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
+    { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
+    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: 1000 },
+    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
+    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
+    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
+    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+  ];
+  const visibleColumns = columns.filter((column) => column.field !== "id");
+
+  const handleDateChange = (range) => {
+    setDateRange(range);
+  };
 
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
     setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
   };
+
   const handleCommitteeStatusChange = (event) => {
     setCommitteeStatus(event.target.value);
   };
@@ -113,139 +219,333 @@ const LandValuationDetail = () => {
   const handleLandValuationStatusChange = (event) => {
     setLandValuationStatus(event.target.value);
   };
+
   const breadcrumbData = [
     { name: "Home", href: "/" },
     { name: "Land Valuation", href: "/land-valuation" },
   ];
+
   return (
-    <LayoutPageCommon
-      breadcrumbData={breadcrumbData}
-      title="Detail information on land valuation profile"
-      actions={
-        <>
-          <Button
-            sx={{
-              backgroundColor: "#fff",
-              color: "#000",
-              border: "1px solid #0000001A",
-              textTransform: "none",
-              borderRadius: "6px",
-              fontFamily: "Poppins",
-              fontSize: "14px",
-              fontWeight: 400,
-              lineHeight: "20px",
-              boxShadow: "none",
-            }}
-            variant="contained"
-            startIcon={<CloseIcon />}
-          >
-            Cancel
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: "#1677FF",
-              color: "#fff",
-              textTransform: "none",
-              borderRadius: "6px",
-              fontFamily: "Poppins",
-              fontSize: "14px",
-              fontWeight: 400,
-              minWidth: "32px",
-              minHeight: "32px",
-              boxShadow: "none",
-            }}
-            variant="contained"
-            startIcon={<SaveIcon />}
-          >
-            Save
-          </Button>
-        </>
-      }
-    >
-      <Typography
-        sx={{
-          fontFamily: "Poppins",
-          fontWeight: 400,
-          fontSize: "20px",
-          color: "#00000073",
-          marginTop: "22px",
-          marginBottom: "16px",
-        }}
-      >
-        Overview
-      </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          width: "100%",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: "fit-content",
-          }}
-        >
-          <label htmlFor="calendar">
-            <span style={{ color: "red" }}>*</span> Base year
-          </label>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              className="calendar"
-              views={["year"]}
-              value={selectedYear}
-              onChange={(newValue) => {
-                setSelectedYear(newValue);
+    <>
+      <LayoutPageCommon
+        breadcrumbData={breadcrumbData}
+        title="Detail information on land valuation profile"
+        actions={
+          <>
+            <Button
+              sx={{
+                backgroundColor: "#fff",
+                color: "#000",
+                border: "1px solid #0000001A",
+                textTransform: "none",
+                borderRadius: "6px",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "20px",
+                boxShadow: "none",
               }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
-        </Box>
+              variant="contained"
+              startIcon={<CloseIcon />}
+            >
+              Cancel
+            </Button>
+            <Button
+              sx={{
+                backgroundColor: "#1677FF",
+                color: "#fff",
+                textTransform: "none",
+                borderRadius: "6px",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+                fontWeight: 400,
+                minWidth: "32px",
+                minHeight: "32px",
+                boxShadow: "none",
+              }}
+              variant="contained"
+              startIcon={<SaveIcon />}
+            >
+              Save
+            </Button>
+          </>
+        }
+      >
+        <Typography
+          sx={{
+            fontFamily: "Poppins",
+            fontWeight: 400,
+            fontSize: "20px",
+            color: "#00000073",
+            marginTop: "22px",
+            marginBottom: "16px",
+          }}
+        >
+          Overview
+        </Typography>
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
-            width: "fit-content",
+            flexDirection: "row",
+            width: "100%",
+            gap: "16px",
           }}
         >
-          <label htmlFor="province">
-            <span style={{ color: "red" }}>*</span> Province
-          </label>
-          <Select
-            value={selectedProvince}
-            onChange={(e) => setSelectedProvince(e.target.value)}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "fit-content",
+            }}
           >
-            <MenuItem value="1">Vientiane</MenuItem>
-          </Select>
+            <label htmlFor="calendar">
+              <span style={{ color: "red" }}>*</span> Base year
+            </label>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                className="calendar"
+                views={["year"]}
+                value={selectedYear}
+                onChange={(newValue) => {
+                  setSelectedYear(newValue);
+                }}
+                slots={{
+                  openPickerIcon: CalendarIcon,
+                }}
+                renderInput={(params) => <TextField {...params} />}
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: "40px", // Custom height for the input
+                  },
+                  "& .MuiPaper-root": {
+                    "& .MuiCalendarPicker-root": {
+                      height: "300px", // Custom height for the popup calendar
+                    },
+                  },
+                }}
+                slotProps={{
+                  textField: {
+                    sx: {
+                      "& .MuiInputBase-root": {
+                        height: "40px", // Ensure consistent input height
+                      },
+                    },
+                  },
+                }}
+              />
+            </LocalizationProvider>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "fit-content",
+            }}
+          >
+            <label htmlFor="province">
+              <span style={{ color: "red" }}>*</span> Province
+            </label>
+            <Select
+              value={selectedProvince}
+              onChange={(e) => setSelectedProvince(e.target.value)}
+              sx={{ height: "40px" }}
+            >
+              <MenuItem value="1">Vientiane</MenuItem>
+            </Select>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+            <label htmlFor="province">
+              <span style={{ color: "red" }}>*</span> Title
+            </label>
+            <TextField
+              placeholder="Enter title"
+              sx={{
+                "& .MuiInputBase-root": {
+                  height: "40px",
+                },
+              }}
+            ></TextField>
+          </Box>
         </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
-          <label htmlFor="province">
-            <span style={{ color: "red" }}>*</span> Province
-          </label>
-          <TextField placeholder="Enter title"></TextField>
-        </Box>
-      </Box>
-      <label>Note</label>
-      <TextField placeholder="Enter content"></TextField>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "32px",
-          marginTop: "32px",
-        }}
-      >
+        <label style={{ marginTop: "17px" }}>Note</label>
+        <TextField
+          sx={{
+            "& .MuiInputBase-root": {
+              height: "40px",
+            },
+          }}
+          placeholder="Enter content"
+        ></TextField>
         <Box
           sx={{
+            display: "flex",
+            flexDirection: "row",
+            gap: "32px",
+            marginTop: "32px",
+          }}
+        >
+          <Box
+            sx={{
+              border: "1px solid #D9D9D9",
+              borderRadius: "8px",
+              p: 2,
+              mt: 2,
+              position: "relative",
+              width: "50%",
+              marginTop: "0",
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: "16px",
+                fontWeight: 600,
+                mb: 2,
+                position: "absolute",
+                top: "-15px",
+                backgroundColor: "#ffffff",
+                padding: "0 8px",
+                color: "#000000E0",
+              }}
+            >
+              Approval Status
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth required>
+                  <label
+                    style={{
+                      fontFamily: "Poppins",
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      lineHeight: "22px",
+                    }}
+                  >
+                    <span style={{ color: "red" }}>*</span> Committee Approval
+                    Status
+                  </label>
+                  <Select
+                    displayEmpty
+                    defaultValue="Select"
+                    value={committeeStatus}
+                    onChange={handleCommitteeStatusChange}
+                    sx={{ height: "40px" }}
+                  >
+                    <MenuItem disabled value="">
+                      Select
+                    </MenuItem>
+                    <MenuItem value="approved">Approved</MenuItem>
+                    <MenuItem value="pending">Pending</MenuItem>
+                    <MenuItem value="rejected">Rejected</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth required>
+                  <label
+                    style={{
+                      fontFamily: "Poppins",
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      lineHeight: "22px",
+                    }}
+                  >
+                    <span style={{ color: "red" }}>*</span> Land Valuation
+                    Result Approval Status
+                  </label>
+                  <Select
+                    displayEmpty
+                    defaultValue="Select"
+                    value={landValuationStatus}
+                    onChange={handleLandValuationStatusChange}
+                    sx={{ height: "40px" }}
+                  >
+                    <MenuItem disabled value="">
+                      Select
+                    </MenuItem>
+                    <MenuItem value="approved">Approved</MenuItem>
+                    <MenuItem value="pending">Pending</MenuItem>
+                    <MenuItem value="rejected">Rejected</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box sx={{ width: "50%" }}>
+            <Button
+              component="label"
+              role={undefined}
+              variant="outlined"
+              tabIndex={-1}
+              startIcon={<AttachIcon />}
+              sx={{
+                border: "1px solid #1677FF",
+                borderRadius: "6px",
+                textTransform: "none",
+                color: "#1677FF",
+              }}
+            >
+              Attach
+              <VisuallyHiddenInput
+                type="file"
+                onChange={handleFileUpload}
+                multiple
+              />
+            </Button>
+            {uploadedFiles.length > 0 && (
+              <List>
+                {uploadedFiles.map((file, index) => {
+                  return (
+                    <ListItem
+                      key={index}
+                      sx={{
+                        width: "100%",
+                        padding: 0,
+                        "&:hover": {
+                          backgroundColor: "#F5F5F5",
+                          borderRadius: "4px",
+                          padding: 0,
+                        },
+                      }}
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(-1)}
+                    >
+                      <AttachIcon2 sx={{ fontSize: 12, margin: "0 5px" }} />
+                      <ListItemText primary={file.name} />
+                      {hoveredIndex === index && (
+                        <IconButton
+                          onClick={() => onDelete(index)}
+                          size="small"
+                          sx={{ marginLeft: "auto" }}
+                        >
+                          <DeleteIcon sx={{ fontSize: 14 }} />
+                        </IconButton>
+                      )}
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )}
+          </Box>
+        </Box>
+        <Typography
+          sx={{
+            fontFamily: "Poppins",
+            fontWeight: 400,
+            fontSize: "20px",
+            color: "#00000073",
+            marginTop: "22px",
+            marginBottom: "24px",
+          }}
+        >
+          Land Valuation Committee Information
+        </Typography>
+        <Box
+          sx={{
+            height: "452px",
             border: "1px solid #D9D9D9",
-            borderRadius: "4px",
-            p: 2,
-            mt: 2,
+            borderRadius: "12px",
             position: "relative",
-            width: "50%",
-            marginTop: "0",
           }}
         >
           <Typography
@@ -256,141 +556,154 @@ const LandValuationDetail = () => {
               mb: 2,
               position: "absolute",
               top: "-15px",
+              left: "15px",
               backgroundColor: "#ffffff",
               padding: "0 8px",
               color: "#000000E0",
             }}
           >
-            Approval Status
+            Committee Information
           </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth required>
-                <label
-                  style={{
-                    fontFamily: "Poppins",
-                    fontSize: "14px",
-                    fontWeight: 400,
-                    lineHeight: "22px",
-                  }}
-                >
-                  <span style={{ color: "red" }}>*</span> Committee Approval
-                  Status
-                </label>
-                <Select
-                  displayEmpty
-                  defaultValue="Select"
-                  value={committeeStatus}
-                  onChange={handleCommitteeStatusChange}
-                >
-                  <MenuItem disabled value="">
-                    Select
-                  </MenuItem>
-                  <MenuItem value="approved">Approved</MenuItem>
-                  <MenuItem value="pending">Pending</MenuItem>
-                  <MenuItem value="rejected">Rejected</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth required>
-                <label
-                  style={{
-                    fontFamily: "Poppins",
-                    fontSize: "14px",
-                    fontWeight: 400,
-                    lineHeight: "22px",
-                  }}
-                >
-                  <span style={{ color: "red" }}>*</span> Land Valuation Result
-                  Approval Status
-                </label>
-                <Select
-                  displayEmpty
-                  defaultValue="Select"
-                  value={landValuationStatus}
-                  onChange={handleLandValuationStatusChange}
-                >
-                  <MenuItem disabled value="">
-                    Select
-                  </MenuItem>
-                  <MenuItem value="approved">Approved</MenuItem>
-                  <MenuItem value="pending">Pending</MenuItem>
-                  <MenuItem value="rejected">Rejected</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
+          <Box
+            sx={{
+              padding: "16px 24px",
+              display: "flex",
+              flexDirection: "row",
+              gap: "24px",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "70%",
+              }}
+            >
+              <label>
+                <span style={{ color: "red" }}>*</span> Description
+              </label>
+              <TextField
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: "40px",
+                  },
+                }}
+                placeholder="Enter title"
+              ></TextField>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "30%",
+              }}
+            >
+              <label>
+                <span style={{ color: "red" }}>*</span> Committee Duration
+              </label>
+              <DateRangePicker
+                clearIcon={null}
+                onChange={handleDateChange}
+                value={dateRange}
+                calendarIcon={<CalendarIcon />}
+                rangeDivider={<CustomDateDivider />}
+                // dayPlaceholder="Start date"
+                // monthPlaceholder=""
+                // yearPlaceholder=""
+              />
+            </Box>
+          </Box>
+          <Box sx={{ height: "300px", margin: "24px" }}>
+            <DataGrid
+              rows={rows}
+              columns={visibleColumns}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 5,
+                  },
+                },
+              }}
+              pageSizeOptions={[5]}
+              checkboxSelection
+              disableRowSelectionOnClick
+            />
+          </Box>
         </Box>
-        <Box sx={{ width: "50%" }}>
+        <Box
+          sx={{
+            height: "337px",
+            border: "1px solid #D9D9D9",
+            borderRadius: "12px",
+            position: "relative",
+            marginTop: "32px",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: "16px",
+              fontWeight: 600,
+              mb: 2,
+              position: "absolute",
+              top: "-15px",
+              left: "15px",
+              backgroundColor: "#ffffff",
+              padding: "0 8px",
+              color: "#000000E0",
+            }}
+          >
+            Land Valuation Reference Data 
+            <span style={{ fontWeight: 400 }}>(To Local Government)</span>
+          </Typography>
           <Button
             component="label"
             role={undefined}
             variant="outlined"
             tabIndex={-1}
-            startIcon={<AttachIcon />}
+            startIcon={<UploadIcon />}
             sx={{
-              border: "1px solid #1677FF",
               textTransform: "none",
+              margin: "32px 24px",
+              borderRadius: "6px",
+              border: "1px solid #1677FF",
               color: "#1677FF",
             }}
           >
-            Attach
+            Upload document
             <VisuallyHiddenInput
               type="file"
-              onChange={handleFileUpload}
+              onChange={(event) => console.log(event.target.files)}
               multiple
             />
           </Button>
-          {uploadedFiles.length > 0 && (
-            <List>
-              {uploadedFiles.map((file, index) => {
-                return (
-                  <ListItem
-                    key={index}
-                    sx={{
-                      width: "100%",
-                      padding: 0,
-                      "&:hover": {
-                        backgroundColor: "#F5F5F5",
-                        borderRadius: "4px",
-                        padding: 0,
-                      },
-                    }}
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(-1)}
-                  >
-                    <AttachIcon2 sx={{ fontSize: 12, margin: "0 5px" }} />
-                    <ListItemText primary={file.name} />
-                    {hoveredIndex === index && (
-                      <IconButton
-                        onClick={() => onDelete(index)}
-                        size="small"
-                        sx={{ marginLeft: "auto" }}
-                      >
-                        <DeleteIcon sx={{ fontSize: 14 }} />
-                      </IconButton>
-                    )}
-                  </ListItem>
-                );
-              })}
-            </List>
-          )}
         </Box>
+        <Typography
+          sx={{
+            fontFamily: "Poppins",
+            fontWeight: 400,
+            fontSize: "20px",
+            color: "#00000073",
+            marginTop: "22px",
+            marginBottom: "24px",
+          }}
+        >
+          Data Received from Local Government
+        </Typography>
+        <Box
+          sx={{
+            height: "700px",
+            border: "1px solid #D9D9D9",
+            borderRadius: "12px",
+            // marginBottom: "44px",
+          }}
+        ></Box>
+      </LayoutPageCommon>
+      <Box>
+        <Divider />
+        <Footer />
       </Box>
-      <Typography
-        sx={{
-          fontFamily: "Poppins",
-          fontWeight: 400,
-          fontSize: "20px",
-          color: "#00000073",
-          marginTop: "22px",
-          marginBottom: "16px",
-        }}
-      >
-        Land Valuation Committee Information
-      </Typography>
-    </LayoutPageCommon>
+    </>
   );
 };
 
