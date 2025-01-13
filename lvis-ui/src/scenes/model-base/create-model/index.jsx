@@ -13,6 +13,8 @@ import SelectSampleParcels from './select-sample-parcels/SelectSampleParcels';
 import DataPreprocessing from './data-preprocessing/DataPreprocessing';
 import DataVerification from './data-verification/DataVerification';
 import SetModelVariables from './set-model-variables/SetModelVariables';
+import SelectOptionalModel from './select-optional-model/SelectOptionalModel';
+import FinalizeAdjustmentTable from './finalize-adjustment-table/FinalizeAdjustmentTable';
 
 const steps = [
   'Define Model Area',
@@ -157,10 +159,10 @@ const CreateNewModel = () => {
         return <DataVerification />;
       case 4:
         return <SetModelVariables />;
-      // case 5:
-      //   return <SelectOptimalModel />;
-      // case 6:
-      //   return <FinalizeAdjustmentTable />;
+      case 5:
+        return <SelectOptionalModel />;
+      case 6:
+        return <FinalizeAdjustmentTable />;
       default:
         return null;
     }

@@ -84,7 +84,7 @@ const DataPreprocessing = () => {
         </Button>
       </Box>
       <Box sx={{ display: 'flex', gap: '24px', flexWrap: 'wrap', width: '100%' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '320px' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: 1, flexWrap: 'wrap' }}>
           <Box sx={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #F0F0F0' }}>
             <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px 8px 0' }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -262,7 +262,7 @@ const DataPreprocessing = () => {
             </Box>
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '320px' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: 1, flexWrap: 'wrap' }}>
           <Box sx={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #F0F0F0' }}>
             <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px 8px 0' }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -396,7 +396,7 @@ const DataPreprocessing = () => {
             </Box>
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '320px' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: 1, flexWrap: 'wrap' }}>
           <Box sx={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #F0F0F0' }}>
             <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px 8px 0' }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>

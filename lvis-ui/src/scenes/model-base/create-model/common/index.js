@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, styled, Tab, Tabs } from "@mui/material";
+import { Button, ButtonGroup, LinearProgress, linearProgressClasses, styled, Tab, Tabs } from "@mui/material";
 
 export const StyledButtonGroup = styled(ButtonGroup)(() => ({
   border: '1px solid #D9D9D9',
@@ -72,3 +72,21 @@ export const a11yProps = (index) => {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 };
+
+export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  height: 10,
+  borderRadius: 5,
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: theme.palette.grey[200],
+    ...theme.applyStyles('dark', {
+      backgroundColor: theme.palette.grey[800],
+    }),
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 5,
+    backgroundColor: '#1a90ff',
+    ...theme.applyStyles('dark', {
+      backgroundColor: '#308fe8',
+    }),
+  },
+}));

@@ -250,8 +250,8 @@ const SetModelVariables = () => {
           }
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', gap: '24px', width: '100%' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <Box sx={{ display: 'flex', gap: '24px', width: '100%', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: 1 }}>
           <Box sx={{
             border: '1px solid #F0F0F0',
             borderRadius: '6px',
@@ -307,7 +307,7 @@ const SetModelVariables = () => {
             </Box>
           </Box>
         </Box>
-        <Box>
+        <Box sx={{ flex: 1}}>
           <Box sx={{
             border: '1px solid #F0F0F0',
             borderRadius: '6px',
