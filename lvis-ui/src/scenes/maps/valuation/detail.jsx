@@ -155,17 +155,19 @@ const LandValuationDetail = () => {
   };
   const handleFileUpload2 = (event) => {
     const files = Array.from(event.target.files).map(file => ({
+      id: `${file.name}-${Date.now()}`,
       name: file.name,
       size:file.size,
       uploadTime: new Date(), 
     }));
     setUploadedFiles2((prevFiles) => [...prevFiles, ...files]);
   };
-  const handleDeleteFile = (fileName) => {
+  const handleDeleteFile = (fileId) => {
     setUploadedFiles2((prevFiles) =>
-      prevFiles.filter((file) => file.name !== fileName)
+        prevFiles.filter((file) => file.id !== fileId)
     );
-  };
+    document.getElementById('fileInputId').value = '';
+};
   const handleCommitteeStatusChange = (event) => {
     setCommitteeStatus(event.target.value);
   };
@@ -614,6 +616,7 @@ const LandValuationDetail = () => {
             <VisuallyHiddenInput
               type="file"
               onChange={handleFileUpload2}
+              id="fileInputId"
               multiple
             />
           </Button>

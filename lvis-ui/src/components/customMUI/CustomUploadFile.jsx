@@ -30,8 +30,8 @@ const fileIcons = {
 };
 
 const CustomUploadFile = ({ files, onDelete }) => {
-  const handleDownload = (fileName) => {
-    const file = files.find((file) => file.name === fileName);
+    const handleDownload = (fileId) => {
+        const file = files.find((file) => file.id === fileId);
     if (file) {
       const blob = new Blob([new ArrayBuffer(file.size)], {
         type: "application/octet-stream",
@@ -47,9 +47,9 @@ const CustomUploadFile = ({ files, onDelete }) => {
     }
   };
 
-  const handleDelete = (fileName) => {
+  const handleDelete = (fileId) => {
     if (onDelete) {
-        onDelete(fileName);
+        onDelete(fileId);
       }
   };
   const getFileExtension = (fileName) => {
@@ -92,14 +92,14 @@ const CustomUploadFile = ({ files, onDelete }) => {
             <Box sx={{ marginTop: "8px" }}>
               <Button
                 variant="contained"
-                onClick={() => handleDownload(file.name)}
+                onClick={() => handleDownload(file.id)}
               >
                 Download
               </Button>
               <Button
                 variant="outlined"
                 color="error"
-                onClick={() => handleDelete(file.name)}
+                onClick={() => handleDelete(file.id)}
               >
                 Delete
               </Button>
