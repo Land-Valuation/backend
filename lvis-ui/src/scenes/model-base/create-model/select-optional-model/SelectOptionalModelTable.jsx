@@ -1,10 +1,11 @@
 import { Box, Radio, Typography } from '@mui/material';
 import CustomTable from '../../../../components/customMUI/CustomTable';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import FeatureModal from '../../modal/FeatureModal';
 
 const SelectOptionalModelTable = () => {
-const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
+  const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
+  const [sortConfig, setSortConfig] = useState(null);
 
   const handleOpenFeatureModal = () => {
     setIsFeatureModalOpen(true);
@@ -118,6 +119,7 @@ const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
       dataIndex: 'adjRSquare',
       key: 'adjRSquare',
       align: 'right',
+      sortable: true,
       render: (value) => (
         <Typography sx={{ color: '#000000E0', fontSize: '14px', fontWeight: 400, lineHeight: '22px' }}>
           {value}
@@ -137,9 +139,28 @@ const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
     },
   ];
 
+  const handleSort = (key, direction) => {
+    setSortConfig({ key, direction });
+  };
+
+  const sortedData = useMemo(() => {
+    if (!sortConfig) {
+      return data;
+    }
+    return [...data].sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  }, [data, sortConfig]);
+
   return (
     <Box>
-      <CustomTable dataSource={data} columns={columns} rowStyle={rowStyle} />
+      <CustomTable dataSource={sortedData} columns={columns} rowStyle={rowStyle} onSort={handleSort} />
       <FeatureModal open={isFeatureModalOpen} onClose={handleCloseFeatureModal} />
     </Box>
   )

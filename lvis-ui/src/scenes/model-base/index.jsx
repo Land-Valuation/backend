@@ -4,9 +4,14 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddIcon from '@mui/icons-material/Add';
 import ListModel from "./list-model";
 import { useNavigate } from "react-router-dom";
+import RequestForInvesgation from "./request-for-invesgation";
+import { useState } from "react";
 
 const ModelBase = () => {
   const navigate = useNavigate();
+
+  const [isLocal] = useState(true)
+
   const breadcrumbData = [
     { name: 'Home', href: '/' },
     { name: 'MODEL-BASED LAND VALUATION', href: '/model-base' },
@@ -21,6 +26,7 @@ const ModelBase = () => {
       breadcrumbData={breadcrumbData} 
       title="MODEL-BASED LAND VALUATION"
       actions={ 
+        !isLocal ?
         <>
           <Button
             sx={{
@@ -62,10 +68,10 @@ const ModelBase = () => {
           >
             <MoreVertIcon />
           </Button>
-        </>
+        </> : ''
       }
     >
-      <ListModel />
+      { isLocal ? <RequestForInvesgation /> : <ListModel /> }
     </LayoutPageCommon>
   )
 }

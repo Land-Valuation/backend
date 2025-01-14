@@ -25,139 +25,137 @@ const SelectOptionalModel = () => {
             flexDirection: 'column',
             gap: '24px',
           }}>
-            <Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'space-between' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px'}}>
-                  <Typography
-                    sx={{
-                      color: '#000000E0',
-                      fontFamily: 'Poppins',
-                      fontSize: '16px',
-                      fontWeight: 500,
-                      lineHeight: '22px',
-                    }}
-                  >
-                    Adj R-Square
-                  </Typography>
-                  <Box>
-                    <ArrowBackIosNewIcon sx={{ fontSize: 14, color: '#00000073' }} />
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box sx={{ 
-                      border: '1px solid #D9D9D9',
-                      backgroundColor: '#00000005',
-                      borderTopLeftRadius: 6,
-                      borderBottomLeftRadius: 6,
-                    }}>
-                      <IconButton aria-label="decrease">
-                        <RemoveIcon />
-                      </IconButton>
-                    </Box>
-                    <TextField
-                      defaultValue="0.50"
-                      sx={{ 
-                        width: 80, 
-                        textAlign: 'center', 
-                        borderRadius: 0,
-                        '&:hover fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important' },
-                        '& .MuiInputBase-root' : {
-                          borderRadius: 0,
-                          height: 38, 
-                        }
-                      }}
-                      inputProps={{ style: { textAlign: 'center', borderRadius: 0 } }}
-                    />
-                    <Box sx={{ 
-                      border: '1px solid #D9D9D9',
-                      backgroundColor: '#00000005',
-                      borderTopRightRadius: 6,
-                      borderBottomRightRadius: 6,
-                    }}>
-                      <IconButton aria-label="increase">
-                        <AddIcon />
-                      </IconButton>
-                    </Box>
-                  </Box>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px'}}>
-                  <Typography
-                    sx={{
-                      color: '#000000E0',
-                      fontFamily: 'Poppins',
-                      fontSize: '16px',
-                      fontWeight: 500,
-                      lineHeight: '22px',
-                    }}
-                  >
-                    F-Statistic
-                  </Typography>
-                  <Box>
-                    <ArrowBackIosNewIcon sx={{ fontSize: 14, color: '#00000073' }} />
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box sx={{ 
-                      border: '1px solid #D9D9D9',
-                      backgroundColor: '#00000005',
-                      borderTopLeftRadius: 6,
-                      borderBottomLeftRadius: 6,
-                    }}>
-                      <IconButton aria-label="decrease">
-                        <RemoveIcon />
-                      </IconButton>
-                    </Box>
-                    <TextField
-                      defaultValue="1.50"
-                      sx={{ 
-                        width: 80, 
-                        textAlign: 'center', 
-                        borderRadius: 0,
-                        '&:hover fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important' },
-                        '& .MuiInputBase-root' : {
-                          borderRadius: 0,
-                          height: 38, 
-                        }
-                      }}
-                      inputProps={{ style: { textAlign: 'center', borderRadius: 0 } }}
-                    />
-                    <Box sx={{ 
-                      border: '1px solid #D9D9D9',
-                      backgroundColor: '#00000005',
-                      borderTopRightRadius: 6,
-                      borderBottomRightRadius: 6,
-                    }}>
-                      <IconButton aria-label="increase">
-                        <AddIcon />
-                      </IconButton>
-                    </Box>
-                  </Box>
-                </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px'}}>
+                <Typography
+                  sx={{
+                    color: '#000000E0',
+                    fontFamily: 'Poppins',
+                    fontSize: '16px',
+                    fontWeight: 500,
+                    lineHeight: '22px',
+                  }}
+                >
+                  Adj R-Square
+                </Typography>
                 <Box>
-                  <Button
-                    sx={{
-                      backgroundColor: "#1677FF",
-                      color: "#fff",
-                      textTransform: "none",
-                      borderRadius: "8px",
-                      fontFamily: "Poppins",
-                      fontSize: "16px",
-                      fontWeight: 400,
-                      lineHeight: "24px",
-                      boxShadow: 'none',
-                      height: '40px',
-                      '&:hover': {
-                        backgroundColor: '#4096ff',
-                        boxShadow: 'none',
+                  <ArrowBackIosNewIcon sx={{ fontSize: 14, color: '#00000073' }} />
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ 
+                    border: '1px solid #D9D9D9',
+                    backgroundColor: '#00000005',
+                    borderTopLeftRadius: 6,
+                    borderBottomLeftRadius: 6,
+                  }}>
+                    <IconButton aria-label="decrease">
+                      <RemoveIcon />
+                    </IconButton>
+                  </Box>
+                  <TextField
+                    defaultValue="0.50"
+                    sx={{ 
+                      width: 80, 
+                      textAlign: 'center', 
+                      borderRadius: 0,
+                      '&:hover fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important' },
+                      '& .MuiInputBase-root' : {
+                        borderRadius: 0,
+                        height: 38, 
                       }
                     }}
-                    variant="contained"
-                    startIcon={<RestartAltIcon />}
-                  >
-                    Run Analysis
-                  </Button>
+                    inputProps={{ style: { textAlign: 'center', borderRadius: 0 } }}
+                  />
+                  <Box sx={{ 
+                    border: '1px solid #D9D9D9',
+                    backgroundColor: '#00000005',
+                    borderTopRightRadius: 6,
+                    borderBottomRightRadius: 6,
+                  }}>
+                    <IconButton aria-label="increase">
+                      <AddIcon />
+                    </IconButton>
+                  </Box>
                 </Box>
               </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px'}}>
+                <Typography
+                  sx={{
+                    color: '#000000E0',
+                    fontFamily: 'Poppins',
+                    fontSize: '16px',
+                    fontWeight: 500,
+                    lineHeight: '22px',
+                  }}
+                >
+                  F-Statistic
+                </Typography>
+                <Box>
+                  <ArrowBackIosNewIcon sx={{ fontSize: 14, color: '#00000073' }} />
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ 
+                    border: '1px solid #D9D9D9',
+                    backgroundColor: '#00000005',
+                    borderTopLeftRadius: 6,
+                    borderBottomLeftRadius: 6,
+                  }}>
+                    <IconButton aria-label="decrease">
+                      <RemoveIcon />
+                    </IconButton>
+                  </Box>
+                  <TextField
+                    defaultValue="1.50"
+                    sx={{ 
+                      width: 80, 
+                      textAlign: 'center', 
+                      borderRadius: 0,
+                      '&:hover fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important' },
+                      '& .MuiInputBase-root' : {
+                        borderRadius: 0,
+                        height: 38, 
+                      }
+                    }}
+                    inputProps={{ style: { textAlign: 'center', borderRadius: 0 } }}
+                  />
+                  <Box sx={{ 
+                    border: '1px solid #D9D9D9',
+                    backgroundColor: '#00000005',
+                    borderTopRightRadius: 6,
+                    borderBottomRightRadius: 6,
+                  }}>
+                    <IconButton aria-label="increase">
+                      <AddIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Box>
+              <Box>
+                <Button
+                  sx={{
+                    backgroundColor: "#1677FF",
+                    color: "#fff",
+                    textTransform: "none",
+                    borderRadius: "8px",
+                    fontFamily: "Poppins",
+                    fontSize: "16px",
+                    fontWeight: 400,
+                    lineHeight: "24px",
+                    boxShadow: 'none',
+                    height: '40px',
+                    '&:hover': {
+                      backgroundColor: '#4096ff',
+                      boxShadow: 'none',
+                    }
+                  }}
+                  variant="contained"
+                  startIcon={<RestartAltIcon />}
+                >
+                  Run Analysis
+                </Button>
+              </Box>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px'}}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
               <Typography
                 sx={{
                   color: '#000000A6',
@@ -165,11 +163,6 @@ const SelectOptionalModel = () => {
                   fontSize: '14px',
                   fontWeight: 400,
                   lineHeight: '22px',
-                  width: '100%',
-                  maxWidth: '730px',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
                 }}
               >
                 Analyzing: area(Area), Rec_Area(Minimum bounding rectangular area),  Con_Area(Convex hull area), ...

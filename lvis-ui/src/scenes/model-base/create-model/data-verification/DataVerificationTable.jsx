@@ -66,9 +66,21 @@ const DataVerificationTable = () => {
         "& .MuiDataGrid-root": {
           border: "none",
         },
+        "& .MuiDataGrid-columnHeader": {
+          borderBottom: "none",
+          color: '#000000E0',
+          fontFamily: 'Poppins',
+          fontSize: '14px',
+          fontWeight: 500,
+        },
         "& .MuiDataGrid-cell": {
           borderBottom: "none",
-        },          
+          color: '#000000E0',
+          fontFamily: 'Poppins',
+          fontSize: '14px',
+          fontWeight: 400,
+          padding: '0 16px',
+        },           
         "& .MuiDataGrid-container--top [role=row]": {
           backgroundColor: `${theme.palette.grey[50]} !important`,
           color: theme.palette.secondary[100],
