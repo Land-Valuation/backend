@@ -3,7 +3,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
  const FinalizeAdjustmentTable = () => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%', flexWrap: 'wrap' }}>
       <Box sx={{ 
         display: 'flex',
         alignItems: 'center', 
@@ -12,6 +12,8 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
         border: '1px solid #F0F0F0',
         borderRadius: '8px',
         padding: '16px',
+        flexWrap: 'wrap',
+        width: '100%',
       }}>
         <Typography
           sx={{
@@ -52,8 +54,8 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
         </Button>
       </Box>
       <Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flexWrap: 'wrap' }}>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, flexWrap: 'wrap' }}>
             <Box sx={{ flex: 1 }}>
               <Typography variant="subtitle1" component="label" sx={{ display: 'block', mb: 0.5 }}>
                 Title <Typography component="span" sx={{ color: 'red' }}>*</Typography>
