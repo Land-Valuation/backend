@@ -19,14 +19,14 @@ function SideMenu() {
     {
       src: "/model-based.svg",
       alt: "Model-based land valuation",
-      path: "/Products",
+      path: "/model-base",
     },
     {
       src: "/parcel-survey.svg",
       alt: "Parcel survey management",
-      path: "/Dashboard",
+      path: "/dashboard",
     },
-    { src: "/admin.svg", alt: "Admin", path: "/Customers" },
+    { src: "/admin.svg", alt: "Admin", path: "/customers" },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);

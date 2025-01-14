@@ -232,7 +232,7 @@ function Sidebar() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
-    const currentIndex = menuItems.findIndex(item => 
+    const currentIndex = menuItems.findIndex((item) =>
       location.pathname.includes(item.path.toLowerCase())
     );
     if (currentIndex !== -1) {
@@ -337,6 +337,7 @@ function Sidebar() {
                   alignItems: "center",
                   justifyContent: "center",
                   borderRadius: "8px",
+                  cursor: "pointer",
                   background: activeIndex === index ? "#E6F4FF" : "#F4F4F4",
                   opacity: activeIndex === index ? 1 : 0.7,
                   boxShadow:
@@ -349,7 +350,7 @@ function Sidebar() {
                     boxShadow: "0px 6px 16px 0px #00000029",
                   },
                 }}
-                button
+                button="true"
                 key={item.alt}
                 onClick={() => {
                   // setActiveIndex(index);

@@ -17,7 +17,6 @@ import {
 import { styled } from "@mui/system";
 import LayoutPageCommon from "../../../components/LayoutPageCommon";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -25,6 +24,8 @@ import Footer from "../../../components/Footer";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
+import CustomDataGrid from "../../../components/customMUI/CustomDataGrid";
+import CustomUploadFile from "../../../components/customMUI/CustomUploadFile";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -37,14 +38,13 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
-
 function CustomDateDivider(props) {
   return (
     <SvgIcon {...props} viewBox="0 0 16 16">
       <path
         d="M13.6422 9.31563L11.0797 6.06563C11.033 6.00629 10.9734 5.95832 10.9055 5.92531C10.8375 5.89229 10.763 5.87509 10.6875 5.875H9.675C9.57031 5.875 9.5125 5.99531 9.57656 6.07812L11.8313 8.9375H2.375C2.30625 8.9375 2.25 8.99375 2.25 9.0625V10C2.25 10.0687 2.30625 10.125 2.375 10.125H13.2484C13.6672 10.125 13.9 9.64375 13.6422 9.31563Z"
         fill="black"
-        fill-opacity="0.25"
+        fillOpacity="0.25"
       />
     </SvgIcon>
   );
@@ -52,11 +52,11 @@ function CustomDateDivider(props) {
 function CalendarIcon(props) {
   return (
     <SvgIcon {...props} viewBox="0 0 16 16">
-      <g clip-path="url(#clip0_7280_6269)">
+      <g clipPath="url(#clip0_7280_6269)">
         <path
           d="M14.5717 2.14509H11.5717V1.00223C11.5717 0.923661 11.5074 0.859375 11.4289 0.859375H10.4289C10.3503 0.859375 10.286 0.923661 10.286 1.00223V2.14509H5.71457V1.00223C5.71457 0.923661 5.65028 0.859375 5.57171 0.859375H4.57171C4.49314 0.859375 4.42885 0.923661 4.42885 1.00223V2.14509H1.42885C1.11278 2.14509 0.857422 2.40045 0.857422 2.71652V14.5737C0.857422 14.8897 1.11278 15.1451 1.42885 15.1451H14.5717C14.8878 15.1451 15.1431 14.8897 15.1431 14.5737V2.71652C15.1431 2.40045 14.8878 2.14509 14.5717 2.14509ZM13.8574 13.8594H2.14314V7.07366H13.8574V13.8594ZM2.14314 5.85938V3.4308H4.42885V4.28795C4.42885 4.36652 4.49314 4.4308 4.57171 4.4308H5.57171C5.65028 4.4308 5.71457 4.36652 5.71457 4.28795V3.4308H10.286V4.28795C10.286 4.36652 10.3503 4.4308 10.4289 4.4308H11.4289C11.5074 4.4308 11.5717 4.36652 11.5717 4.28795V3.4308H13.8574V5.85938H2.14314Z"
           fill="black"
-          fill-opacity="0.25"
+          fillOpacity="0.25"
         />
       </g>
       <defs>
@@ -77,7 +77,6 @@ function AttachIcon(props) {
     </SvgIcon>
   );
 }
-
 function AttachIcon2(props) {
   return (
     <SvgIcon {...props} viewBox="0 0 16 16">
@@ -104,12 +103,11 @@ function CloseIcon(props) {
       <path
         d="M8.92473 7.99916L13.6122 2.41166C13.6908 2.31881 13.6247 2.17773 13.5033 2.17773H12.0783C11.9944 2.17773 11.914 2.21523 11.8587 2.27952L7.99258 6.88845L4.12651 2.27952C4.07294 2.21523 3.99258 2.17773 3.90687 2.17773H2.48187C2.36044 2.17773 2.29437 2.31881 2.37294 2.41166L7.06044 7.99916L2.37294 13.5867C2.35534 13.6074 2.34405 13.6327 2.3404 13.6596C2.33676 13.6865 2.34092 13.7139 2.35239 13.7386C2.36386 13.7632 2.38216 13.784 2.40511 13.7985C2.42806 13.8131 2.4547 13.8207 2.48187 13.8206H3.90687C3.9908 13.8206 4.07115 13.7831 4.12651 13.7188L7.99258 9.10988L11.8587 13.7188C11.9122 13.7831 11.9926 13.8206 12.0783 13.8206H13.5033C13.6247 13.8206 13.6908 13.6795 13.6122 13.5867L8.92473 7.99916Z"
         fill="black"
-        fill-opacity="0.45"
+        fillOpacity="0.45"
       />
     </SvgIcon>
   );
 }
-
 function DeleteIcon(props) {
   return (
     <SvgIcon {...props} viewBox="0 0 14 14">
@@ -123,7 +121,7 @@ function DeleteIcon(props) {
 function SaveIcon(props) {
   return (
     <SvgIcon {...props} viewBox="0 0 16 16">
-      <g clip-path="url(#clip0_7223_11716)">
+      <g clipPath="url(#clip0_7223_11716)">
         <path
           d="M14.8092 4.09688L11.9056 1.1933C11.7717 1.05937 11.6074 0.961161 11.4289 0.907589V0.859375H1.42885C1.11278 0.859375 0.857422 1.11473 0.857422 1.4308V14.5737C0.857422 14.8897 1.11278 15.1451 1.42885 15.1451H14.5717C14.8878 15.1451 15.1431 14.8897 15.1431 14.5737V4.90402C15.1431 4.60045 15.0235 4.31116 14.8092 4.09688ZM5.71457 2.14509H10.286V4.00223H5.71457V2.14509ZM13.8574 13.8594H2.14314V2.14509H4.57171V4.57366C4.57171 4.88973 4.82707 5.14509 5.14314 5.14509H10.8574C11.1735 5.14509 11.4289 4.88973 11.4289 4.57366V2.53438L13.8574 4.96295V13.8594ZM8.00028 6.75223C6.58064 6.75223 5.42885 7.90402 5.42885 9.32366C5.42885 10.7433 6.58064 11.8951 8.00028 11.8951C9.41992 11.8951 10.5717 10.7433 10.5717 9.32366C10.5717 7.90402 9.41992 6.75223 8.00028 6.75223ZM8.00028 10.7522C7.21099 10.7522 6.57171 10.1129 6.57171 9.32366C6.57171 8.53438 7.21099 7.89509 8.00028 7.89509C8.78957 7.89509 9.42885 8.53438 9.42885 9.32366C9.42885 10.1129 8.78957 10.7522 8.00028 10.7522Z"
           fill="white"
@@ -144,78 +142,35 @@ const LandValuationDetail = () => {
   const [committeeStatus, setCommitteeStatus] = useState("");
   const [landValuationStatus, setLandValuationStatus] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploadedFiles2, setUploadedFiles2] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [dateRange, setDateRange] = useState([null, null]);
-
-  const columns = [
-    { field: "id", headerName: "ID", flex: 1, hide: true },
-    {
-      field: "firstName",
-      headerName: "Member Type",
-      editable: true,
-      flex: 1,
-    },
-    {
-      field: "lastName",
-      headerName: "Organization",
-      editable: true,
-      flex: 1,
-    },
-    {
-      field: "age",
-      headerName: "Name",
-      editable: true,
-      flex: 1,
-    },
-    {
-      field: "fullName",
-      headerName: "Position",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      valueGetter: (value, row) =>
-        `${row.firstName || ""} ${row.lastName || ""}`,
-      flex: 1,
-    },
-    {
-      field: "phone",
-      headerName: "Phone Number",
-      editable: true,
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      editable: true,
-      flex: 1,
-    },
-  ];
-
-  const rows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: 1000 },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  ];
-  const visibleColumns = columns.filter((column) => column.field !== "id");
 
   const handleDateChange = (range) => {
     setDateRange(range);
   };
-
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
     setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
   };
-
+  const handleFileUpload2 = (event) => {
+    const files = Array.from(event.target.files).map(file => ({
+      id: `${file.name}-${Date.now()}`,
+      name: file.name,
+      size:file.size,
+      uploadTime: new Date(), 
+    }));
+    setUploadedFiles2((prevFiles) => [...prevFiles, ...files]);
+  };
+  const handleDeleteFile = (fileId) => {
+    setUploadedFiles2((prevFiles) =>
+        prevFiles.filter((file) => file.id !== fileId)
+    );
+    document.getElementById('fileInputId').value = '';
+};
   const handleCommitteeStatusChange = (event) => {
     setCommitteeStatus(event.target.value);
   };
-
   const handleLandValuationStatusChange = (event) => {
     setLandValuationStatus(event.target.value);
   };
@@ -613,21 +568,8 @@ const LandValuationDetail = () => {
               />
             </Box>
           </Box>
-          <Box sx={{ height: "300px", margin: "24px" }}>
-            <DataGrid
-              rows={rows}
-              columns={visibleColumns}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 5,
-                  },
-                },
-              }}
-              pageSizeOptions={[5]}
-              checkboxSelection
-              disableRowSelectionOnClick
-            />
+          <Box sx={{ height: "320px", margin: "24px" }}>
+            <CustomDataGrid />
           </Box>
         </Box>
         <Box
@@ -673,10 +615,12 @@ const LandValuationDetail = () => {
             Upload document
             <VisuallyHiddenInput
               type="file"
-              onChange={(event) => console.log(event.target.files)}
+              onChange={handleFileUpload2}
+              id="fileInputId"
               multiple
             />
           </Button>
+          <CustomUploadFile files={uploadedFiles2} onDelete={handleDeleteFile}/>
         </Box>
         <Typography
           sx={{

@@ -92,7 +92,7 @@ const Products = () => {
 
   const breadcrumbData = [
     { name: 'Home', href: '/' },
-    { name: 'MODEL-BASED LAND VALUATION', href: '/products' },
+    { name: 'MODEL-BASED LAND VALUATION', href: '/model-base' },
   ];
 
   return (
