@@ -8,8 +8,11 @@ import { IOSSwitch } from "../../../components/customMUI/CustomIOSSwitch";
 import AppliedAreasModal from "../modal/AppliedAreasModal";
 import FeatureModal from "../modal/FeatureModal";
 import CachedIcon from '@mui/icons-material/Cached';
+import { useNavigate } from "react-router-dom";
 
 const RequestForInvesgation = () => {
+  const navigate = useNavigate();
+
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 7 }, (_, i) => {
     return {
@@ -37,6 +40,10 @@ const RequestForInvesgation = () => {
   const handleCloseFeatureModal = () => {
     setIsFeatureModalOpen(false);
   };
+
+  const goDetailModel = () => {
+    navigate('/model-base/detail');
+  }
 
   const renderStatus = (status) => {
     const statusConfigs = {
@@ -76,6 +83,7 @@ const RequestForInvesgation = () => {
             fontFamily: 'Poppins',
             cursor: 'pointer',
           }}
+          onClick={goDetailModel}
         >
           {config.icon} {status}
         </Box>

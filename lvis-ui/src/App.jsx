@@ -27,6 +27,7 @@ import translationLO from "./locales/lo/translation.json";
 import Egis0 from "./scenes/egis0";
 import ModelBase from "./scenes/model-base";
 import CreateNewModel from "./scenes/model-base/create-model";
+import RequestForInvesgationDetail from "./scenes/model-base/request-for-invesgation/detail/RequestForInvesgationDetail";
 
 const resources = {
   en: {
@@ -81,6 +82,7 @@ function App() {
                 <Route path="/search" element={<Valuation />} />
                 <Route path="/model-base" element={<ModelBase />} />
                 <Route path="/model-base/create-new-model" element={<CreateNewModel />} />
+                <Route path="/model-base/detail" element={<RequestForInvesgationDetail />} />
                 <Route path="/land-valuation" element={<Valuation />} />
                 <Route path="/land-valuation/detail" element={<LandValuationDetail />} />
                 <Route path="/customers" element={
