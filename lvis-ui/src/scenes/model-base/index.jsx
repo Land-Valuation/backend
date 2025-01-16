@@ -1,16 +1,40 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import LayoutPageCommon from "../../components/LayoutPageCommon";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddIcon from '@mui/icons-material/Add';
 import ListModel from "./list-model";
 import { useNavigate } from "react-router-dom";
 import RequestForInvesgation from "./request-for-invesgation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import UserService from "../../state/UserService";
+import { MODEL_BASE_MODE, USER_ROLES } from "../../utils/constant";
 
 const ModelBase = () => {
   const navigate = useNavigate();
 
-  const [isLocal] = useState(true)
+  const [isLocal, setIsLocal] = useState(MODEL_BASE_MODE.UNAUTHORIZED)
+
+  const roles = UserService.getTokenParsed().realm_access.roles;
+
+  const determineModelBaseMode = (roles) => {
+    if (roles && roles.length > 0) {
+      if (roles.some(role => [USER_ROLES.ROLE_LOCAL_MANAGER, USER_ROLES.ROLE_LOCAL_USER].includes(role))) {
+        return MODEL_BASE_MODE.LOCAL;
+      }
+      if (roles.some(role => [USER_ROLES.ROLE_CENTRAL_MANAGER, USER_ROLES.ROLE_CENTRAL_USER].includes(role))) {
+        return MODEL_BASE_MODE.CENTRAL;
+      }
+    }
+    return MODEL_BASE_MODE.UNAUTHORIZED;
+  };
+
+  useEffect(() => {
+    const mode = determineModelBaseMode(roles);
+    if (mode) {
+      setIsLocal(mode);
+    }
+  }, [roles])
+  
 
   const breadcrumbData = [
     { name: 'Home', href: '/' },
@@ -71,7 +95,9 @@ const ModelBase = () => {
         </> : ''
       }
     >
-      { isLocal ? <RequestForInvesgation /> : <ListModel /> }
+      { isLocal === MODEL_BASE_MODE.LOCAL && <RequestForInvesgation /> }
+      { isLocal === MODEL_BASE_MODE.CENTRAL && <ListModel /> }
+      { isLocal === MODEL_BASE_MODE.UNAUTHORIZED && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>No data</Box> }
     </LayoutPageCommon>
   )
 }

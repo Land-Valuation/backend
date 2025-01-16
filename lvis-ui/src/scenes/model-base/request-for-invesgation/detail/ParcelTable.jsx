@@ -1,98 +1,12 @@
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import PlaceIcon from '@mui/icons-material/Place';
 import LoopIcon from '@mui/icons-material/Loop';
 import { Typography, useTheme } from '@mui/material';
 import LandCharacteristicsDialog from '../../modal/LandCharacteristicsDialog';
-
-const columns = [
-  {
-    field: 'parcelId',
-    headerName: 'Parcel ID',
-    flex: 1,
-    renderCell: (params) => (
-      <Typography
-        sx={{
-          color: '#1677FF',
-          fontFamily: 'Poppins',
-          fontSize: '14px',
-          fontWeight: 500,
-          display: 'flex',
-          alignItems: 'center',
-          height: '100%',
-          cursor: 'pointer',
-        }}
-      >
-        {params.value}
-      </Typography>
-    ),
-  },
-  {
-    field: 'referenceParcel',
-    headerName: 'Reference Parcel',
-    flex: 2,
-    sortable: false,
-    renderHeader: () => (
-      <Box display="flex" alignItems="center" gap={'10px'} flexWrap={true}>
-        <Typography
-          sx={{
-            color: '#000000E0',
-            fontFamily: 'Poppins',
-            fontSize: '14px',
-            fontWeight: 500,
-            lineHeight: '22px',
-            wordBreak: 'break-word',
-          }}
-        >
-          Reference Parcel
-        </Typography>
-        <Button
-          sx={{
-            backgroundColor: "#1677FF",
-            color: "#fff",
-            textTransform: "none",
-            borderRadius: "6px",
-            fontFamily: "Poppins",
-            fontSize: "14px",
-            fontWeight: 400,
-            lineHeight: "22px",
-            boxShadow: 'none',
-            padding: '4px 8px',
-            '&:hover': {
-              backgroundColor: '#4096ff',
-              boxShadow: 'none',
-            }
-          }}
-          variant="contained"
-          startIcon={<LoopIcon />}
-        >
-          Auto
-        </Button>
-      </Box>
-    ),
-    renderCell: (params) => (
-      <Box sx={{
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-      }}>
-        {params.value === 'N/A' || params.value === 'No data' ? (
-          <PlaceIcon />
-        ) : (
-          <PlaceIcon sx={{ color: '#1677FF' }} />
-        )}
-        {params.value}
-      </Box>
-    ),
-  },
-  { field: 'price', headerName: 'Price (LAK/m²)', flex: 1 },
-  { field: 'characteristic1', headerName: 'Characteristic 1', flex: 1 },
-  { field: 'characteristic2', headerName: 'Characteristic 2', flex: 1 },
-  { field: 'characteristic3', headerName: 'Characteristic 3', flex: 1 },
-  { field: 'characteristic4', headerName: 'Characteristic 4', flex: 1 },
-];
+import { useState } from 'react';
+import MarkerIcon from '../../../../assets/icons/model-base/MarkerIcon';
+import SelectSampleParcelLandModal from '../../modal/SelectSampleParcelLandModal';
 
 const data = [
   { id: 1, parcelId: 'A1-001', referenceParcel: 'A2-123', price: '30,000', characteristic1: 'Row data 1', characteristic2: 'Row data 1', characteristic3: 'Row data 1', characteristic4: 'Row data 1' },
@@ -109,6 +23,117 @@ const data = [
 
 const ParcelTable = () => {
   const theme = useTheme();
+  const [isOpenLandCharacteristicsDialog, setIsOpenLandCharacteristicsDialog] = useState(false)
+  const [isOpenSelectSampleParcelLandDialog, setIsSelectSampleParcelLandDialog] = useState(false)
+
+  const handleOpenLandCharacteristicsDialog = () => {
+    setIsOpenLandCharacteristicsDialog(true)
+  }
+
+  const handleCloseLandCharacteristicsDialog = () => {
+    setIsOpenLandCharacteristicsDialog(false)
+  }
+
+  const handleOpenSelectSampleParcelLandDialog = () => {
+    setIsSelectSampleParcelLandDialog(true)
+  }
+
+  const handleCloseSelectSampleParcelLandDialog = () => {
+    setIsSelectSampleParcelLandDialog(false)
+  }
+
+
+  const columns = [
+    {
+      field: 'parcelId',
+      headerName: 'Parcel ID',
+      flex: 1,
+      renderCell: (params) => (
+        <Typography
+          sx={{
+            color: '#1677FF',
+            fontFamily: 'Poppins',
+            fontSize: '14px',
+            fontWeight: 500,
+            display: 'flex',
+            alignItems: 'center',
+            height: '100%',
+            cursor: 'pointer',
+          }}
+          onClick={handleOpenLandCharacteristicsDialog}
+        >
+          {params.value}
+        </Typography>
+      ),
+    },
+    {
+      field: 'referenceParcel',
+      headerName: 'Reference Parcel',
+      flex: 2,
+      sortable: false,
+      renderHeader: () => (
+        <Box display="flex" alignItems="center" gap={'10px'} flexWrap={true}>
+          <Typography
+            sx={{
+              color: '#000000E0',
+              fontFamily: 'Poppins',
+              fontSize: '14px',
+              fontWeight: 500,
+              lineHeight: '22px',
+              wordBreak: 'break-word',
+            }}
+          >
+            Reference Parcel
+          </Typography>
+          <Button
+            sx={{
+              backgroundColor: "#1677FF",
+              color: "#fff",
+              textTransform: "none",
+              borderRadius: "6px",
+              fontFamily: "Poppins",
+              fontSize: "14px",
+              fontWeight: 400,
+              lineHeight: "22px",
+              boxShadow: 'none',
+              padding: '4px 8px',
+              '&:hover': {
+                backgroundColor: '#4096ff',
+                boxShadow: 'none',
+              }
+            }}
+            variant="contained"
+            startIcon={<LoopIcon />}
+          >
+            Auto
+          </Button>
+        </Box>
+      ),
+      renderCell: (params) => (
+        <Box 
+          sx={{
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+          onClick={handleOpenSelectSampleParcelLandDialog}
+        >
+          {params.value === 'N/A' || params.value === 'No data' ? (
+            <MarkerIcon />
+          ) : (
+            <MarkerIcon color='#1677FF' />
+          )}
+          {params.value}
+        </Box>
+      ),
+    },
+    { field: 'price', headerName: 'Price (LAK/m²)', flex: 1 },
+    { field: 'characteristic1', headerName: 'Characteristic 1', flex: 1 },
+    { field: 'characteristic2', headerName: 'Characteristic 2', flex: 1 },
+    { field: 'characteristic3', headerName: 'Characteristic 3', flex: 1 },
+    { field: 'characteristic4', headerName: 'Characteristic 4', flex: 1 },
+  ];
 
   return (
     <Box
@@ -182,7 +207,14 @@ const ParcelTable = () => {
           },
         }}
       />
-      <LandCharacteristicsDialog />
+      <LandCharacteristicsDialog 
+        open={isOpenLandCharacteristicsDialog}
+        onClose={handleCloseLandCharacteristicsDialog}
+      />
+      <SelectSampleParcelLandModal 
+        open={isOpenSelectSampleParcelLandDialog}
+        onClose={handleCloseSelectSampleParcelLandDialog}
+      /> 
     </Box>
   )
 }
