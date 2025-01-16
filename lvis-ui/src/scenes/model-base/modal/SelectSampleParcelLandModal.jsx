@@ -1,4 +1,4 @@
-import { Box, Dialog, DialogContent, DialogTitle, IconButton, Radio, Typography } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Radio, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 import MarkerIcon from '../../../assets/icons/model-base/MarkerIcon';
@@ -89,7 +89,7 @@ const SelectSampleParcelLandModal = ({ open, onClose }) => {
           sx={{
             display: 'flex',
             gap: '24px',
-            padding: '16px 0',
+            pt: '16px'
           }}
         >
           <Box sx={{
@@ -287,7 +287,7 @@ const SelectSampleParcelLandModal = ({ open, onClose }) => {
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
                         width: '100%',
-                        maxWidth: '100%',
+                        maxWidth: '180px',
                         mb: '4px',
                       }}
                     >
@@ -355,6 +355,47 @@ const SelectSampleParcelLandModal = ({ open, onClose }) => {
           </Box>
         </Box>
       </DialogContent>
+      <DialogActions sx={{
+        padding: '0 24px 24px 24px'
+      }}>
+        <Button
+          sx={{
+            backgroundColor: "#fff",
+            color: "#000",
+            border: "1px solid #0000001A",
+            textTransform: "none",
+            borderRadius: "6px",
+            fontFamily: "Poppins",
+            fontSize: "14px",
+            fontWeight: 400,
+            lineHeight: "20px",
+            boxShadow: "none",
+            height: "32px",
+          }}
+          variant="contained"
+          onClick={onClose}
+        >
+          Cancel
+        </Button>
+        <Button
+          sx={{
+            backgroundColor: "#1677FF",
+            color: "#fff",
+            textTransform: "none",
+            borderRadius: "6px",
+            fontFamily: "Poppins",
+            fontSize: "14px",
+            fontWeight: 400,
+            minWidth: "32px",
+            height: "32px",
+            boxShadow: "none",
+          }}
+          variant="contained"
+          type="submit"
+        >
+          Ok
+        </Button>
+      </DialogActions>
     </Dialog>
   )
 }
