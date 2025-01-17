@@ -12,7 +12,7 @@ import { MODEL_BASE_MODE, USER_ROLES } from "../../utils/constant";
 const ModelBase = () => {
   const navigate = useNavigate();
 
-  const [isLocal, setIsLocal] = useState(MODEL_BASE_MODE.UNAUTHORIZED)
+  const [viewMode, setViewMode] = useState(MODEL_BASE_MODE.UNAUTHORIZED)
 
   const roles = UserService.getTokenParsed().realm_access.roles;
 
@@ -31,7 +31,7 @@ const ModelBase = () => {
   useEffect(() => {
     const mode = determineModelBaseMode(roles);
     if (mode) {
-      setIsLocal(mode);
+      setViewMode(mode);
     }
   }, [roles])
   
@@ -50,7 +50,7 @@ const ModelBase = () => {
       breadcrumbData={breadcrumbData} 
       title="MODEL-BASED LAND VALUATION"
       actions={ 
-        !isLocal ?
+        viewMode === MODEL_BASE_MODE.CENTRAL ?
         <>
           <Button
             sx={{
@@ -95,9 +95,9 @@ const ModelBase = () => {
         </> : ''
       }
     >
-      { isLocal === MODEL_BASE_MODE.LOCAL && <RequestForInvesgation /> }
-      { isLocal === MODEL_BASE_MODE.CENTRAL && <ListModel /> }
-      { isLocal === MODEL_BASE_MODE.UNAUTHORIZED && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>No data</Box> }
+      { viewMode === MODEL_BASE_MODE.LOCAL && <RequestForInvesgation /> }
+      { viewMode === MODEL_BASE_MODE.CENTRAL && <ListModel /> }
+      { viewMode === MODEL_BASE_MODE.UNAUTHORIZED && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>No data</Box> }
     </LayoutPageCommon>
   )
 }
