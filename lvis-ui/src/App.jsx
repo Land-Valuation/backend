@@ -28,6 +28,7 @@ import Egis0 from "./scenes/egis0";
 import ModelBase from "./scenes/model-base";
 import CreateNewModel from "./scenes/model-base/create-model";
 import RequestForInvesgationDetail from "./scenes/model-base/request-for-invesgation/detail/RequestForInvesgationDetail";
+import ParcelSurveyManagement from "./scenes/parcel-survey-management";
 
 const resources = {
   en: {
@@ -85,6 +86,7 @@ function App() {
                 <Route path="/model-base/detail" element={<RequestForInvesgationDetail />} />
                 <Route path="/land-valuation" element={<Valuation />} />
                 <Route path="/land-valuation/detail" element={<LandValuationDetail />} />
+                <Route path="/parcel-survey-management" element={<ParcelSurveyManagement />} />
                 <Route path="/customers" element={
                   <NotRenderOnRole roles={[]} showNotAllowed>
                     <Customers />
