@@ -13,8 +13,11 @@ import {
   ListItem,
   Divider,
   ListItemText,
+  Stack,
+  Tabs,
+  Tab,
 } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled, width } from "@mui/system";
 import LayoutPageCommon from "../../../components/LayoutPageCommon";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
@@ -26,6 +29,8 @@ import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
 import CustomDataGrid from "../../../components/customMUI/CustomDataGrid";
 import CustomUploadFile from "../../../components/customMUI/CustomUploadFile";
+import { Done } from "@mui/icons-material";
+import { DataGrid } from "@mui/x-data-grid";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -135,7 +140,66 @@ function SaveIcon(props) {
     </SvgIcon>
   );
 }
-
+function DoneIcon(props) {
+  return (
+    <SvgIcon {...props} viewBox="0 0 12 12">
+      <g clipPath="url(#clip0_7185_4076)">
+        <path
+          d="M8.50443 3.87012H7.8763C7.73969 3.87012 7.60978 3.93574 7.52942 4.04824L5.42407 6.96789L4.4705 5.64467C4.39014 5.53351 4.26157 5.46655 4.12362 5.46655H3.4955C3.40844 5.46655 3.35755 5.56565 3.40844 5.63664L5.07719 7.95092C5.11661 8.00594 5.16858 8.05078 5.22879 8.08171C5.289 8.11263 5.35571 8.12877 5.4234 8.12877C5.49109 8.12877 5.5578 8.11263 5.61801 8.08171C5.67821 8.05078 5.73018 8.00594 5.7696 7.95092L8.59014 4.04021C8.64237 3.96922 8.59148 3.87012 8.50443 3.87012Z"
+          fill="#52C41A"
+        />
+        <path
+          d="M6 0C2.68661 0 0 2.68661 0 6C0 9.31339 2.68661 12 6 12C9.31339 12 12 9.31339 12 6C12 2.68661 9.31339 0 6 0ZM6 10.9821C3.24911 10.9821 1.01786 8.75089 1.01786 6C1.01786 3.24911 3.24911 1.01786 6 1.01786C8.75089 1.01786 10.9821 3.24911 10.9821 6C10.9821 8.75089 8.75089 10.9821 6 10.9821Z"
+          fill="#52C41A"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_7185_4076">
+          <rect width="12" height="12" fill="white" />
+        </clipPath>
+      </defs>
+    </SvgIcon>
+  );
+}
+function PendingIcon(props) {
+  return (
+    <SvgIcon {...props} viewBox="0 0 12 12">
+      <g clip-path="url(#clip0_7499_928)">
+        <path
+          d="M6 0.604492C2.68661 0.604492 0 3.2911 0 6.60449C0 9.91789 2.68661 12.6045 6 12.6045C9.31339 12.6045 12 9.91789 12 6.60449C12 3.2911 9.31339 0.604492 6 0.604492ZM6 11.5866C3.24911 11.5866 1.01786 9.35539 1.01786 6.60449C1.01786 3.8536 3.24911 1.62235 6 1.62235C8.75089 1.62235 10.9821 3.8536 10.9821 6.60449C10.9821 9.35539 8.75089 11.5866 6 11.5866Z"
+          fill="black"
+          fill-opacity="0.88"
+        />
+        <path
+          d="M8.33984 8.29877L6.43002 6.91797V3.60324C6.43002 3.54431 6.3818 3.49609 6.32287 3.49609H5.67868C5.61975 3.49609 5.57153 3.54431 5.57153 3.60324V7.29163C5.57153 7.32645 5.5876 7.35859 5.61573 7.37868L7.83091 8.99386C7.87912 9.02868 7.94609 9.01797 7.98091 8.97109L8.36394 8.44877C8.39877 8.39922 8.38805 8.33225 8.33984 8.29877Z"
+          fill="black"
+          fill-opacity="0.88"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_7499_928">
+          <rect
+            width="12"
+            height="12"
+            fill="white"
+            transform="translate(0 0.604492)"
+          />
+        </clipPath>
+      </defs>
+    </SvgIcon>
+  );
+}
+function DownloadIcon(props) {
+  return (
+    <SvgIcon {...props} viewBox="0 0 16 16">
+      <path
+        d="M7.88736 10.6574C7.90072 10.6744 7.9178 10.6883 7.93729 10.6977C7.95678 10.7072 7.97818 10.7122 7.99986 10.7122C8.02154 10.7122 8.04294 10.7072 8.06243 10.6977C8.08192 10.6883 8.099 10.6744 8.11236 10.6574L10.1124 8.12701C10.1856 8.03415 10.1195 7.89665 9.99986 7.89665H8.67665V1.85379C8.67665 1.77522 8.61236 1.71094 8.53379 1.71094H7.46236C7.38379 1.71094 7.3195 1.77522 7.3195 1.85379V7.89487H5.99986C5.88022 7.89487 5.81415 8.03237 5.88736 8.12522L7.88736 10.6574ZM14.5356 10.0324H13.4641C13.3856 10.0324 13.3213 10.0967 13.3213 10.1752V12.9252H2.67843V10.1752C2.67843 10.0967 2.61415 10.0324 2.53557 10.0324H1.46415C1.38557 10.0324 1.32129 10.0967 1.32129 10.1752V13.7109C1.32129 14.027 1.57665 14.2824 1.89272 14.2824H14.107C14.4231 14.2824 14.6784 14.027 14.6784 13.7109V10.1752C14.6784 10.0967 14.6141 10.0324 14.5356 10.0324Z"
+        // fill="#1677FF"
+        fill-opacity="0.88"
+      />
+    </SvgIcon>
+  );
+}
 const LandValuationDetail = () => {
   const [selectedYear, setSelectedYear] = useState(new Date(2024, 0, 1));
   const [selectedProvince, setSelectedProvince] = useState(1);
@@ -145,7 +209,102 @@ const LandValuationDetail = () => {
   const [uploadedFiles2, setUploadedFiles2] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [dateRange, setDateRange] = useState([null, null]);
+  const [value, setValue] = useState(0);
+  const columns = [
+    { field: "id", headerName: "ID", flex: 1, hide: true },
+    {
+      field: "firstName",
+      headerName: "Member Type",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "lastName",
+      headerName: "Organization",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "age",
+      headerName: "Name",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "fullName",
+      headerName: "Position",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      valueGetter: (value, row) =>
+        `${row.firstName || ""} ${row.lastName || ""}`,
+      flex: 1,
+    },
+    {
+      field: "phone",
+      headerName: "Phone Number",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      editable: true,
+      flex: 1,
+    },
+  ];
 
+  const initialRows = [
+    { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
+    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
+    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
+    { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
+    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: 1000 },
+    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
+    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
+    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
+    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+  ];
+  const visibleColumns = columns.filter((column) => column.field !== "id");
+  const [rows, setRows] = useState(initialRows);
+  let attachments = [
+    { name: "Document A.doc", size: "7.261 MB" },
+    { name: "Document B.pdf", size: "7.261 MB" },
+    { name: "Document C.xlsx", size: "7.261 MB" },
+    { name: "Document D.ppt", size: "7.261 MB" },
+    { name: "Document E.zip", size: "7.261 MB" },
+    { name: "Document F.jpg", size: "7.261 MB" },
+  ];
+  const FileIcon = styled("img")({
+    width: "50px",
+    height: "50px",
+  });
+  const fileIcons = {
+    pdf: "/PDF ico.svg",
+    jpg: "/JPG ico.svg",
+    jpeg: "/JPG ico.svg",
+    doc: "/DOC ico.svg",
+    docx: "/DOC ico.svg",
+    csv: "/CSV ico.svg",
+    xlsx: "/CSV ico.svg",
+    zip: "/ZIP ico.svg",
+    ppt: "/PPT ico.svg",
+    pptx: "/PPT ico.svg",
+  };
+  const FileCard = styled(Box)(({ theme }) => ({
+    border: "1px solid #F0F0F0",
+    borderRadius: "8px",
+    padding: "16px",
+    textAlign: "center",
+    position: "relative",
+    marginBottom: "16px",
+    backgroundColor: "#fff",
+  }));
+  const getFileExtension = (fileName) => {
+    return fileName.split(".").pop().toLowerCase();
+  };
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   const handleDateChange = (range) => {
     setDateRange(range);
   };
@@ -154,20 +313,20 @@ const LandValuationDetail = () => {
     setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
   };
   const handleFileUpload2 = (event) => {
-    const files = Array.from(event.target.files).map(file => ({
+    const files = Array.from(event.target.files).map((file) => ({
       id: `${file.name}-${Date.now()}`,
       name: file.name,
-      size:file.size,
-      uploadTime: new Date(), 
+      size: file.size,
+      uploadTime: new Date(),
     }));
     setUploadedFiles2((prevFiles) => [...prevFiles, ...files]);
   };
   const handleDeleteFile = (fileId) => {
     setUploadedFiles2((prevFiles) =>
-        prevFiles.filter((file) => file.id !== fileId)
+      prevFiles.filter((file) => file.id !== fileId)
     );
-    document.getElementById('fileInputId').value = '';
-};
+    document.getElementById("fileInputId").value = "";
+  };
   const handleCommitteeStatusChange = (event) => {
     setCommitteeStatus(event.target.value);
   };
@@ -270,11 +429,11 @@ const LandValuationDetail = () => {
                 renderInput={(params) => <TextField {...params} />}
                 sx={{
                   "& .MuiInputBase-root": {
-                    height: "40px", // Custom height for the input
+                    height: "40px",
                   },
                   "& .MuiPaper-root": {
                     "& .MuiCalendarPicker-root": {
-                      height: "300px", // Custom height for the popup calendar
+                      height: "300px",
                     },
                   },
                 }}
@@ -282,7 +441,7 @@ const LandValuationDetail = () => {
                   textField: {
                     sx: {
                       "& .MuiInputBase-root": {
-                        height: "40px", // Ensure consistent input height
+                        height: "40px",
                       },
                     },
                   },
@@ -579,6 +738,7 @@ const LandValuationDetail = () => {
             borderRadius: "12px",
             position: "relative",
             marginTop: "32px",
+            // overflowY:"auto"
           }}
         >
           <Typography
@@ -620,7 +780,10 @@ const LandValuationDetail = () => {
               multiple
             />
           </Button>
-          <CustomUploadFile files={uploadedFiles2} onDelete={handleDeleteFile}/>
+          <CustomUploadFile
+            files={uploadedFiles2}
+            onDelete={handleDeleteFile}
+          />
         </Box>
         <Typography
           sx={{
@@ -640,8 +803,240 @@ const LandValuationDetail = () => {
             border: "1px solid #D9D9D9",
             borderRadius: "12px",
             // marginBottom: "44px",
+            display: "flex",
+            flexDirection: "row",
           }}
-        ></Box>
+        >
+          <Box
+            sx={{
+              backgroundColor: "#F5F5F5",
+              width: "260px",
+              borderRadius: "12px 0 0 12px",
+            }}
+          >
+            <Typography>District</Typography>
+            <Stack spacing={"8px"} sx={{ margin: "16px" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  borderRadius: "8px",
+                  background: "#E6F4FF",
+                  border: "1px solid #91CAFF",
+                  justifyContent: "space-between",
+                  padding: "8px 12px 8px 12px",
+                }}
+              >
+                <Typography sx={{ color: "#1677FF" }}>Phonhong</Typography>
+                <Box
+                  sx={{
+                    backgroundColor: "#F6FFED",
+                    border: "1px solid #B7EB8F",
+                    color: "#52C41A",
+                    borderRadius: "4px",
+                    padding: "0 8px",
+                    display: "flex",
+                    alignItems: "center",
+                    width: "fit-content",
+                    textWrap: "nowrap",
+                    fontFamily: "Poppins",
+                    fontSize: "12px",
+                    fontWeight: 400,
+                  }}
+                >
+                  <DoneIcon sx={{ marginRight: "4px", width: "12px" }} />
+                  Done
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  borderRadius: "8px",
+                  background: "#FFF",
+                  justifyContent: "space-between",
+                  padding: "8px 12px 8px 12px",
+                }}
+              >
+                <Typography>Viengkham</Typography>
+                <Box
+                  sx={{
+                    backgroundColor: "#00000005",
+                    border: "1px solid #D9D9D9",
+                    borderRadius: "4px",
+                    padding: "0 8px",
+                    display: "flex",
+                    alignItems: "center",
+                    width: "fit-content",
+                    textWrap: "nowrap",
+                    fontFamily: "Poppins",
+                    fontSize: "12px",
+                    fontWeight: 400,
+                  }}
+                >
+                  <PendingIcon sx={{ marginRight: "4px", width: "12px" }} />
+                  Pending
+                </Box>
+              </Box>
+            </Stack>
+          </Box>
+          <Box sx={{ width: "100%", padding: "8px 24px 8px 24px" }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              textColor="inherit"
+              indicatorColor="transparent"
+              sx={{
+                borderBottom: "1px solid #F0F0F0",
+                width: "100%",
+                "& .MuiTab-root": {
+                  color: "##000000E0",
+                  textTransform: "none",
+                  fontFamily: "SF Pro Text",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                },
+                "& .MuiTab-root.Mui-selected": {
+                  color: "#1677FF",
+                  fontWeight: 600,
+                },
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "#1677FF",
+                },
+              }}
+            >
+              <Tab label="Overview" />
+              <Tab label="Land Valuation" />
+            </Tabs>
+            {value === 0 && (
+              <Box sx={{ height: "600px", overflow: "auto", width: "100%" }}>
+                <Box>
+                  <Typography>Land Valuation Result</Typography>
+                  <Box sx={{ display: "flex", gap: "24px" }}>
+                    <Button
+                      variant="outlined"
+                      startIcon={<DownloadIcon />}
+                      sx={{
+                        color: "#1677FF",
+                        textTransform: "none",
+                        width: "50%",
+                        border: "1px solid #1677FF",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      Download All Land Valuation Areas (*.shp)
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      startIcon={<DownloadIcon />}
+                      sx={{
+                        color: "#1677FF",
+                        textTransform: "none",
+                        width: "50%",
+                        border: "1px solid #1677FF",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      Download All Land Valuation Tables (*.xlsx)
+                    </Button>
+                  </Box>
+                </Box>
+                <Typography>Attachments:</Typography>
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gap: "16px",
+                    padding: "0 24px 24px 24px",
+                  }}
+                >
+                  {attachments.map((file) => {
+                    const fileExtension = getFileExtension(file.name);
+                    const iconSrc = fileIcons[fileExtension];
+                    return (
+                      <FileCard
+                        key={file.name}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <FileIcon src={iconSrc} alt={`${fileExtension} icon`} />
+                        <Box>
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              fontWeight: 600,
+                              textOverflow: "ellipsis",
+                              maxWidth: "210px",
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                            }}
+                          >
+                            {file.name}
+                          </Typography>
+                          <Typography variant="body2" sx={{ color: "#888" }}>
+                            {file.size}
+                          </Typography>
+                        </Box>
+                        <IconButton>
+                          <DownloadIcon sx={{ color: "#00000073" }} />
+                        </IconButton>
+                      </FileCard>
+                    );
+                  })}
+                </Box>
+                <Typography>Committee Members</Typography>
+                <Typography>Description:</Typography>
+                <Typography>
+                  Lorem ipsum dolor sit amet consectetur. Enim est in odio nulla
+                  felis morbi at sit eget. Enim aliquam non quis egestas risus
+                  aliquet arcu. Nullam dapibus blandit sed sit diam. Rhoncus nec
+                  sed hendrerit a nam tellus proin.
+                </Typography>
+                <Typography>Committee Duration:</Typography>
+                <Typography>01-09-2024 to 09-11-2024</Typography>
+                <Box sx={{ height: "320px", margin: "24px", width: "95%" }}>
+                  <DataGrid
+                    rows={rows}
+                    columns={visibleColumns}
+                    initialState={{
+                      pagination: {
+                        paginationModel: {
+                          pageSize: 5,
+                        },
+                      },
+                    }}
+                    pageSizeOptions={[5]}
+                    disableRowSelectionOnClick
+                    disableColumnSorting
+                    disableColumnFilter
+                    disableColumnMenu
+                    sx={{
+                      "& .MuiDataGrid-columnHeaders": {
+                        color: "#000000E0",
+                      },
+                      "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeader":
+                        {
+                          background: "#FAFAFA",
+                        },
+                      "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeaderTitle":
+                        {
+                          fontFamily: "Poppins",
+                          fontSize: "14px",
+                          fontWeight: 500,
+                        },
+                    }}
+                  />
+                </Box>
+              </Box>
+            )}
+            {value === 1 && (
+              <div>
+                <h2>Land Valuation Content</h2>
+                <p>This is the content for the Land Valuation tab.</p>
+              </div>
+            )}
+          </Box>
+        </Box>
       </LayoutPageCommon>
       <Box>
         <Divider />

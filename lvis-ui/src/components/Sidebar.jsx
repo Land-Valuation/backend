@@ -217,19 +217,36 @@ import { useState, useEffect } from "react";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import { Divider, Box, Popper, Typography, Tooltip } from "@mui/material";
-import UserService from "../state/UserService";
+import {
+  Divider,
+  Box,
+  Popper,
+  Typography,
+  Tooltip,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
+import UserService from "../state/UserService";
 
 const drawerWidth = 64;
 
 function Sidebar() {
+  const username = UserService.getUsername();
   const navigate = useNavigate();
   const location = useLocation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleMenuOpen = (event) => {
+    setAnchorEl(open ? null : event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     const currentIndex = menuItems.findIndex((item) =>
@@ -261,12 +278,6 @@ function Sidebar() {
     { src: "/admin.svg", alt: "Admin", path: "/customers" },
   ];
 
-  const handleClick = (event) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popper" : undefined;
   const LightTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -379,66 +390,51 @@ function Sidebar() {
         <Divider variant="middle" sx={{ width: "31px" }} />
         <img width="24px" height="18px" alt="flag" src="../lao_flag.svg" />
         <img width="20px" height="20px" alt="noti bell" src="../bell ico.svg" />
-        <img
-          width="32px"
-          height="32px"
-          alt="flag"
-          src="../sample avatar.svg"
-          style={{ cursor: "pointer" }}
-          onClick={handleClick}
-          aria-describedby={id}
-        />
-        <Popper
-          id={id}
-          open={open}
+        <IconButton onClick={handleMenuOpen} sx={{ cursor: "pointer" }}>
+          <img
+            width="32px"
+            height="32px"
+            alt="flag"
+            src="../sample avatar.svg"
+          />
+        </IconButton>
+        <Menu
           anchorEl={anchorEl}
+          open={open}
+          onClose={handleMenuClose}
+          onClick={handleMenuClose}
           sx={{
             zIndex: 1000,
-            position: "absolute !important",
-            bottom: "16px",
-            top: "auto !important",
-            left: "73px !important",
-          }}
-          placement="right-end"
-          modifiers={[
-            {
-              name: "arrow",
-              enabled: true,
-              options: {
-                element: ".arrow",
+            left: "55px",
+            top: "-15px",
+            width: "220px",
+            borderRadius:"8px",
+            "& .MuiPaper-root": {
+              position: "relative",
+              overflow: "visible",
+              borderRadius: "8px", 
+              "&::before": {
+                content: '""',
+                display: "block",
+                position: "absolute",
+                bottom: 10,
+                left: -5,
+                width: 10,
+                height: 10,
+                bgcolor: "background.paper",
+                transform: "rotate(45deg)",
+                zIndex: 0,
               },
             },
-          ]}
-          transition
+          }}
         >
-          <div
-            style={{
-              backgroundColor: "white",
-              padding: "16px",
-              borderRadius: "8px",
-              position: "relative",
-              boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <div
-              className="arrow"
-              style={{
-                position: "absolute",
-                bottom: "10px",
-                left: "-16px",
-                borderWidth: "8px",
-                borderStyle: "solid",
-                borderColor: " transparent white transparent transparent",
-                transform: "translateY(0)",
-              }}
-            />
+          <div>
             <div
               style={{
                 display: "flex",
-                flexDirection: "row",
-                marginBottom: "12px",
-                gap: "8px",
                 alignItems: "center",
+                marginBottom: "12px",
+                marginLeft:"12px"
               }}
             >
               <img
@@ -447,7 +443,7 @@ function Sidebar() {
                 alt="flag"
                 src="../sample avatar.svg"
               />
-              <div>
+              <div style={{ marginLeft: "8px" }}>
                 <Typography
                   sx={{
                     fontSize: "14px",
@@ -457,61 +453,41 @@ function Sidebar() {
                     marginBottom: "2px",
                   }}
                 >
-                  Username
+                  {username}
                 </Typography>
                 <Typography sx={{ fontWeight: 400, color: "#00000073" }}>
                   user@mail.com
                 </Typography>
               </div>
             </div>
-            <div
-              style={{
-                // display: "flex",
-                flexDirection: "row",
-                gap: "8px",
-                marginBottom: "10px",
-                display: "none",
-              }}
-            >
-              <img src="/user.svg" alt="" />
-              <Typography>User management</Typography>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "8px",
-                marginBottom: "10px",
-              }}
+            <MenuItem
+              onClick={handleMenuClose}
+              style={{ display: "flex", alignItems: "center", gap: "8px" }}
             >
               <img src="/personal info.svg" alt="" />
               <Typography>Personal Information</Typography>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "8px",
-                marginBottom: "10px",
-              }}
+            </MenuItem>
+            <MenuItem
+              onClick={handleMenuClose}
+              style={{ display: "flex", alignItems: "center", gap: "8px" }}
             >
               <img src="/change pw.svg" alt="" />
               <Typography>Change password</Typography>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "8px",
-                cursor: "pointer",
-              }}
-              onClick={() => UserService.doLogout()}
+            </MenuItem>
+            <MenuItem
+              onClick={handleMenuClose}
+              style={{ display: "flex", alignItems: "center", gap: "8px" }}
             >
               <img src="/logout ico.svg" alt="" />
-              <Typography>Log out</Typography>
-            </div>
+              <Typography
+                onClick={() => UserService.doLogout()}
+                style={{ cursor: "pointer" }}
+              >
+                Log out
+              </Typography>
+            </MenuItem>
           </div>
-        </Popper>
+        </Menu>
       </div>
     </Drawer>
   );
