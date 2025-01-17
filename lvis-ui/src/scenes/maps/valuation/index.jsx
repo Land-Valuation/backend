@@ -27,6 +27,7 @@ import {
 import Footer from "../../../components/Footer";
 import SvgIcon from "@mui/material/SvgIcon";
 import { Link } from "react-router-dom";
+import UserService from "../../../state/UserService";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -155,7 +156,6 @@ function ApproveIcon(props) {
     </SvgIcon>
   );
 }
-
 function createData(
   year,
   status,
@@ -400,12 +400,13 @@ const rows2 = [
 ];
 const Valuation = () => {
   // const theme = useTheme();
-  const userRole = "central";
-  // const userRole = 'local';
-
+  const userRole = UserService.getTokenParsed().realm_access.roles;
+  console.log(userRole," role");
+  const hasCentralRole = userRole.some(role => role.includes("CENTRAL"));
+  // const hasLocalRole = userRole.some(role => role.includes("LOCAL"));
   return (
     <>
-      {userRole === "central" ? (
+      {hasCentralRole ? (
         <Box
           m="1.5rem 2.5rem"
           sx={{

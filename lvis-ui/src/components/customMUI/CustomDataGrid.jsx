@@ -141,6 +141,19 @@ const CustomDataGrid = () => {
       disableColumnSorting
       disableColumnFilter
       disableColumnMenu
+      sx={{
+        "& .MuiDataGrid-columnHeaders": {
+          color: "#000000E0",
+        },
+        "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeader": {
+          background: "#FAFAFA",
+        },
+        "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeaderTitle": {
+          fontFamily: "Poppins",
+          fontSize: "14px",
+          fontWeight: 500,
+        },
+      }}
     />
   );
 };
