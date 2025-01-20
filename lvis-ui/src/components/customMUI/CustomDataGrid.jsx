@@ -142,6 +142,7 @@ const CustomDataGrid = () => {
       disableColumnFilter
       disableColumnMenu
       sx={{
+        width:"1700px",
         "& .MuiDataGrid-columnHeaders": {
           color: "#000000E0",
         },

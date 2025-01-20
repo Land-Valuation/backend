@@ -18,7 +18,7 @@ const FileCard = styled(Box)(({ theme }) => ({
   padding: "16px",
   textAlign: "center",
   position: "relative",
-  marginBottom: "16px",
+  // marginBottom: "16px",
   backgroundColor: "#fff",
 }));
 
@@ -29,6 +29,7 @@ const FileIcon = styled("img")({
 const fileIcons = {
   pdf: "/PDF ico.svg",
   jpg: "/JPG ico.svg",
+  png: "/JPG ico.svg",
   jpeg: "/JPG ico.svg",
   doc: "/DOC ico.svg",
   docx: "/DOC ico.svg",
@@ -125,8 +126,10 @@ const CustomUploadFile = ({ files, onDelete }) => {
       sx={{
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "16px",
-        padding: "0 24px 24px 24px",
+        gap: "24px",
+        // padding: "0 24px 24px 24px",
+        marginTop: "24px",
+        marginTop: files.length === 0 ? 0 : "32px",
       }}
     >
       {files.map((file) => {
