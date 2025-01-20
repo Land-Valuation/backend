@@ -16,11 +16,12 @@ import {
   Stack,
   Tabs,
   Tab,
+  Checkbox,
 } from "@mui/material";
 import { styled, width } from "@mui/system";
 import LayoutPageCommon from "../../../components/LayoutPageCommon";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import Footer from "../../../components/Footer";
@@ -29,9 +30,524 @@ import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
 import CustomDataGrid from "../../../components/customMUI/CustomDataGrid";
 import CustomUploadFile from "../../../components/customMUI/CustomUploadFile";
-import { Done } from "@mui/icons-material";
+// import { Done } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
+import "leaflet/dist/leaflet.css";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  ZoomControl,
+  useMap,
+  useMapEvent,
+  Rectangle
+} from "react-leaflet";
+import { useEventHandlers } from "@react-leaflet/core";
+import L from "leaflet";
 
+const districts = [
+  { name: "Phonhong", status: true },
+  { name: "Viengkham", status: false },
+  { name: "Thoulakhom", status: true },
+  { name: "Keo-Oudom", status: false },
+  { name: "Feuang", status: false },
+  { name: "Vangvieng", status: false },
+  { name: "Xanakham", status: false },
+  { name: "Hinheup", status: false },
+  { name: "Mad", status: false },
+  { name: "Met", status: false },
+  { name: "Kasi", status: false },
+];
+const parcels = [
+  {
+    name: "A1",
+    area: "1,100.21",
+    mainStreet: 6500000,
+    connectingRoad: 4800000,
+    junctionStreet: 3200000,
+    streetAsTheyUsedToBe: 1600000,
+    mapSheet: 1,
+    parcelNo: 1,
+    surveyedPrice: 6200000,
+    roadType: 1,
+  },
+  {
+    name: "A2",
+    area: "1,100.21",
+    mainStreet: 6500000,
+    connectingRoad: 4800000,
+    junctionStreet: 3200000,
+    streetAsTheyUsedToBe: 1600000,
+    mapSheet: 2,
+    parcelNo: 2,
+    surveyedPrice: 6200000,
+    roadType: 2,
+  },
+  {
+    name: "A3",
+    area: "1,100.21",
+    mainStreet: "N/A",
+    connectingRoad: "N/A",
+    junctionStreet: "N/A",
+    streetAsTheyUsedToBe: "N/A",
+    mapSheet: "N/A",
+    parcelNo: "N/A",
+    surveyedPrice: "N/A",
+    roadType: "N/A",
+  },
+  {
+    name: "B12",
+    area: "1,100.21",
+    mainStreet: 6500000,
+    connectingRoad: 4800000,
+    junctionStreet: 3200000,
+    streetAsTheyUsedToBe: 1600000,
+    mapSheet: 7,
+    parcelNo: 8,
+    surveyedPrice: 6200000,
+    roadType: 9,
+  },
+  {
+    name: "C8",
+    area: "1,100.21",
+    mainStreet: "N/A",
+    connectingRoad: "N/A",
+    junctionStreet: "N/A",
+    streetAsTheyUsedToBe: "N/A",
+    mapSheet: 10,
+    parcelNo: 151,
+    surveyedPrice: 6200000,
+    roadType: 4,
+  },
+];
+const customIcon = new L.Icon({
+  iconUrl: "/red pin.svg",
+  iconSize: [38, 95],
+  iconAnchor: [22, 94],
+  popupAnchor: [-3, -76],
+});
+const CustomTab = styled(Tab)(({ theme, selected }) => ({
+  textTransform: "none",
+  borderRadius: "6px",
+  backgroundColor: selected ? "#FFF" : "#F5F5F5",
+  color: selected ? "#1677FF" : "#000000A6",
+  minHeight: "28px",
+  height: "28px",
+  fontFamily: "Poppins",
+  fontSize: "14px",
+  fontWeight: 400,
+  transition: "background-color 0.3s ease",
+  width: "118px",
+  "&:hover": {
+    backgroundColor: selected ? "#FFF" : "#F1F1F1",
+  },
+}));
+const position = [51.505, -0.09];
+const DistrictList = () => {
+  return (
+    <div>
+      {districts.map((district) =>
+        createDistrict(district.name, district.status)
+      )}
+    </div>
+  );
+};
+
+function createParcel(parcel) {
+  return (
+    <Box
+      sx={{
+        width: "240px",
+        height: "152px",
+        borderRadius: "6px",
+        backgroundColor: "#F8F8F8",
+        border: "1px solid #F0F0F0",
+        marginBottom: "8px",
+        "&:hover": {
+          border: "1px solid #9FCEFF",
+          backgroundColor: "#E6F4FF",
+          "& .parcel-name": {
+            color: "white",
+            backgroundColor: "#1677FF",
+            borderRight: "1px solid #9FCEFF",
+            borderBottom: "1px solid #9FCEFF",
+          },
+        },
+      }}
+    >
+      <Box
+        className="parcel-name"
+        sx={{
+          color: "#000000E0",
+          backgroundColor: "white",
+          borderRadius: "6px 0 6px 0",
+          padding: "1px 4px",
+          fontFamily: "Poppins",
+          fontSize: "14px",
+          fontWeight: 600,
+          width: "fit-content",
+          borderRight: "1px solid #F0F0F0",
+          borderBottom: "1px solid #F0F0F0",
+        }}
+      >
+        {parcel.name}
+      </Box>
+      <Box
+        sx={{
+          margin: "4px 16px 16px 16px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "6px",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 400,
+              color: "#000000A6",
+            }}
+          >
+            Main Street:
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#000000E0",
+            }}
+          >
+            {parcel.mainStreet.toLocaleString()}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 400,
+              color: "#000000A6",
+            }}
+          >
+            Connecting Roads:
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#000000E0",
+            }}
+          >
+            {parcel.connectingRoad.toLocaleString()}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 400,
+              color: "#000000A6",
+            }}
+          >
+            Junction Street:
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#000000E0",
+            }}
+          >
+            {parcel.junctionStreet.toLocaleString()}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 400,
+              color: "#000000A6",
+              maxWidth: "120px",
+            }}
+          >
+            Streets as they used to be:
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#000000E0",
+            }}
+          >
+            {parcel.streetAsTheyUsedToBe.toLocaleString()}
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+function createParcel2(parcel) {
+  return (
+    <Box
+      sx={{
+        width: "240px",
+        height: "152px",
+        borderRadius: "6px",
+        backgroundColor: "#F8F8F8",
+        border: "1px solid #F0F0F0",
+        marginBottom: "8px",
+        "&:hover": {
+          border: "1px solid #9FCEFF",
+          backgroundColor: "#E6F4FF",
+          "& .parcel-name": {
+            color: "white",
+            backgroundColor: "#1677FF",
+            borderRight: "1px solid #9FCEFF",
+            borderBottom: "1px solid #9FCEFF",
+          },
+        },
+      }}
+    >
+      <Box
+        className="parcel-name"
+        sx={{
+          color: "#000000E0",
+          backgroundColor: "white",
+          borderRadius: "6px 0 6px 0",
+          padding: "1px 4px",
+          fontFamily: "Poppins",
+          fontSize: "14px",
+          fontWeight: 600,
+          width: "fit-content",
+          borderRight: "1px solid #F0F0F0",
+          borderBottom: "1px solid #F0F0F0",
+        }}
+      >
+        {parcel.name}
+      </Box>
+      <Box
+        sx={{
+          margin: "4px 16px 16px 16px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "6px",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 400,
+              color: "#000000A6",
+            }}
+          >
+            Map Sheet:
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#000000E0",
+            }}
+          >
+            {parcel.mapSheet}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 400,
+              color: "#000000A6",
+            }}
+          >
+            Parcel No.:
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#000000E0",
+            }}
+          >
+            {parcel.parcelNo}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 400,
+              color: "#000000A6",
+            }}
+          >
+            Surveyed Price:
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#000000E0",
+            }}
+          >
+            {parcel.surveyedPrice}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 400,
+              color: "#000000A6",
+              maxWidth: "120px",
+            }}
+          >
+            Road Type:
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#000000E0",
+            }}
+          >
+            {parcel.roadType}
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: "8px" }}>
+          <img src="/view more.svg" alt="view-more" />
+          <Typography
+            sx={{
+              color: "#1677FF",
+              fontFamily: "Poppins",
+              fontSize: "12px",
+              fontWeight: 400,
+            }}
+          >
+            View More
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+const ParcelList = () => {
+  return <Box>{parcels.map((parcel) => createParcel(parcel))}</Box>;
+};
+const ParcelList2 = () => {
+  return <Box>{parcels.map((parcel) => createParcel2(parcel))}</Box>;
+};
+function createDistrict(name, status) {
+  return (
+    <Box
+      key={name}
+      sx={{
+        display: "flex",
+        borderRadius: "8px",
+        marginBottom: "8px",
+        background: "#FFF",
+        justifyContent: "space-between",
+        padding: "8px 12px 8px 12px",
+        border: "1px solid white",
+        "&:hover": {
+          border: "1px solid #91CAFF",
+          background: "#E6F4FF",
+          color: "#1677FF",
+        },
+      }}
+    >
+      <Typography>{name}</Typography>
+      <Box
+        sx={{
+          backgroundColor: status ? "#F6FFED" : "#00000005",
+          border: status ? "1px solid #B7EB8F" : "1px solid #D9D9D9",
+          color: status ? "#52C41A" : "black",
+          borderRadius: "4px",
+          padding: "0 8px",
+          display: "flex",
+          alignItems: "center",
+          width: "fit-content",
+          // textWrap: "nowrap",
+          whiteSpace: "nowrap",
+          fontFamily: "Poppins",
+          fontSize: "12px",
+          fontWeight: 400,
+        }}
+      >
+        {status ? (
+          <DoneIcon sx={{ marginRight: "4px", width: "12px" }} />
+        ) : (
+          <PendingIcon sx={{ marginRight: "4px", width: "12px" }} />
+        )}
+        {status ? "Done" : "Pending"}
+      </Box>
+    </Box>
+  );
+}
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -210,6 +726,117 @@ const LandValuationDetail = () => {
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [dateRange, setDateRange] = useState([null, null]);
   const [value, setValue] = useState(0);
+  const [value1, setValue1] = useState(0);
+
+  const POSITION_CLASSES = {
+    bottomleft: "leaflet-bottom leaflet-left",
+    bottomright: "leaflet-bottom leaflet-right",
+    topleft: "leaflet-top leaflet-left",
+    topright: "leaflet-top leaflet-right",
+  };
+
+  const BOUNDS_STYLE = { weight: 1 };
+
+  function MinimapBounds({ parentMap, zoom }) {
+    const minimap = useMap();
+
+    const onClick = useCallback(
+      (e) => {
+        parentMap.setView(e.latlng, parentMap.getZoom());
+      },
+      [parentMap]
+    );
+    useMapEvent("click", onClick);
+
+    const [bounds, setBounds] = useState(parentMap.getBounds());
+    const onChange = useCallback(() => {
+      setBounds(parentMap.getBounds());
+      minimap.setView(parentMap.getCenter(), zoom);
+    }, [minimap, parentMap, zoom]);
+
+    const handlers = useMemo(() => ({ move: onChange, zoom: onChange }), []);
+    useEventHandlers({ instance: parentMap }, handlers);
+
+    return <Rectangle bounds={bounds} pathOptions={BOUNDS_STYLE} />;
+  }
+
+  function MinimapControl({ position, zoom }) {
+    const parentMap = useMap();
+    const mapZoom = zoom || 0;
+
+    const minimap = useMemo(
+      () => (
+        <MapContainer
+          style={{ height: 28, width: 28 }}
+          center={parentMap.getCenter()}
+          zoom={mapZoom}
+          dragging={false}
+          doubleClickZoom={false}
+          scrollWheelZoom={false}
+          attributionControl={false}
+          zoomControl={false}
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <MinimapBounds parentMap={parentMap} zoom={mapZoom} />
+        </MapContainer>
+      ),
+      []
+    );
+
+    const positionClass =
+      (position && POSITION_CLASSES[position]) || POSITION_CLASSES.topright;
+    return (
+      <div className={positionClass}>
+        <div className="leaflet-control leaflet-bar">{minimap}</div>
+      </div>
+    );
+  }
+
+  const ZoomControl = () => {
+    const map = useMap();
+
+    const handleZoomIn = () => {
+      map.zoomIn();
+    };
+
+    const handleZoomOut = () => {
+      map.zoomOut();
+    };
+
+    return (
+      <div
+        className="leaflet-control-zoom"
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          zIndex: 1000,
+        }}
+      >
+        <a
+          href="#"
+          className="leaflet-control-zoom-in"
+          onClick={(e) => {
+            e.preventDefault();
+            handleZoomIn();
+          }}
+        >
+          <img src="/zoom in.svg" alt="zoomin" />
+        </a>
+        <a
+          href="#"
+          className="leaflet-control-zoom-out"
+          onClick={(e) => {
+            e.preventDefault();
+            handleZoomOut();
+          }}
+        >
+          <img src="/zoom out.svg" alt="zoomout" />
+        </a>
+      </div>
+    );
+  };
+
   const columns = [
     { field: "id", headerName: "ID", flex: 1, hide: true },
     {
@@ -296,7 +923,7 @@ const LandValuationDetail = () => {
     padding: "16px",
     textAlign: "center",
     position: "relative",
-    marginBottom: "16px",
+    // marginBottom: "16px",
     backgroundColor: "#fff",
   }));
   const getFileExtension = (fileName) => {
@@ -304,6 +931,9 @@ const LandValuationDetail = () => {
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+  const handleChange1 = (event, newValue) => {
+    setValue1(newValue);
   };
   const handleDateChange = (range) => {
     setDateRange(range);
@@ -322,10 +952,12 @@ const LandValuationDetail = () => {
     setUploadedFiles2((prevFiles) => [...prevFiles, ...files]);
   };
   const handleDeleteFile = (fileId) => {
+    console.log(fileId);
+
     setUploadedFiles2((prevFiles) =>
       prevFiles.filter((file) => file.id !== fileId)
     );
-    document.getElementById("fileInputId").value = "";
+    // document.getElementById("fileInputId").value = "";
   };
   const handleCommitteeStatusChange = (event) => {
     setCommitteeStatus(event.target.value);
@@ -727,17 +1359,20 @@ const LandValuationDetail = () => {
               />
             </Box>
           </Box>
-          <Box sx={{ height: "320px", margin: "24px" }}>
+          <Box sx={{ height: "320px", margin: "24px", paddingBottom: "12px" }}>
             <CustomDataGrid />
           </Box>
         </Box>
         <Box
           sx={{
-            height: "337px",
+            height: "fit-content",
             border: "1px solid #D9D9D9",
             borderRadius: "12px",
             position: "relative",
             marginTop: "32px",
+            paddingLeft: "24px",
+            paddingRight: "24px",
+            paddingBottom: "24px",
             // overflowY:"auto"
           }}
         >
@@ -766,7 +1401,8 @@ const LandValuationDetail = () => {
             startIcon={<UploadIcon />}
             sx={{
               textTransform: "none",
-              margin: "32px 24px",
+              marginTop: "32px",
+              // marginBottom: "24px",
               borderRadius: "6px",
               border: "1px solid #1677FF",
               color: "#1677FF",
@@ -791,7 +1427,7 @@ const LandValuationDetail = () => {
             fontWeight: 400,
             fontSize: "20px",
             color: "#00000073",
-            marginTop: "22px",
+            marginTop: "32px",
             marginBottom: "24px",
           }}
         >
@@ -814,68 +1450,19 @@ const LandValuationDetail = () => {
               borderRadius: "12px 0 0 12px",
             }}
           >
-            <Typography>District</Typography>
-            <Stack spacing={"8px"} sx={{ margin: "16px" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  borderRadius: "8px",
-                  background: "#E6F4FF",
-                  border: "1px solid #91CAFF",
-                  justifyContent: "space-between",
-                  padding: "8px 12px 8px 12px",
-                }}
-              >
-                <Typography sx={{ color: "#1677FF" }}>Phonhong</Typography>
-                <Box
-                  sx={{
-                    backgroundColor: "#F6FFED",
-                    border: "1px solid #B7EB8F",
-                    color: "#52C41A",
-                    borderRadius: "4px",
-                    padding: "0 8px",
-                    display: "flex",
-                    alignItems: "center",
-                    width: "fit-content",
-                    textWrap: "nowrap",
-                    fontFamily: "Poppins",
-                    fontSize: "12px",
-                    fontWeight: 400,
-                  }}
-                >
-                  <DoneIcon sx={{ marginRight: "4px", width: "12px" }} />
-                  Done
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  borderRadius: "8px",
-                  background: "#FFF",
-                  justifyContent: "space-between",
-                  padding: "8px 12px 8px 12px",
-                }}
-              >
-                <Typography>Viengkham</Typography>
-                <Box
-                  sx={{
-                    backgroundColor: "#00000005",
-                    border: "1px solid #D9D9D9",
-                    borderRadius: "4px",
-                    padding: "0 8px",
-                    display: "flex",
-                    alignItems: "center",
-                    width: "fit-content",
-                    textWrap: "nowrap",
-                    fontFamily: "Poppins",
-                    fontSize: "12px",
-                    fontWeight: 400,
-                  }}
-                >
-                  <PendingIcon sx={{ marginRight: "4px", width: "12px" }} />
-                  Pending
-                </Box>
-              </Box>
+            <Typography
+              sx={{
+                padding: "16px",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+                fontWeight: 500,
+                lineHeight: "22px",
+              }}
+            >
+              District
+            </Typography>
+            <Stack spacing={"8px"} sx={{ margin: "0 16px 16px 16px" }}>
+              <DistrictList />
             </Stack>
           </Box>
           <Box sx={{ width: "100%", padding: "8px 24px 8px 24px" }}>
@@ -909,7 +1496,17 @@ const LandValuationDetail = () => {
             {value === 0 && (
               <Box sx={{ height: "600px", overflow: "auto", width: "100%" }}>
                 <Box>
-                  <Typography>Land Valuation Result</Typography>
+                  <Typography
+                    sx={{
+                      margin: "16px 0",
+                      color: "#000000E0",
+                      fontFamily: "Poppins",
+                      fontSize: "16px",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Land Valuation Result
+                  </Typography>
                   <Box sx={{ display: "flex", gap: "24px" }}>
                     <Button
                       variant="outlined"
@@ -939,13 +1536,23 @@ const LandValuationDetail = () => {
                     </Button>
                   </Box>
                 </Box>
-                <Typography>Attachments:</Typography>
+                <Typography
+                  sx={{
+                    margin: "24px 0 12px 0",
+                    fontFamily: "Poppins",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    lineHeight: "22px",
+                    color: "#00000073",
+                  }}
+                >
+                  Attachments:
+                </Typography>
                 <Box
                   sx={{
                     display: "grid",
                     gridTemplateColumns: "repeat(3, 1fr)",
                     gap: "16px",
-                    padding: "0 24px 24px 24px",
                   }}
                 >
                   {attachments.map((file) => {
@@ -984,17 +1591,61 @@ const LandValuationDetail = () => {
                     );
                   })}
                 </Box>
-                <Typography>Committee Members</Typography>
-                <Typography>Description:</Typography>
-                <Typography>
+                <Typography
+                  sx={{
+                    margin: "32px 0 8px 0",
+                    fontFamily: "Poppins",
+                    fontSize: "16px",
+                    fontWeight: 500,
+                    lineHeight: "22px",
+                    color: "#000000E0",
+                  }}
+                >
+                  Committee Members
+                </Typography>
+                <Typography
+                  sx={{
+                    margin: "8px 0 2px 0",
+                    fontFamily: "Poppins",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    lineHeight: "22px",
+                    color: "#00000073",
+                  }}
+                >
+                  Description:
+                </Typography>
+                <Typography
+                  sx={{
+                    margin: "8px 0 2px 0",
+                    fontFamily: "Poppins",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    lineHeight: "22px",
+                    color: "#1F1F1F",
+                  }}
+                >
                   Lorem ipsum dolor sit amet consectetur. Enim est in odio nulla
                   felis morbi at sit eget. Enim aliquam non quis egestas risus
                   aliquet arcu. Nullam dapibus blandit sed sit diam. Rhoncus nec
                   sed hendrerit a nam tellus proin.
                 </Typography>
-                <Typography>Committee Duration:</Typography>
-                <Typography>01-09-2024 to 09-11-2024</Typography>
-                <Box sx={{ height: "320px", margin: "24px", width: "95%" }}>
+                <Typography
+                  sx={{
+                    margin: "12px 0 2px 0",
+                    fontFamily: "Poppins",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    lineHeight: "22px",
+                    color: "#00000073",
+                  }}
+                >
+                  Committee Duration:
+                </Typography>
+                <Typography sx={{ marginBottom: "16px" }}>
+                  01-09-2024 to 09-11-2024
+                </Typography>
+                <Box sx={{ height: "320px", width: "1420px" }}>
                   <DataGrid
                     rows={rows}
                     columns={visibleColumns}
@@ -1011,6 +1662,7 @@ const LandValuationDetail = () => {
                     disableColumnFilter
                     disableColumnMenu
                     sx={{
+                      width: "103%",
                       "& .MuiDataGrid-columnHeaders": {
                         color: "#000000E0",
                       },
@@ -1030,10 +1682,124 @@ const LandValuationDetail = () => {
               </Box>
             )}
             {value === 1 && (
-              <div>
-                <h2>Land Valuation Content</h2>
-                <p>This is the content for the Land Valuation tab.</p>
-              </div>
+              <Box
+                sx={{
+                  height: "600px",
+                  overflow: "auto",
+                  width: "100%",
+                  display: "flex",
+                  gap: "24px",
+                  marginTop: "16px",
+                }}
+              >
+                <Box sx={{ width: "240px" }}>
+                  <Tabs
+                    value={value1}
+                    onChange={handleChange1}
+                    textColor="inherit"
+                    indicatorColor="transparent"
+                    sx={{
+                      backgroundColor: "#F5F5F5",
+                      borderRadius: "6px",
+                      padding: "2px",
+                      "&.MuiTabs-root": {
+                        minHeight: "32px",
+                      },
+                      alignItems: "center",
+                      gap: "2px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <CustomTab label="Zone" />
+                    <CustomTab label="Survey" />
+                  </Tabs>
+                  {value1 === 0 && (
+                    <Box
+                      sx={{
+                        height: "550px",
+                        overflow: "auto",
+                        "&::-webkit-scrollbar": {
+                          display: "none",
+                        },
+                        scrollbarWidth: "none",
+                        msOverflowStyle: "none",
+                      }}
+                    >
+                      <ParcelList />
+                    </Box>
+                  )}
+                  {value1 === 1 && (
+                    <Box
+                      sx={{
+                        height: "550px",
+                        overflow: "auto",
+                        "&::-webkit-scrollbar": {
+                          display: "none",
+                        },
+                        scrollbarWidth: "none",
+                        msOverflowStyle: "none",
+                      }}
+                    >
+                      <ParcelList2 />
+                    </Box>
+                  )}
+                </Box>
+                <Box sx={{ width: "calc(100% - 240px)" }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Box sx={{ display: "flex", gap: "24px" }}>
+                      <Box sx={{ display: "flex", gap: "8px" }}>
+                        <img src="/red pin.svg" alt="surveyed" />
+                        <Typography>Surveyed Parcel</Typography>
+                      </Box>
+                      <Box sx={{ display: "flex", gap: "8px" }}>
+                        <img src="/gray pin.svg" alt="surveyed" />
+                        <Typography>Not surveyed</Typography>
+                      </Box>
+                    </Box>
+                    <Box>
+                      <Checkbox
+                        defaultChecked
+                        sx={{
+                          "&.Mui-checked": {
+                            color: "#1677FF",
+                          },
+                        }}
+                      />
+                      Label
+                    </Box>
+                  </Box>
+                  <Box>
+                    <MapContainer
+                      center={position}
+                      zoom={13}
+                      style={{
+                        height: "560px",
+                        width: "100%",
+                        borderRadius: "8px",
+                      }}
+                      zoomControl={false}
+                    >
+                      <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      />
+                      <ZoomControl />
+                      <MinimapControl position="topright" zoom={13}/>
+                      <Marker position={position} icon={customIcon}>
+                        <Popup>
+                          A pretty CSS3 popup. <br /> Easily customizable.
+                        </Popup>
+                      </Marker>
+                    </MapContainer>
+                  </Box>
+                </Box>
+              </Box>
             )}
           </Box>
         </Box>
