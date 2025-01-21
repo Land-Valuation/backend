@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Popover,
@@ -13,10 +13,36 @@ const PopConfirm = ({
   onConfirm,
   onCancel,
   children,
-  placement = 'bottom',
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [placement, setPlacement] = useState('bottom'); // Initialize default placement
   const open = Boolean(anchorEl);
+  const popoverRef = useRef(null); // Ref for the popover element
+  const triggerRef = useRef(null);
+
+  const handlePlacement = () => {
+    if (!triggerRef.current || !popoverRef.current) return;
+    const triggerRect = triggerRef.current.getBoundingClientRect();
+    const popoverRect = popoverRef.current.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const spaceAbove = triggerRect.top;
+    const spaceLeft = triggerRect.left;
+    const spaceRight = viewportWidth - triggerRect.right;
+    let newPlacement = 'bottom';
+
+    if (spaceAbove > popoverRect.height + 20) {
+      newPlacement = 'top';
+    }
+    else if (spaceRight > popoverRect.width + 20){
+      newPlacement = 'right';
+    }
+    else if (spaceLeft > popoverRect.width + 20){
+      newPlacement = 'left';
+    }
+
+    setPlacement(newPlacement);
+  };
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,22 +62,58 @@ const PopConfirm = ({
     handleClose();
   };
 
+  useEffect(() => {
+    if (open) {
+      handlePlacement();
+    }
+  }, [open]);
+
   return (
     <>
-      <div onClick={handleClick} style={{display: 'inline-block'}}>
+      <div onClick={handleClick} style={{ display: 'inline-block', position: 'relative' }} ref={triggerRef}>
         {children}
+        {open && (
+            <Box
+              sx={{
+              position: 'absolute',
+              zIndex: 9999,
+              top: placement === 'top' ? '100%' : placement === 'bottom' ? 'auto' : '50%',
+              bottom: placement === 'bottom' ? '100%' : 'auto',
+              left: placement === 'right' ? 'auto' : placement === 'left' ? '100%' : '50%',
+              right: placement === 'right' ? '100%' : 'auto',
+              transform: placement === 'top' || placement === 'bottom' ? 'translateX(-50%)' : 'translateY(-50%)',
+              '&::before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                borderLeft: placement === 'right' ? 'none' :  '8px solid transparent',
+                borderRight: placement === 'left' ? 'none' : '8px solid transparent',
+                borderTop: placement === 'bottom' ? '8px solid #fff' : placement === 'left' ? '8px solid transparent' : 'none',
+                borderBottom: placement === 'top' ? '8px solid #fff' : placement === 'right' ? '8px solid transparent' : 'none',
+                borderLeftColor: placement === 'right' ?  '#fff' : 'transparent',
+                borderRightColor: placement === 'left' ? '#fff' : 'transparent',
+                top: placement === 'bottom' ? 0 : placement === 'top' ? 'auto': '50%',
+                bottom: placement === 'top' ? 0 :  'auto',
+                left: placement === 'right' ? 0 : placement === 'left' ? 'auto' : '50%',
+                right: placement === 'left' ? 0: 'auto',
+                transform: placement === 'top' || placement === 'bottom' ? 'translateX(-50%)' : 'translateY(-50%)',
+              }
+            }}
+          />
+        )}
       </div>
       <Popover
+        ref={popoverRef}
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: placement === 'top' ? 'bottom' : 'top',
-          horizontal: 'center',
+          vertical: placement === 'top' ? 'bottom' : placement === 'bottom' ? 'top' : 'center',
+          horizontal: placement === 'left' ? 'right' : placement === 'right' ? 'left' : 'center',
         }}
         transformOrigin={{
-          vertical: placement === 'top' ? 'top' : 'bottom',
-          horizontal: 'center',
+          vertical: placement === 'top' ? 'top' : placement === 'bottom' ? 'bottom' : 'center',
+          horizontal: placement === 'left' ? 'left' : placement === 'right' ? 'right' : 'center',
         }}
       >
         <Box sx={{
@@ -141,7 +203,6 @@ PopConfirm.propTypes = {
   onConfirm: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
-  placement: PropTypes.oneOf(['top', 'bottom']),
 };
 
 export default PopConfirm;

@@ -9,9 +9,9 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from "../../../assets/icons/parcel-survey/EditIcon";
 import FileViewer from "../../../components/FileViewer";
 
-const SurveyInformation = ({ open, onClose }) => {
+const SurveyInformation = ({ open, onClose, createHandle, isHasData }) => {
   const [selectDate, setSelectDate] = useState(null);
-  const [isHasData] = useState(true)
+  // const [isHasData] = useState(false)
   const [surveyDate, setSurveyDate] = useState('');
 
   const fileList = [
@@ -260,6 +260,7 @@ const SurveyInformation = ({ open, onClose }) => {
                   }}
                   variant="contained"
                   startIcon={<AddIcon />}
+                  onClick={() => createHandle(true)}
                 >
                   Add new
                 </Button>
@@ -371,6 +372,7 @@ const SurveyInformation = ({ open, onClose }) => {
                     }}
                     variant="contained"
                     startIcon={<AddIcon />}
+                    onClick={() => createHandle(true)}
                   >
                     Create survey
                   </Button>
@@ -1030,7 +1032,9 @@ const SurveyInformation = ({ open, onClose }) => {
 
 SurveyInformation.propTypes = {
   open: PropTypes.bool.isRequired,
+  isHasData: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  createHandle: PropTypes.func,
 };
 
 export default SurveyInformation

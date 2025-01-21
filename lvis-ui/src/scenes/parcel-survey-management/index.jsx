@@ -14,6 +14,7 @@ const ParcelSurveyManagement = () => {
   const [itemActive, setItemActive] = useState('A1');
   const [isOpenSurveyInformationDialog, setIsOpenSurveyInformationDialog] = useState(false);
   const [isRegisterSurveyInformationModal, setIsRegisterSurveyInformationModal] = useState(false);
+  const [isHasData, setIsHasData] = useState(false);
 
   const handleDistrictChange = (event) => {
     setDistrict(event.target.value);
@@ -27,7 +28,8 @@ const ParcelSurveyManagement = () => {
     setItemActive(item.label);
   };
 
-  const handleOpenSurveyInformationDialog = () => {
+  const handleOpenSurveyInformationDialog = (isHasData) => {
+    setIsHasData(isHasData);
     setIsOpenSurveyInformationDialog(true);
   };
 
@@ -41,6 +43,12 @@ const ParcelSurveyManagement = () => {
 
   const handleCloseRegisterSurveyInformationModal = () => {
     setIsRegisterSurveyInformationModal(false);
+  };
+
+  const handleCreateRegisterSurveyInformationModal = (event) => {
+    console.log(event);
+    setIsOpenSurveyInformationDialog(false);
+    handleOpenRegisterSurveyInformationModal();
   };
 
   const itemsData = [
@@ -228,7 +236,7 @@ const ParcelSurveyManagement = () => {
                               borderRadius: '8px',
                               cursor: 'pointer',
                             }}
-                            onClick={element.icon_info ? handleOpenSurveyInformationDialog : handleOpenRegisterSurveyInformationModal}
+                            onClick={() => handleOpenSurveyInformationDialog(element.icon_info)}
                           >
                             <Box sx={{
                               display: 'flex',
@@ -271,7 +279,7 @@ const ParcelSurveyManagement = () => {
           <ValuationMap />
         </Box>
       </Box>
-      <SurveyInformation open={isOpenSurveyInformationDialog} onClose={handleCloseSurveyInformationDialog} />
+      <SurveyInformation open={isOpenSurveyInformationDialog} onClose={handleCloseSurveyInformationDialog} createHandle={handleCreateRegisterSurveyInformationModal} isHasData={isHasData} />
       <RegisterSurveyInformationModal open={isRegisterSurveyInformationModal} onClose={handleCloseRegisterSurveyInformationModal} />
     </LayoutPageCommon>
   )
