@@ -401,8 +401,8 @@ const rows2 = [
 const Valuation = () => {
   // const theme = useTheme();
   const userRole = UserService.getTokenParsed().realm_access.roles;
-  console.log(userRole," role");
-  const hasCentralRole = userRole.some(role => role.includes("CENTRAL"));
+  console.log(userRole, " role");
+  const hasCentralRole = userRole.some((role) => role.includes("CENTRAL"));
   // const hasLocalRole = userRole.some(role => role.includes("LOCAL"));
   return (
     <>
@@ -653,23 +653,28 @@ const Valuation = () => {
                           {row.year}
                         </TableCell>
                         <TableCell>
-                          <Box
-                            sx={{
-                              ...style,
-                              borderRadius: "4px",
-                              padding: "0 8px",
-                              // fontWeight: 600,
-                              display: "flex",
-                              alignItems: "center",
-                              width: "fit-content",
-                              textWrap: "nowrap",
-                              fontFamily: "Poppins",
-                              fontSize: "12px",
-                              fontWeight: 400,
-                            }}
+                          <Link
+                            to="/land-valuation/detail"
+                            style={{ textDecoration: "none" }}
                           >
-                            {icon} {row.status}
-                          </Box>
+                            <Box
+                              sx={{
+                                ...style,
+                                borderRadius: "4px",
+                                padding: "0 8px",
+                                // fontWeight: 600,
+                                display: "flex",
+                                alignItems: "center",
+                                width: "fit-content",
+                                textWrap: "nowrap",
+                                fontFamily: "Poppins",
+                                fontSize: "12px",
+                                fontWeight: 400,
+                              }}
+                            >
+                              {icon} {row.status}
+                            </Box>
+                          </Link>
                         </TableCell>
                         <TableCell>
                           <AntSwitch

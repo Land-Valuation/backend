@@ -80,14 +80,14 @@ body,
 /* MapStyles.css */
 .leaflet-control-zoom {
   background-color: white;
-  border-radius: 6px;
+  border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
 }
 
 .leaflet-control-zoom a {
-  color: #007bff; 
+  color: #007bff;
   font-size: 24px; /* Adjust size of icons */
   text-align: center;
   padding: 5px;
@@ -95,9 +95,48 @@ body,
 
 .leaflet-control-zoom a:hover {
   background-color: rgba(0, 123, 255, 0.1);
-  color: #0056b3; 
+  color: #0056b3;
 }
 
 .leaflet-control-zoom a:active {
   background-color: rgba(0, 123, 255, 0.2);
+}
+.leaflet-control.leaflet-bar {
+  border: none !important;
+}
+/* Custom Popup Style */
+.leaflet-popup-content-wrapper {
+  background: #fff !important; /* Change background color */
+  color: #333; /* Text color */
+  font-size: 14px; /* Font size */
+  border-radius: 6px !important; /* Rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Custom shadow */
+  width: 240px;
+}
+
+.leaflet-popup-tip {
+  background: #fff !important; /* Match tip color with popup */
+}
+.leaflet-popup-tip-container {
+  left: 50% !important;
+}
+.leaflet-popup-content {
+  margin: 0;
+  padding: 12px 16px;
+  width: 240px !important;
+}
+
+.leaflet-popup-content a {
+  color: #007bff; /* Link color */
+  text-decoration: none;
+}
+
+.leaflet-popup-content a:hover {
+  text-decoration: underline; /* Hover effect for links */
+}
+#panel1a-header {
+  padding: 0;
+}
+.react-daterange-picker {
+  width:100%
 }
