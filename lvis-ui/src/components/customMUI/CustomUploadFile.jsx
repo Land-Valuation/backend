@@ -127,9 +127,7 @@ const CustomUploadFile = ({ files, onDelete }) => {
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
         gap: "24px",
-        // padding: "0 24px 24px 24px",
-        marginTop: "24px",
-        marginTop: files.length === 0 ? 0 : "32px",
+        marginTop: files.length === 0 ? "8px" : "24px",
       }}
     >
       {files.map((file) => {
