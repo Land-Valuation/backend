@@ -2528,6 +2528,7 @@ const LandValuationDetail = () => {
                         }}
                         variant="outlined"
                         startIcon={<CopyIcon />}
+                        onClick={handleUploadClick}
                       >
                         Copy from the previous time
                       </Button>
