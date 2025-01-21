@@ -9,6 +9,7 @@ import ExportIcon from "../../../../assets/icons/model-base/ExportIcon";
 import ImportIcon from "../../../../assets/icons/model-base/ImportIcon";
 import { IOSSwitch } from "../../../../components/customMUI/CustomIOSSwitch";
 import ParcelTable from "./ParcelTable";
+import PopConfirm from "../../../../components/customMUI/PopConfirm";
 
 
 const RequestForInvesgationDetail = () => {
@@ -350,7 +351,14 @@ const RequestForInvesgationDetail = () => {
               >
                 Submit to Central
               </Typography>
-              <IOSSwitch checked={submitCentral} onClick= {() => setSubmitCentral(!submitCentral)} />
+              <PopConfirm
+                title={'Thông báo'}
+                content={'Bạn có chắc chắn xóa không?'}
+                onConfirm={() => {}}
+                onCancel={() => {}}
+              >
+                <IOSSwitch checked={submitCentral} onClick= {() => setSubmitCentral(!submitCentral)} />
+              </PopConfirm>
             </Box>
           </Box>
           <Box sx={{

@@ -6,12 +6,15 @@ import { useState } from "react";
 import PLaceIcon from "../../assets/icons/model-base/PLaceIcon";
 import DetailIcon from "../../assets/icons/model-base/DetailIcon";
 import SurveyInformation from "./modal/SurveyInformation";
+import RegisterSurveyInformationModal from "./modal/RegisterSurveyInformationModal";
 
 const ParcelSurveyManagement = () => {
   const [district, setDistrict] = useState('');
   const [province, setProvince] = useState('');
   const [itemActive, setItemActive] = useState('A1');
   const [isOpenSurveyInformationDialog, setIsOpenSurveyInformationDialog] = useState(false);
+  const [isRegisterSurveyInformationModal, setIsRegisterSurveyInformationModal] = useState(false);
+  const [isHasData, setIsHasData] = useState(false);
 
   const handleDistrictChange = (event) => {
     setDistrict(event.target.value);
@@ -25,12 +28,27 @@ const ParcelSurveyManagement = () => {
     setItemActive(item.label);
   };
 
-  const handleOpenSurveyInformationDialog = () => {
+  const handleOpenSurveyInformationDialog = (isHasData) => {
+    setIsHasData(isHasData);
     setIsOpenSurveyInformationDialog(true);
   };
 
   const handleCloseSurveyInformationDialog = () => {
     setIsOpenSurveyInformationDialog(false);
+  };
+
+  const handleOpenRegisterSurveyInformationModal = () => {
+    setIsRegisterSurveyInformationModal(true);
+  };
+
+  const handleCloseRegisterSurveyInformationModal = () => {
+    setIsRegisterSurveyInformationModal(false);
+  };
+
+  const handleCreateRegisterSurveyInformationModal = (event) => {
+    console.log(event);
+    setIsOpenSurveyInformationDialog(false);
+    handleOpenRegisterSurveyInformationModal();
   };
 
   const itemsData = [
@@ -122,7 +140,7 @@ const ParcelSurveyManagement = () => {
               onChange={handleProvinceChange}
               displayEmpty
               size="small"
-              sx={{ minWidth: '128px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
+              sx={{ minWidth: '128px', borderRadius: '6px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
             >
               <MenuItem sx={{ display: 'none' }} disabled value="">
                 <Box>Province</Box>
@@ -138,7 +156,7 @@ const ParcelSurveyManagement = () => {
               onChange={handleDistrictChange}
               size="small"
               displayEmpty
-              sx={{ minWidth: '128px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
+              sx={{ minWidth: '128px', borderRadius: '6px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
             >
               <MenuItem sx={{ display: 'none' }} disabled value="">
                 <Box>District</Box>
@@ -218,7 +236,7 @@ const ParcelSurveyManagement = () => {
                               borderRadius: '8px',
                               cursor: 'pointer',
                             }}
-                            onClick={handleOpenSurveyInformationDialog}
+                            onClick={() => handleOpenSurveyInformationDialog(element.icon_info)}
                           >
                             <Box sx={{
                               display: 'flex',
@@ -261,7 +279,8 @@ const ParcelSurveyManagement = () => {
           <ValuationMap />
         </Box>
       </Box>
-      <SurveyInformation open={isOpenSurveyInformationDialog} onClose={handleCloseSurveyInformationDialog} />
+      <SurveyInformation open={isOpenSurveyInformationDialog} onClose={handleCloseSurveyInformationDialog} createHandle={handleCreateRegisterSurveyInformationModal} isHasData={isHasData} />
+      <RegisterSurveyInformationModal open={isRegisterSurveyInformationModal} onClose={handleCloseRegisterSurveyInformationModal} />
     </LayoutPageCommon>
   )
 }
