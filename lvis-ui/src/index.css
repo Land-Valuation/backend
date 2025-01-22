@@ -137,6 +137,12 @@ body,
 #panel1a-header {
   padding: 0;
 }
+#panel1a-header1 {
+  padding: 0;
+}
 .react-daterange-picker {
   width:100%
+}
+.MuiAccordionDetails-root {
+  padding: 0
 }
