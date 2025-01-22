@@ -44,30 +44,27 @@ const CustomDataGrid = () => {
     },
     { field: "id", headerName: "ID", flex: 1, hide: true },
     {
-      field: "firstName",
+      field: "memberType",
       headerName: "Member Type",
       editable: true,
       flex: 1,
     },
     {
-      field: "lastName",
+      field: "organization",
       headerName: "Organization",
       editable: true,
       flex: 1,
     },
     {
-      field: "age",
+      field: "name",
       headerName: "Name",
       editable: true,
       flex: 1,
     },
     {
-      field: "fullName",
+      field: "position",
       headerName: "Position",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      valueGetter: (value, row) =>
-        `${row.firstName || ""} ${row.lastName || ""}`,
+      editable: true,
       flex: 1,
     },
     {
@@ -85,15 +82,51 @@ const CustomDataGrid = () => {
   ];
 
   const initialRows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: 1000 },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+    {
+      id: 1,
+      memberType: "Member",
+      organization: "000 Association",
+      name: "Somchai Vongxay",
+      position: "Professors",
+      phone: "+856 20 5555 1234",
+      email: "somchai.vongxay@example.com",
+    },
+    {
+      id: 2,
+      memberType: "Chairperson",
+      organization: "000 Association",
+      name: "Chanthavy Inthavong",
+      position: "Ph.D., Master",
+      phone: "+856 20 5555 1234",
+      email: "somchai.vongxay@example.com",
+    },
+    {
+      id: 3,
+      memberType: "Member",
+      organization: "000 Association",
+      name: "Soudalay Phommasone",
+      position: "Professors",
+      phone: "+856 20 5555 1234",
+      email: "somchai.vongxay@example.com",
+    },
+    {
+      id: 4,
+      memberType: "Member",
+      organization: "000 Association",
+      name: "Khamla Phanthavong",
+      position: "Ph.D., Master",
+      phone: "+856 20 5555 1234",
+      email: "somchai.vongxay@example.com",
+    },
+    {
+      id: 5,
+      memberType: "Member",
+      organization: "000 Association",
+      name: "Keo Sihalath",
+      position: "Ph.D., Master",
+      phone: "+856 20 5555 1234",
+      email: "somchai.vongxay@example.com",
+    },
   ];
   const visibleColumns = columns.filter((column) => column.field !== "id");
   const [rows, setRows] = useState(initialRows);
@@ -142,7 +175,7 @@ const CustomDataGrid = () => {
       disableColumnFilter
       disableColumnMenu
       sx={{
-        width:"1700px",
+        width:"100%",
         "& .MuiDataGrid-columnHeaders": {
           color: "#000000E0",
         },

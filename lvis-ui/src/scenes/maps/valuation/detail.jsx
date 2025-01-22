@@ -54,14 +54,64 @@ import {
   useMap,
   useMapEvent,
   Rectangle,
+  GeoJSON
 } from "react-leaflet";
 import { useEventHandlers } from "@react-leaflet/core";
 import L from "leaflet";
 import UserService from "../../../state/UserService";
 import { Upload } from "@mui/icons-material";
+// import {geoData} from "../../../data/geoData";
+
+const geoJsonStyle = (feature) => {
+  return {
+    color: 'blue', 
+    weight: 2,     
+    dashArray: '5, 5',                               
+    fillColor:'lightblue', 
+    fillOpacity: 0.5,                        
+  };
+};
+
+const geoData = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      properties: {
+        name: "Vientiane Polygon",
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [102.6329, 17.9755], // Bottom left
+    [102.6333, 17.9755], // Bottom right
+    [102.6333, 17.9758], // Top right (lowered)
+    [102.6329, 17.9758], // Top left (lowered)
+    [102.6329, 17.9755], // Closing the polygon
+          ],
+        ],
+      },
+    },
+  ],
+};
 
 const theme = createTheme({
   components: {
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+      },
+    },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        content: {
+          alignItems: 'center', 
+        },
+      },
+    },
     MuiAccordion: {
       styleOverrides: {
         root: {
@@ -230,7 +280,7 @@ const CustomTab = styled(Tab)(({ theme, selected }) => ({
     backgroundColor: selected ? "#FFF" : "#F1F1F1",
   },
 }));
-const position = [51.505, -0.09];
+const position = [17.9757, 102.6331];
 const DistrictList = () => {
   return (
     <div>
@@ -849,15 +899,24 @@ const LandValuationDetail = () => {
   const [value1, setValue1] = useState(0);
   const [value2, setValue2] = useState(0);
   const [showBox, setShowBox] = useState(true);
+  const [showBox2, setShowBox2] = useState(true);
+  const [showMarker, setShowMarker] = useState(false);
+
+  const handleCloneButton = () => {
+    setShowBox2(false);
+  };
 
   const handleUploadClick = () => {
     setShowBox(false);
+    setShowMarker(true);
   };
+
   const handleClearButton = () => {
     setShowBox(true);
+    setShowMarker(false);
   };
+
   const userRole = UserService.getTokenParsed().realm_access.roles;
-  console.log(userRole, " role");
   const hasCentralRole = userRole.some((role) => role.includes("CENTRAL"));
 
   const POSITION_CLASSES = {
@@ -978,30 +1037,27 @@ const LandValuationDetail = () => {
   const columns = [
     { field: "id", headerName: "ID", flex: 1, hide: true },
     {
-      field: "firstName",
+      field: "memberType",
       headerName: "Member Type",
       editable: true,
       flex: 1,
     },
     {
-      field: "lastName",
+      field: "organization",
       headerName: "Organization",
       editable: true,
       flex: 1,
     },
     {
-      field: "age",
+      field: "name",
       headerName: "Name",
       editable: true,
       flex: 1,
     },
     {
-      field: "fullName",
+      field: "position",
       headerName: "Position",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      valueGetter: (value, row) =>
-        `${row.firstName || ""} ${row.lastName || ""}`,
+      editable: true,
       flex: 1,
     },
     {
@@ -1017,20 +1073,326 @@ const LandValuationDetail = () => {
       flex: 1,
     },
   ];
-
+  const columns1 = [
+    { field: "id", headerName: "ID", flex: 1, hide: true },
+    {
+      field: "zone",
+      headerName: "Zone",
+      editable: true,
+      // flex: 1,
+      width: 60,
+    },
+    {
+      field: "mainStreet",
+      headerName: "Main Street",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "connectingRoad",
+      headerName: "Connecting Road",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "junctionStreet",
+      headerName: "Junction Street",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "streetAsTheyUsedToBe",
+      headerName: "Street As They Used To Be",
+      editable: true,
+      // flex: 1,
+      width: 220,
+    },
+  ];
+  const columns2 = [
+    { field: "id", headerName: "ID", flex: 1, hide: true },
+    {
+      field: "mapSheet",
+      headerName: "Map Sheet",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "parcelNo",
+      headerName: "Parcel No",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "surveyedPrice",
+      headerName: "Surveyed Price",
+      editable: true,
+      width: 150,
+      // flex: 1,
+    },
+    {
+      field: "roadType",
+      headerName: "Road Type",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "building",
+      headerName: "Building",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "landType",
+      headerName: "Land Type",
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: "landUse",
+      headerName: "Land Use",
+      editable: true,
+      flex: 1,
+    },
+  ];
   const initialRows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: 1000 },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+    {
+      id: 1,
+      memberType: "Member",
+      organization: "000 Association",
+      name: "Somchai Vongxay",
+      position: "Professors",
+      phone: "+856 20 5555 1234",
+      email: "somchai.vongxay@example.com",
+    },
+    {
+      id: 2,
+      memberType: "Chairperson",
+      organization: "000 Association",
+      name: "Chanthavy Inthavong",
+      position: "Ph.D., Master",
+      phone: "+856 20 5555 1234",
+      email: "somchai.vongxay@example.com",
+    },
+    {
+      id: 3,
+      memberType: "Member",
+      organization: "000 Association",
+      name: "Soudalay Phommasone",
+      position: "Professors",
+      phone: "+856 20 5555 1234",
+      email: "somchai.vongxay@example.com",
+    },
+    {
+      id: 4,
+      memberType: "Member",
+      organization: "000 Association",
+      name: "Khamla Phanthavong",
+      position: "Ph.D., Master",
+      phone: "+856 20 5555 1234",
+      email: "somchai.vongxay@example.com",
+    },
+    {
+      id: 5,
+      memberType: "Member",
+      organization: "000 Association",
+      name: "Keo Sihalath",
+      position: "Ph.D., Master",
+      phone: "+856 20 5555 1234",
+      email: "somchai.vongxay@example.com",
+    },
+  ];
+  const initialRows1 = [
+    {
+      id: 1,
+      zone: "A1",
+      mainStreet: 6500000,
+      connectingRoad: 4800000,
+      junctionStreet: 3200000,
+      streetAsTheyUsedToBe: 1600000,
+    },
+    {
+      id: 2,
+      zone: "A2",
+      mainStreet: 6500000,
+      connectingRoad: 4800000,
+      junctionStreet: 3200000,
+      streetAsTheyUsedToBe: 1600000,
+    },
+    {
+      id: 3,
+      zone: "A3",
+      mainStreet: 6500000,
+      connectingRoad: 4800000,
+      junctionStreet: 3200000,
+      streetAsTheyUsedToBe: 1600000,
+    },
+    {
+      id: 4,
+      zone: "A4",
+      mainStreet: 6500000,
+      connectingRoad: 4800000,
+      junctionStreet: 3200000,
+      streetAsTheyUsedToBe: 1600000,
+    },
+    {
+      id: 5,
+      zone: "A5",
+      mainStreet: 6500000,
+      connectingRoad: 4800000,
+      junctionStreet: 3200000,
+      streetAsTheyUsedToBe: 1600000,
+    },
+    {
+      id: 6,
+      zone: "A6",
+      mainStreet: 6500000,
+      connectingRoad: 4800000,
+      junctionStreet: 3200000,
+      streetAsTheyUsedToBe: 1600000,
+    },
+    {
+      id: 7,
+      zone: "A7",
+      mainStreet: 6500000,
+      connectingRoad: 4800000,
+      junctionStreet: 3200000,
+      streetAsTheyUsedToBe: 1600000,
+    },
+    {
+      id: 8,
+      zone: "A8",
+      mainStreet: 6500000,
+      connectingRoad: 4800000,
+      junctionStreet: 3200000,
+      streetAsTheyUsedToBe: 1600000,
+    },
+    {
+      id: 9,
+      zone: "A9",
+      mainStreet: 6500000,
+      connectingRoad: 4800000,
+      junctionStreet: 3200000,
+      streetAsTheyUsedToBe: 1600000,
+    },
+    {
+      id: 10,
+      zone: "A10",
+      mainStreet: 6500000,
+      connectingRoad: 4800000,
+      junctionStreet: 3200000,
+      streetAsTheyUsedToBe: 1600000,
+    },
+  ];
+  const initialRows2 = [
+    {
+      id: 1,
+      mapSheet: 11,
+      parcelNo: 17,
+      surveyedPrice: 4800000,
+      roadType: 1,
+      building: 1,
+      landType: 1,
+      landUse: 1,
+    },
+    {
+      id: 2,
+      mapSheet: 14,
+      parcelNo: 17,
+      surveyedPrice: 4800000,
+      roadType: 3,
+      building: 1,
+      landType: 1,
+      landUse: 1,
+    },
+    {
+      id: 3,
+      mapSheet: 71,
+      parcelNo: 43,
+      surveyedPrice: 4800000,
+      roadType: 2,
+      building: 1,
+      landType: 1,
+      landUse: 1,
+    },
+    {
+      id: 4,
+      mapSheet: 11,
+      parcelNo: 61,
+      surveyedPrice: 4800000,
+      roadType: 4,
+      building: 1,
+      landType: 1,
+      landUse: 1,
+    },
+    {
+      id: 5,
+      mapSheet: 15,
+      parcelNo: 21,
+      surveyedPrice: 4800000,
+      roadType: 1,
+      building: 1,
+      landType: 1,
+      landUse: 1,
+    },
+    {
+      id: 6,
+      mapSheet: 21,
+      parcelNo: 44,
+      surveyedPrice: 4800000,
+      roadType: 3,
+      building: 1,
+      landType: 1,
+      landUse: 1,
+    },
+    {
+      id: 7,
+      mapSheet: 32,
+      parcelNo: 65,
+      surveyedPrice: 4800000,
+      roadType: 2,
+      building: 1,
+      landType: 1,
+      landUse: 1,
+    },
+    {
+      id: 8,
+      mapSheet: 58,
+      parcelNo: 29,
+      surveyedPrice: 4800000,
+      roadType: 2,
+      building: 1,
+      landType: 1,
+      landUse: 1,
+    },
+    {
+      id: 9,
+      mapSheet: 39,
+      parcelNo: 38,
+      surveyedPrice: 4800000,
+      roadType: 4,
+      building: 1,
+      landType: 1,
+      landUse: 1,
+    },
+    {
+      id: 10,
+      mapSheet: 46,
+      parcelNo: 54,
+      surveyedPrice: 4800000,
+      roadType: 1,
+      building: 1,
+      landType: 1,
+      landUse: 1,
+    },
   ];
   const visibleColumns = columns.filter((column) => column.field !== "id");
+  const visibleColumns1 = columns1.filter((column) => column.field != "id");
+  const visibleColumns2 = columns2.filter((column) => column.field != "id");
+
   const [rows, setRows] = useState(initialRows);
+  const [rows1, setRows1] = useState(initialRows1);
+  const [rows2, setRows2] = useState(initialRows2);
+
   let attachments = [
     { name: "Document A.doc", size: "7.261 MB" },
     { name: "Document B.pdf", size: "7.261 MB" },
@@ -1102,16 +1464,12 @@ const LandValuationDetail = () => {
     setUploadedFiles3((prevFiles) => [...prevFiles, ...files]);
   };
   const handleDeleteFile = (fileId) => {
-    console.log(fileId);
-
     setUploadedFiles2((prevFiles) =>
       prevFiles.filter((file) => file.id !== fileId)
     );
     // document.getElementById("fileInputId").value = "";
   };
   const handleDeleteFile2 = (fileId) => {
-    console.log(fileId);
-
     setUploadedFiles3((prevFiles) =>
       prevFiles.filter((file) => file.id !== fileId)
     );
@@ -1553,8 +1911,8 @@ const LandValuationDetail = () => {
                   color: "#000000E0",
                 }}
               >
-                Land Valuation Reference Data 
-                <span style={{ fontWeight: 400 }}>(To Local Government)</span>
+                Land Valuation Reference Data
+                <span style={{ fontWeight: 400 }}> (To Local Government)</span>
               </Typography>
               <Button
                 component="label"
@@ -1816,7 +2174,7 @@ const LandValuationDetail = () => {
                     <Typography sx={{ marginBottom: "16px" }}>
                       01-09-2024 to 09-11-2024
                     </Typography>
-                    <Box sx={{ height: "320px", width: "1420px" }}>
+                    <Box sx={{ height: "320px", width: "calc(100% - 44px)" }}>
                       <DataGrid
                         rows={rows}
                         columns={visibleColumns}
@@ -1948,7 +2306,7 @@ const LandValuationDetail = () => {
                       <Box>
                         <MapContainer
                           center={position}
-                          zoom={13}
+                          zoom={19}
                           style={{
                             height: "560px",
                             width: "100%",
@@ -1961,8 +2319,9 @@ const LandValuationDetail = () => {
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                           />
+                          <GeoJSON data={geoData} style={geoJsonStyle}/>
                           <ZoomControl />
-                          <MinimapControl position="topright" zoom={13} />
+                          <MinimapControl position="topright" zoom={15} />
                           <Marker position={position} icon={customIcon}>
                             <Popup closeButton={false}>
                               <Box
@@ -2379,8 +2738,8 @@ const LandValuationDetail = () => {
                 }}
               >
                 <AccordionSummary
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
+                  aria-controls="panel1a-content1"
+                  id="panel1a-header1"
                 >
                   <ExpandIcon style={{ marginRight: "8px", width: "16px" }} />
                   <Typography variant="h6">Committee Information</Typography>
@@ -2388,10 +2747,10 @@ const LandValuationDetail = () => {
                 <AccordionDetails>
                   <Box
                     sx={{
-                      padding: "16px 24px",
                       display: "flex",
                       flexDirection: "row",
                       gap: "24px",
+                      marginBottom:"24px"
                     }}
                   >
                     <Box
@@ -2436,8 +2795,8 @@ const LandValuationDetail = () => {
                   <Box
                     sx={{
                       height: "320px",
-                      margin: "24px",
-                      paddingBottom: "12px",
+                      // margin: "24px",
+                      // paddingBottom: "12px",
                     }}
                   >
                     <CustomDataGrid />
@@ -2453,12 +2812,16 @@ const LandValuationDetail = () => {
                 marginTop: "32px",
               }}
             >
-              <Typography sx={{
-                fontFamily: "Poppins",
-                fontSize: "18px",
-                fontWeight: 500,
-                color:"#000000E0"
-              }}>Land Valuation Information</Typography>
+              <Typography
+                sx={{
+                  fontFamily: "Poppins",
+                  fontSize: "18px",
+                  fontWeight: 500,
+                  color: "#000000E0",
+                }}
+              >
+                Land Valuation Information
+              </Typography>
               <Box
                 sx={{
                   height: "700px",
@@ -2535,9 +2898,15 @@ const LandValuationDetail = () => {
                     </Box>
                   ) : (
                     <Box
-                      sx={{ display: "flex", justifyContent: "space-between", position:"relative", width:"100%", height:"90%" }}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        position: "relative",
+                        width: "100%",
+                        height: "90%",
+                      }}
                     >
-                      <Box sx={{width:"100%", height:"100%"}}>
+                      <Box sx={{ width: "100%", height: "100%" }}>
                         <Tabs
                           value={value2}
                           onChange={handleChange2}
@@ -2555,116 +2924,196 @@ const LandValuationDetail = () => {
                             marginBottom: "12px",
                             marginLeft: "16px",
                             marginTop: "16px",
-                            width:"fit-content"
+                            width: "fit-content",
                           }}
                         >
-                          <CustomTab label="Zone" />
-                          <CustomTab label="Survey" />
-                        </Tabs>
-                        {value2 === 0 && <Box sx={{width:"100%", height:"100%", padding:"0 16px"}}>
-                          <DataGrid
-                          rows={rows}
-                          columns={visibleColumns}
-                          initialState={{
-                            pagination: {
-                              paginationModel: {
-                                pageSize: 5,
-                              },
-                            },
-                          }}
-                          pageSizeOptions={[5]}
-                          disableRowSelectionOnClick
-                          disableColumnSorting
-                          disableColumnFilter
-                          disableColumnMenu
-                          sx={{
-                            width: "100%",
-                            "& .MuiDataGrid-columnHeaders": {
-                              color: "#000000E0",
-                            },
-                            "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeader":
-                              {
-                                background: "#FAFAFA",
-                              },
-                            "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeaderTitle":
-                              {
-                                fontFamily: "Poppins",
-                                fontSize: "14px",
-                                fontWeight: 500,
-                              },
-                          }}
+                          <CustomTab
+                            label="Zone"
+                            sx={{ width: "fit-content", minWidth: "0" }}
                           />
-                           </Box>}
-                        {value2 === 1 && <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "473px",
-                        height:"100%",
-                        textAlign: "center",
-                        margin: "auto",
-                        gap:"16px"
-                      }}
-                    >
-                      <img
-                        src="/Illustration.svg"
-                        alt="illus"
-                        style={{ width: "97px" }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: "14px",
-                          fontWeight: 400,
-                          fontFamily: "SF Pro Text",
-                          marginTop: "8px",
-                        }}
-                      >
-                        No surveyed parcel information is currently registered. 
-                        Please import parcels from the Parcel Survey Managemaent System.
-                      </Typography>
-                      <Box sx={{display:"flex", flexDirection:"column", alignItems:"flex-start", width:"100%"}}>
-                      <label>
-                    <span style={{ color: "red" }}>*</span> Duration
-                  </label>
-                  <DateRangePicker
-                    clearIcon={null}
-                    onChange={handleDateChange}
-                    value={dateRange}
-                    calendarIcon={<CalendarIcon />}
-                    rangeDivider={<CustomDateDivider />}
-                  />
-                      </Box>
-                      <Button
-                        sx={{
-                          color: "white",
-                          backgroundColor: "#1677FF",
-                          textTransform: "none",
-                          width: "290px",
-                          marginTop: "8px",
-                          width:"100%"
-                        }}
-                        variant="outlined"
-                        startIcon={<CopyIcon sx={{fill:"white"}}/>}
-                        onClick={handleUploadClick}
-                      >
-                        Clone Parcels Surveyed During the Specified Period
-                      </Button>
-                      <Button
-                        sx={{
-                          color: "#1677FF",
-                          backgroundColor: "white",
-                          borderColor: "#1677FF",
-                          textTransform: "none",
-                          width: "290px",
-                          padding:0
-                        }}
-                        variant="text"
-                      >
-                        Go to Parcel Survey Management System
-                      </Button>
-                    </Box>}
+                          <CustomTab
+                            label="Survey"
+                            sx={{ width: "fit-content", minWidth: "0" }}
+                          />
+                        </Tabs>
+                        {value2 === 0 && (
+                          <Box
+                            sx={{
+                              width: "100%",
+                              height: "100%",
+                              padding: "0 16px",
+                            }}
+                          >
+                            <DataGrid
+                              rows={rows1}
+                              columns={visibleColumns1}
+                              initialState={{
+                                pagination: {
+                                  paginationModel: {
+                                    pageSize: 10,
+                                  },
+                                },
+                              }}
+                              pageSizeOptions={[10]}
+                              disableRowSelectionOnClick
+                              disableColumnSorting
+                              disableColumnFilter
+                              disableColumnMenu
+                              sx={{
+                                width: "100%",
+                                "& .MuiDataGrid-columnHeaders": {
+                                  color: "#000000E0",
+                                },
+                                "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeader":
+                                  {
+                                    background: "#FAFAFA",
+                                  },
+                                "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeaderTitle":
+                                  {
+                                    fontFamily: "Poppins",
+                                    fontSize: "14px",
+                                    fontWeight: 500,
+                                  },
+                              }}
+                            />
+                          </Box>
+                        )}
+                        {value2 === 1 && (
+                          <Box sx={{ height: "100%" }}>
+                            {showBox2 ? (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  width: "473px",
+                                  height: "100%",
+                                  textAlign: "center",
+                                  margin: "auto",
+                                  gap: "16px",
+                                }}
+                              >
+                                <img
+                                  src="/Illustration.svg"
+                                  alt="illus"
+                                  style={{ width: "97px" }}
+                                />
+                                <Typography
+                                  sx={{
+                                    fontSize: "14px",
+                                    fontWeight: 400,
+                                    fontFamily: "Poppins",
+                                    marginTop: "8px",
+                                  }}
+                                >
+                                  No surveyed parcel information is currently
+                                  registered.
+                                  <br />
+                                  Please import parcels from the Parcel Survey
+                                  Managemaent System.
+                                </Typography>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "flex-start",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <label
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: 400,
+                                      fontFamily: "Poppins",
+                                    }}
+                                  >
+                                    <span style={{ color: "red" }}>*</span>{" "}
+                                    Duration
+                                  </label>
+                                  <DateRangePicker
+                                    clearIcon={null}
+                                    onChange={handleDateChange}
+                                    value={dateRange}
+                                    calendarIcon={<CalendarIcon />}
+                                    rangeDivider={<CustomDateDivider />}
+                                  />
+                                </Box>
+                                <Button
+                                  sx={{
+                                    color: "white",
+                                    backgroundColor: "#1677FF",
+                                    textTransform: "none",
+                                    marginTop: "8px",
+                                    width: "100%",
+                                    fontSize: "16px",
+                                    fontWeight: 400,
+                                    fontFamily: "Poppins",
+                                  }}
+                                  variant="outlined"
+                                  startIcon={
+                                    <CopyIcon sx={{ fill: "white" }} />
+                                  }
+                                  onClick={handleCloneButton}
+                                >
+                                  Clone Parcels Surveyed During the Specified
+                                  Period
+                                </Button>
+                                <Button
+                                  sx={{
+                                    color: "#1677FF",
+                                    backgroundColor: "white",
+                                    borderColor: "#1677FF",
+                                    textTransform: "none",
+                                    width: "100%",
+                                    padding: 0,
+                                    fontSize: "16px",
+                                    fontWeight: 400,
+                                    fontFamily: "Poppins",
+                                  }}
+                                  variant="text"
+                                >
+                                  Go to Parcel Survey Management System
+                                </Button>
+                              </Box>
+                            ) : (
+                              <Box sx={{ padding: "0 16px 16px 16px" }}>
+                                <DataGrid
+                                  rows={rows2}
+                                  columns={visibleColumns2}
+                                  initialState={{
+                                    pagination: {
+                                      paginationModel: {
+                                        pageSize: 10,
+                                      },
+                                    },
+                                  }}
+                                  pageSizeOptions={[10]}
+                                  disableRowSelectionOnClick
+                                  disableColumnSorting
+                                  disableColumnFilter
+                                  disableColumnMenu
+                                  sx={{
+                                    width: "100%",
+                                    "& .MuiDataGrid-columnHeaders": {
+                                      color: "#000000E0",
+                                    },
+                                    "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeader":
+                                      {
+                                        background: "#FAFAFA",
+                                      },
+                                    "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeaderTitle":
+                                      {
+                                        fontFamily: "Poppins",
+                                        fontSize: "14px",
+                                        fontWeight: 500,
+                                      },
+                                  }}
+                                />
+                              </Box>
+                            )}
+                          </Box>
+                        )}
                       </Box>
                       <Box
                         sx={{
@@ -2672,10 +3121,10 @@ const LandValuationDetail = () => {
                           alignItems: "center",
                           gap: "8px",
                           marginRight: "16px",
-                          position:"absolute",
-                          right:0,
-                          top:"22px",
-                          cursor:"pointer"
+                          position: "absolute",
+                          right: 0,
+                          top: "22px",
+                          cursor: "pointer",
                         }}
                         onClick={handleClearButton}
                       >
@@ -2687,13 +3136,50 @@ const LandValuationDetail = () => {
                     </Box>
                   )}
                 </Box>
-                <Box sx={{ width: "50%", padding: "16px" }}>
-                  <Box>
+                <Box sx={{ width: "50%", padding: "16px", height: "100%" }}>
+                  <Box
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    {showMarker && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Box sx={{ display: "flex", gap: "24px" }}>
+                          <Box sx={{ display: "flex", gap: "8px" }}>
+                            <img src="/red pin.svg" alt="surveyed" />
+                            <Typography>Surveyed Parcel</Typography>
+                          </Box>
+                          <Box sx={{ display: "flex", gap: "8px" }}>
+                            <img src="/gray pin.svg" alt="surveyed" />
+                            <Typography>Not surveyed</Typography>
+                          </Box>
+                        </Box>
+                        <Box>
+                          <Checkbox
+                            defaultChecked
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#1677FF",
+                              },
+                            }}
+                          />
+                          Label
+                        </Box>
+                      </Box>
+                    )}
                     <MapContainer
                       center={position}
-                      zoom={13}
+                      zoom={19}
                       style={{
-                        height: "668px",
+                        height: showMarker ? "90%" : "100%",
                         width: "100%",
                         borderRadius: "8px",
                       }}
@@ -2705,7 +3191,168 @@ const LandValuationDetail = () => {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                       />
                       <ZoomControl />
-                      <MinimapControl position="topright" zoom={13} />
+                      <MinimapControl position="topright" zoom={15} />
+                      {showMarker && (
+                        <Marker position={position} icon={customIcon}>
+                          <Popup closeButton={false}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "8px",
+                              }}
+                            >
+                              <Box sx={{ textAlign: "left" }}>
+                                <Typography
+                                  sx={{
+                                    margin: "0 !important",
+                                    fontFamily: "SF Pro Text",
+                                    fontSize: "14px",
+                                    fontWeight: 400,
+                                    color: "#00000073",
+                                  }}
+                                >
+                                  Vientiane / Phonhong
+                                </Typography>
+                              </Box>
+                              <Box sx={{ textAlign: "left" }}>
+                                <span style={{ fontWeight: 600 }}>A1</span>
+                                (1,100.21 m<sup>2</sup>)
+                              </Box>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  gap: "6px",
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontFamily: "Poppins",
+                                      fontSize: "12px",
+                                      fontWeight: 400,
+                                      color: "#000000A6",
+                                      margin: "0 !important",
+                                    }}
+                                  >
+                                    Main Street:
+                                  </Typography>
+                                  <Typography
+                                    sx={{
+                                      fontFamily: "Poppins",
+                                      fontSize: "12px",
+                                      fontWeight: 500,
+                                      color: "#000000E0",
+                                      margin: "0 !important",
+                                    }}
+                                  >
+                                    6,500,000
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontFamily: "Poppins",
+                                      fontSize: "12px",
+                                      fontWeight: 400,
+                                      color: "#000000A6",
+                                      margin: "0 !important",
+                                    }}
+                                  >
+                                    Connecting Roads:
+                                  </Typography>
+                                  <Typography
+                                    sx={{
+                                      fontFamily: "Poppins",
+                                      fontSize: "12px",
+                                      fontWeight: 500,
+                                      color: "#000000E0",
+                                      margin: "0 !important",
+                                    }}
+                                  >
+                                    4,800,000
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontFamily: "Poppins",
+                                      fontSize: "12px",
+                                      fontWeight: 400,
+                                      color: "#000000A6",
+                                      margin: "0 !important",
+                                    }}
+                                  >
+                                    Junction Street:
+                                  </Typography>
+                                  <Typography
+                                    sx={{
+                                      fontFamily: "Poppins",
+                                      fontSize: "12px",
+                                      fontWeight: 500,
+                                      color: "#000000E0",
+                                      margin: "0 !important",
+                                    }}
+                                  >
+                                    3,200,000
+                                  </Typography>
+                                </Box>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontFamily: "Poppins",
+                                      fontSize: "12px",
+                                      fontWeight: 400,
+                                      color: "#000000A6",
+                                      maxWidth: "120px",
+                                      textAlign: "left",
+                                      margin: "0 !important",
+                                    }}
+                                  >
+                                    Streets as they used to be:
+                                  </Typography>
+                                  <Typography
+                                    sx={{
+                                      fontFamily: "Poppins",
+                                      fontSize: "12px",
+                                      fontWeight: 500,
+                                      color: "#000000E0",
+                                      margin: "0 !important",
+                                    }}
+                                  >
+                                    1,600,000
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            </Box>
+                          </Popup>
+                        </Marker>
+                      )}
                     </MapContainer>
                   </Box>
                 </Box>
