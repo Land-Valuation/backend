@@ -12,7 +12,7 @@ const LayoutPageCommon = ({ breadcrumbData, title, actions, children }) => {
       minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      width:"calc(100vw - 74px)"
+      // width:"calc(100vw - 74px)"
     }}>
       {/* Breadcrumb */}
       {breadcrumbData && breadcrumbData.length > 0 && (
