@@ -2,7 +2,6 @@ import { Box, Button, FormControl, Grid2, InputAdornment, OutlinedInput, Typogra
 import { a11yProps, StyledTab, StyledTabs } from "../common"
 import { useState } from "react";
 import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
-import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
 import MapIcon from '@mui/icons-material/Map';
 import HistogramIcon from "../../../../assets/icons/model-base/HistogramIcon";
 import BoxPlotIcon from "../../../../assets/icons/model-base/BoxPlotIcon";
@@ -10,6 +9,7 @@ import HistogramModal from "../../modal/HistogramModal";
 import BoxPlotModal from "../../modal/BoxPlotModal";
 import SelectSampleParcelsMap from "./SelectSampleParcelsMap";
 import SelectSampleParcelsTable from "./SelectSampleParcelsTable";
+import TableIcon from "../../../../assets/icons/model-base/TableIcon";
 
 const SelectSampleParcels = () => {
   const [tab, setTab] = useState(0);
@@ -212,7 +212,7 @@ const SelectSampleParcels = () => {
                 onChange={handleTabChange}
                 aria-label="select from options"
               >
-                <StyledTab icon={<TableRowsOutlinedIcon />} label="Table" {...a11yProps(0)} />
+                <StyledTab icon={<TableIcon color={tab === 0 ? '#1677FF' : '#000000A6'} />} label="Table" {...a11yProps(0)} />
                 <StyledTab icon={<MapIcon />} label="Map" {...a11yProps(1)} />
               </StyledTabs>
             </Grid2>

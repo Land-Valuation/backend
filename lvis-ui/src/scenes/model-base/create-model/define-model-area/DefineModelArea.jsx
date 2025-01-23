@@ -2,10 +2,10 @@ import { Box, Button, Grid2, MenuItem, Select, Typography } from "@mui/material"
 import { useState } from "react";
 import { a11yProps, StyledButton, StyledButtonGroup, StyledTab, StyledTabs } from "../common";
 import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
-import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
 import MapIcon from '@mui/icons-material/Map';
 import DefineModelTable from "./DefineModelTable";
 import DefineModelMap from "./DefineModelMap";
+import TableIcon from "../../../../assets/icons/model-base/TableIcon";
 
 const DefineModelArea = () => {
   const [activeButton, setActiveButton] = useState('village');
@@ -124,7 +124,7 @@ const DefineModelArea = () => {
                 onChange={handleTabChange}
                 aria-label="select from options"
               >
-                <StyledTab icon={<TableRowsOutlinedIcon />} label="Table" {...a11yProps(0)} />
+                <StyledTab icon={<TableIcon color={tab === 0 ? '#1677FF' : '#000000A6'} />} label="Table" {...a11yProps(0)} />
                 <StyledTab icon={<MapIcon />} label="Map" {...a11yProps(1)} />
               </StyledTabs>
             </Grid2>

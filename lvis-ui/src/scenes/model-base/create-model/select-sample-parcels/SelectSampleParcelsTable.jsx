@@ -102,7 +102,10 @@ const SelectSampleParcelsTable = () => {
         },
         '& .MuiDataGrid-row.Mui-selected .MuiCheckbox-root svg': {
           fill: '#1677FF',
-        }
+        },
+        '& .MuiDataGrid-columnHeaders .MuiCheckbox-root.Mui-checked  svg': {
+          fill: '#1677FF',
+        },
       }}
     >
       <DataGrid    
