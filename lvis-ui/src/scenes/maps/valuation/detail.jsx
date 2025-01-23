@@ -65,10 +65,10 @@ import { Upload } from "@mui/icons-material";
 const geoJsonStyle = (feature) => {
   return {
     color: 'blue', 
-    weight: 2,     
+    weight: 1,     
     dashArray: '5, 5',                               
-    fillColor:'lightblue', 
-    fillOpacity: 0.5,                        
+    fillColor:'#8CBCFFE5', 
+    fillOpacity: 1,                        
   };
 };
 
@@ -84,11 +84,11 @@ const geoData = {
         type: "Polygon",
         coordinates: [
           [
-            [102.6329, 17.9755], // Bottom left
-    [102.6333, 17.9755], // Bottom right
+            [102.6329, 17.9753], // Bottom left
+    [102.6333, 17.9753], // Bottom right
     [102.6333, 17.9758], // Top right (lowered)
     [102.6329, 17.9758], // Top left (lowered)
-    [102.6329, 17.9755], // Closing the polygon
+    [102.6329, 17.9753], // Closing the polygon
           ],
         ],
       },
@@ -260,9 +260,21 @@ const parcels = [
 ];
 const customIcon = L.divIcon({
   className: "custom-icon", // Custom class for styling
-  html: '<div style="display:flex; flex-direction:column; align-items:center; font-size: 10px; font-weight: 500; font-family: Poppins; text-shadow:-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; color:#000000E0 "><img src="/red pin.svg" alt="redpin">A1</div>', // Text to display
+  html: '<div style="display:flex; flex-direction:column; align-items:center; font-size: 10px; font-weight: 500; font-family: Poppins; text-shadow:-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; color:#000000E0 "><img src="/red pin.svg" alt="redpin">A1</div>',
   iconSize: [20, 50], // Size of the icon
   iconAnchor: [10, 0], // Anchor point for the marker
+});
+const customIcon1 = L.divIcon({
+  className: "custom-icon", // Custom class for styling
+  html: '<div style="display:flex; flex-direction:column; align-items:center; font-size: 10px; font-weight: 500; font-family: Poppins; text-shadow:-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; color:#000000E0 "><img src="/blue pin.svg" alt="bluepin">A2</div>',
+  iconSize: [32, 50], // Size of the icon
+  iconAnchor: [17, 10], // Anchor point for the marker
+});
+const customIcon2 = L.divIcon({
+  className: "custom-icon", // Custom class for styling
+  html: '<div style="display:flex; flex-direction:column; align-items:center; font-size: 10px; font-weight: 500; font-family: Poppins; text-shadow:-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; color:#000000E0 "><img src="/gray pin.svg" alt="graypin">A3</div>',
+  iconSize: [20, 50], // Size of the icon
+  iconAnchor: [17, 10], // Anchor point for the marker
 });
 const CustomTab = styled(Tab)(({ theme, selected }) => ({
   textTransform: "none",
@@ -281,6 +293,13 @@ const CustomTab = styled(Tab)(({ theme, selected }) => ({
   },
 }));
 const position = [17.9757, 102.6331];
+const position1= [17.9750, 102.6340]
+const position2= [17.9765, 102.6320]
+const position3= [17.9758, 102.6325]
+const position4= [17.9770, 102.6345]
+const position5= [17.9740, 102.6315]
+const position6= [17.9735, 102.6338]
+
 const DistrictList = () => {
   return (
     <div>
@@ -1962,6 +1981,7 @@ const LandValuationDetail = () => {
                 // marginBottom: "44px",
                 display: "flex",
                 flexDirection: "row",
+                width:"100%"
               }}
             >
               <Box
@@ -2174,7 +2194,33 @@ const LandValuationDetail = () => {
                     <Typography sx={{ marginBottom: "16px" }}>
                       01-09-2024 to 09-11-2024
                     </Typography>
-                    <Box sx={{ height: "320px", width: "calc(100% - 44px)" }}>
+                    <Box
+                            mt="20px"
+                            height="360px"
+                            display="grid"
+                            gridTemplateColumns="repeat(12, minmax(0, 1fr))"
+                            justifyContent="space-between"
+                            rowGap="20px"
+                            columnGap="1.33%"
+                            sx={{
+                              "& > div": { gridColumn: "span 12" },
+                              width: "100%",
+                              "& .MuiDataGrid-root": {
+                                borderRadius: "8px",
+                              },
+                              "& .MuiDataGrid-cell": {
+                                borderBottom: "none",
+                              },
+                              "& .MuiDataGrid-container--top [role=row]": {
+                                borderBottom: "none",
+                              },
+                              "& .MuiDataGrid-virtualScroller": {
+                              },
+                              "& .MuiDataGrid-footerContainer": {
+                                borderTop: "none",
+                              },
+                            }}
+                          >
                       <DataGrid
                         rows={rows}
                         columns={visibleColumns}
@@ -2191,7 +2237,7 @@ const LandValuationDetail = () => {
                         disableColumnFilter
                         disableColumnMenu
                         sx={{
-                          width: "103%",
+                          width: "100%",
                           "& .MuiDataGrid-columnHeaders": {
                             color: "#000000E0",
                           },
@@ -2322,7 +2368,7 @@ const LandValuationDetail = () => {
                           <GeoJSON data={geoData} style={geoJsonStyle}/>
                           <ZoomControl />
                           <MinimapControl position="topright" zoom={15} />
-                          <Marker position={position} icon={customIcon}>
+                          <Marker position={position} icon={customIcon1}>
                             <Popup closeButton={false}>
                               <Box
                                 sx={{
@@ -2480,6 +2526,16 @@ const LandValuationDetail = () => {
                                 </Box>
                               </Box>
                             </Popup>
+                          </Marker>
+                          <Marker position={position1} icon={customIcon}></Marker>
+                          <Marker position={position2} icon={customIcon}></Marker>
+                          <Marker position={position3} icon={customIcon}>
+                          </Marker>
+                          <Marker position={position4} icon={customIcon2}>
+                          </Marker>
+                          <Marker position={position5} icon={customIcon2}>
+                          </Marker>
+                          <Marker position={position6} icon={customIcon2}>
                           </Marker>
                         </MapContainer>
                       </Box>
