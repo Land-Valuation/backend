@@ -320,7 +320,7 @@ const HomePage = () => {
       {/* MENU CHOOSER */}
       <Box
         width="100%"
-        padding="1rem 6%"
+        // padding="1rem 6%"
         display="flex"
         flexWrap="wrap"
         gap="24px"
