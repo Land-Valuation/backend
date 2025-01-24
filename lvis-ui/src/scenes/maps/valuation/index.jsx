@@ -429,6 +429,10 @@ const Valuation = () => {
                 subtitle="Find your land valuation materials."
               />
               <Box sx={{ display: "flex", flexDirection: "row", gap: "12px" }}>
+              <Link
+                            to={`/land-valuation/detail`}
+                            style={{ textDecoration: "none" }}
+                          >
                 <Button
                   variant="contained"
                   startIcon={<AddIcon />}
@@ -446,6 +450,7 @@ const Valuation = () => {
                 >
                   New Valuation
                 </Button>
+                </Link>
                 <Button
                   sx={{
                     backgroundColor: "#fff",
