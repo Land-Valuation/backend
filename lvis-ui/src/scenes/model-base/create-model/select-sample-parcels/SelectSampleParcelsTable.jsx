@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Box, useTheme } from "@mui/material";
+import { Box, Checkbox, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "../../../../state/prototypeApi";
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 const SelectSampleParcelsTable = () => {
   const theme = useTheme();
@@ -25,9 +27,21 @@ const SelectSampleParcelsTable = () => {
     },
     {
       field: "userId",
-      headerName: "User ID",
-      editable: true,
-      flex: 1,
+      headerName: "Surveyed",
+      flex: 0.5,
+      sortable: false,
+      renderCell: () => {
+        return (
+          <Checkbox
+            checked={true}
+            sx={{
+              '&.Mui-checked': {
+                color: "#1677FF",
+              },
+            }}
+          />
+        )
+      },
     },
     {
       field: "createdAt",
@@ -50,7 +64,59 @@ const SelectSampleParcelsTable = () => {
       editable: true,
       renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
     },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 150,
+      cellClassName: "actions",
+      renderCell: () => {
+        return (
+          <Box sx={{
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'center',
+            height: '100%',
+          }}>
+            <Box sx={{
+              backgroundColor: '#FFF',
+              border: '1px solid #D9D9D9',
+              borderRadius: '4px',
+              padding: '4px',
+              cursor: 'pointer',
+              width: '24px',
+              height: '24px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <BorderColorIcon sx={{ fontSize: '16px' }} />
+            </Box>
+            <Box sx={{
+              backgroundColor: '#FFF',
+              border: '1px solid #D9D9D9',
+              borderRadius: '4px',
+              padding: '4px',
+              cursor: 'pointer',
+              width: '24px',
+              height: '24px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <RemoveIcon sx={{ fontSize: '16px' }} />
+            </Box>
+          </Box>
+        )
+      },
+    },
   ];
+
+   const getRowClassName = (params) => {
+    if (!params.row.userId) {
+      return 'row-with-user-id';
+    }
+    return '';
+  };
 
   return (
     <Box
@@ -80,7 +146,7 @@ const SelectSampleParcelsTable = () => {
           fontSize: '14px',
           fontWeight: 400,
           padding: '0 16px',
-        },           
+        },
         "& .MuiDataGrid-container--top [role=row]": {
           backgroundColor: `${theme.palette.grey[50]} !important`,
           color: theme.palette.secondary[100],
@@ -103,12 +169,16 @@ const SelectSampleParcelsTable = () => {
         '& .MuiDataGrid-row.Mui-selected .MuiCheckbox-root svg': {
           fill: '#1677FF',
         },
-        '& .MuiDataGrid-columnHeaders .MuiCheckbox-root.Mui-checked  svg': {
-          fill: '#1677FF',
-        },
+          '& .MuiDataGrid-columnHeaders .MuiCheckbox-root.Mui-checked  svg': {
+              fill: '#1677FF',
+          },
+        // Thêm định nghĩa cho class row-with-user-id
+        "& .row-with-user-id": {
+          backgroundColor: "#E6F7FF !important",
+        }
       }}
     >
-      <DataGrid    
+      <DataGrid
         loading={isLoading || !data}
         getRowId={(row) => row._id}
         rows={(data && data.transactions) || []}
@@ -123,7 +193,6 @@ const SelectSampleParcelsTable = () => {
         onPaginationModelChange={(newPaginationModel) =>
           setPaginationModel(newPaginationModel)
         }
-        checkboxSelection
         disableRowSelectionOnClick
         slotProps={{
           loadingOverlay: {
@@ -131,6 +200,7 @@ const SelectSampleParcelsTable = () => {
             noRowsVariant: "skeleton",
           },
         }}
+        getRowClassName={getRowClassName} // Áp dụng hàm getRowClassName
         sx={{
           '& .MuiDataGrid-cell:hover': {
             color: '#1677FF',

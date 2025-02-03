@@ -390,7 +390,9 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
           </Grid>
         </form>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{
+        padding: '0 24px 24px 24px'
+      }}>
         <Button
           sx={{
             backgroundColor: "#fff",
