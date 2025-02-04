@@ -195,6 +195,7 @@ const HomePage = () => {
         backgroundPosition: "center",
         height: "100vh",
         width: "100%",
+        position: "relative",
       }}
     >
       <Sidebar />

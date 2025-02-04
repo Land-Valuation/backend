@@ -27,7 +27,7 @@ const SelectSampleParcels = () => {
   const [isHistogramModalOpen, setIsHistogramModalOpen] = useState(false)
   const [isBoxPlotModalOpen, setIsBoxPlotModalOpen] = useState(false)
   const [isOnlySurveyedStandardLots, setIsOnlySurveyedStandardLots] = useState(false)
-  const [isHasData] = useState(false)
+  const [isHasData, setIsHasData] = useState(false)
 
   const handleTabChange = (event, newValue) => {
     setTab(newValue);
@@ -60,13 +60,15 @@ const SelectSampleParcels = () => {
     },
   });
 
-  
+  const changeViewHandler = (event) => {
+    setIsHasData(event)
+  }
 
   return (
     <Box>
       {
-        isHasData ? 
-        <FilterSelectSampleParcels /> : 
+        !isHasData ?
+        <FilterSelectSampleParcels onChangeView={changeViewHandler} /> : 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
           <Box sx={{ 
             border: '1px solid #F0F0F0',
@@ -91,7 +93,7 @@ const SelectSampleParcels = () => {
                 alignItems: "center",
                 color: "#1677FF",
                 cursor: "pointer",
-              }}>
+              }} onClick={() => setIsHasData(false)}>
                 <ChangeSelectionIcon />
                 Change selection
               </Box>

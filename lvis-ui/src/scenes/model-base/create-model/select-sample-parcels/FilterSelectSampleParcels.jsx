@@ -2,8 +2,13 @@ import { Box, Button, FormControl, IconButton, InputAdornment, OutlinedInput, Te
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import PropTypes from "prop-types";
 
-const FilterSelectSampleParcels = () => {
+const FilterSelectSampleParcels = ({ onChangeView }) => {
+  const generateRamdonHandler = () => {
+    onChangeView(true)
+  }
+
   return (
     <Box sx={{
       display: "flex",
@@ -242,6 +247,7 @@ const FilterSelectSampleParcels = () => {
                 }
               }}
               variant="contained"
+              onClick={generateRamdonHandler}
             >
               <Box>Generate</Box>
               <Box>Random</Box>
@@ -253,5 +259,9 @@ const FilterSelectSampleParcels = () => {
     </Box>
   )
 }
+
+FilterSelectSampleParcels.propTypes = {
+  onChangeView: PropTypes.func,
+};
 
 export default FilterSelectSampleParcels
