@@ -8,9 +8,11 @@ import RequestForInvesgation from "./request-for-invesgation";
 import { useEffect, useState } from "react";
 import UserService from "../../state/UserService";
 import { MODEL_BASE_MODE, USER_ROLES } from "../../utils/constant";
+import { useTranslation } from 'react-i18next';
 
 const ModelBase = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [viewMode, setViewMode] = useState(MODEL_BASE_MODE.UNAUTHORIZED)
 
@@ -37,8 +39,8 @@ const ModelBase = () => {
   
 
   const breadcrumbData = [
-    { name: 'Home', href: '/' },
-    { name: 'MODEL-BASED LAND VALUATION', href: '/model-base' },
+    { name: t('home'), href: '/' },
+    { name: t('modelBasedLandValuation'), href: '/model-base' },
   ];
 
   const createNewModel = () => {
@@ -47,8 +49,8 @@ const ModelBase = () => {
   
   return (
     <LayoutPageCommon
-      breadcrumbData={breadcrumbData} 
-      title="MODEL-BASED LAND VALUATION"
+      breadcrumbData={breadcrumbData}
+      title={t('modelBasedLandValuationTitle')}
       actions={ 
         viewMode === MODEL_BASE_MODE.CENTRAL ?
         <>
@@ -68,7 +70,7 @@ const ModelBase = () => {
             startIcon={<AddIcon />}
             onClick={createNewModel}
           >
-            New Model
+            {t('newModel')}
           </Button>
           <Button
             sx={{
@@ -97,7 +99,7 @@ const ModelBase = () => {
     >
       { viewMode === MODEL_BASE_MODE.LOCAL && <RequestForInvesgation /> }
       { viewMode === MODEL_BASE_MODE.CENTRAL && <ListModel /> }
-      { viewMode === MODEL_BASE_MODE.UNAUTHORIZED && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>No data</Box> }
+      { viewMode === MODEL_BASE_MODE.UNAUTHORIZED && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>{t('noData')}</Box> }
     </LayoutPageCommon>
   )
 }

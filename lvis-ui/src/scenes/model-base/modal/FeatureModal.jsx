@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomTable from '../../../components/customMUI/CustomTable';
+import { useTranslation } from 'react-i18next';
 
 const data = [
   {
@@ -93,16 +94,17 @@ const data = [
   },
 ];
 
-const columns = [
-  { title: 'Variable', dataIndex: 'Variable', key: 'Variable' },
-  { title: 'Coefficient', dataIndex: 'Coefficient', key: 'Coefficient' },
-  { title: 'Std_Error', dataIndex: 'Std_Error', key: 'Std_Error' },
-  { title: 't_value', dataIndex: 't_value', key: 't_value' },
-  { title: 'P_value', dataIndex: 'P_value', key: 'P_value' },
-  { title: 'VIF', dataIndex: 'VIF', key: 'VIF' },
-];
-
 const FeatureModal = ({ open, onClose }) => {
+  const { t } = useTranslation();
+
+  const columns = [
+    { title: t('variable'), dataIndex: 'Variable', key: 'Variable' },
+    { title: t('coefficient'), dataIndex: 'Coefficient', key: 'Coefficient' },
+    { title: t('stdError'), dataIndex: 'Std_Error', key: 'Std_Error' },
+    { title: t('tValue'), dataIndex: 't_value', key: 't_value' },
+    { title: t('pValue'), dataIndex: 'P_value', key: 'P_value' },
+    { title: t('vif'), dataIndex: 'VIF', key: 'VIF' },
+  ];
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
@@ -119,7 +121,7 @@ const FeatureModal = ({ open, onClose }) => {
               textAlign: 'center',
             }}
           >
-            Features : 000, 000, 000, 000 ,000, 000
+            {t('features')} : 000, 000, 000, 000 ,000, 000
           </Typography>
         <IconButton
           aria-label="close"

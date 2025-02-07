@@ -3,8 +3,10 @@ import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from "react";
 import CustomTable from "../../../../components/customMUI/CustomTable";
+import { useTranslation } from 'react-i18next';
 
 const SetModelVariables = () => {
+  const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState([
     { key: 0, label: 'Angular' },
     { key: 1, label: 'jQuery' },
@@ -107,18 +109,18 @@ const SetModelVariables = () => {
   
   const columns = [
     {
-      title: 'Variable',
+      title: t('variable'),
       dataIndex: 'variable',
       key: 'variable',
     },
     {
-      title: 'Count',
+      title: t('count'),
       dataIndex: 'count',
       key: 'count',
       align: 'left',
     },
     {
-      title: 'Baseline Variable',
+      title: t('baselineVariable'),
       dataIndex: 'baselineVariable',
       key: 'baselineVariable',
       align: 'center',
@@ -139,7 +141,7 @@ const SetModelVariables = () => {
 
   const columnLanused = [
     {
-      title: 'Variable',
+      title: t('variable'),
       dataIndex: 'variable',
       key: 'variable',
       render: (value, row) => (
@@ -149,7 +151,7 @@ const SetModelVariables = () => {
       ),
     },
     {
-      title: 'Count',
+      title: t('count'),
       dataIndex: 'count',
       key: 'count',
       align: 'left',
@@ -160,7 +162,7 @@ const SetModelVariables = () => {
       ),
     },
     {
-      title: 'Baseline Variable',
+      title: t('baselineVariable'),
       dataIndex: 'baselineVariable',
       key: 'baselineVariable',
       align: 'center',
@@ -215,7 +217,7 @@ const SetModelVariables = () => {
           variant="outlined"
           startIcon={<ReplayRoundedIcon sx={{ color: '#00000073', transform: 'scaleX(-1)' }} />}
         >
-          Reload
+          {t('reload')}
         </Button>
         <Typography
           sx={{
@@ -226,7 +228,7 @@ const SetModelVariables = () => {
             lineHeight: '16px',
           }}
         >
-          Selected 3 items
+          {t('selectedItems', { count: 3 })}
         </Typography>
         <Box
           sx={{
@@ -267,7 +269,7 @@ const SetModelVariables = () => {
                   lineHeight: '22px',
                 }}
               >
-                Road Frontage Length
+                {t('roadFrontageLength')}
               </Typography>
             </Box>
             <Box sx={{
@@ -294,7 +296,7 @@ const SetModelVariables = () => {
                   lineHeight: '22px',
                 }}
               >
-                Road Frontage Length
+                {t('roadFrontageLength')}
               </Typography>
             </Box>
             <Box sx={{
@@ -323,7 +325,7 @@ const SetModelVariables = () => {
                   lineHeight: '22px',
                 }}
               >
-                Road Frontage Length
+                {t('landUseTitle')}
               </Typography>
             </Box>
             <Box sx={{

@@ -10,6 +10,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import CustomTable from '../../../components/customMUI/CustomTable';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const data = [
   { parcelId: 'A1-125', price: '6,000,000', province: 'Row data 5', district: 'Row data 5' },
@@ -20,15 +21,16 @@ const data = [
   { parcelId: 'A1-125', price: '5,000,000', province: 'Row data 10', district: 'Row data 10' },
 ];
 
-
-const columns = [
-  { title: 'Parcel ID', dataIndex: 'parcelId', key: 'parcelId' },
-  { title: 'Price', dataIndex: 'price', key: 'price', align: 'right' },
-  { title: 'Province', dataIndex: 'province', key: 'province' },
-  { title: 'District', dataIndex: 'district', key: 'district' },
-];
-
 const AppliedAreasDialog = ({ open, onClose }) => {
+  const { t } = useTranslation();
+
+  const columns = [
+    { title: t('parcelID'), dataIndex: 'parcelId', key: 'parcelId' },
+    { title: t('price'), dataIndex: 'price', key: 'price', align: 'right' },
+    { title: t('province'), dataIndex: 'province', key: 'province' },
+    { title: t('district'), dataIndex: 'district', key: 'district' },
+  ];
+
   const letters = Array.from({ length: 7 }, (_, i) => `A${i + 1}`);
   const [letterSelected, setLetterSelected] = useState('A1')
 
@@ -51,7 +53,7 @@ const AppliedAreasDialog = ({ open, onClose }) => {
               textAlign: 'center',
             }}
           >
-            Applied Areas
+            {t('appliedAreas')}
           </Typography>
         <IconButton
           aria-label="close"
@@ -83,7 +85,7 @@ const AppliedAreasDialog = ({ open, onClose }) => {
                 textAlign: 'center',
               }}
             >
-              Areas
+              {t('areas')}
             </Typography>
             {letters && letters.length > 0 && letters.map((letter) => (
               <Box
@@ -122,7 +124,7 @@ const AppliedAreasDialog = ({ open, onClose }) => {
                 marginBottom: '12px',
               }}
             >
-              List Parcels
+              {t('listParcels')}
             </Typography>
             <CustomTable dataSource={data} columns={columns} />
           </Box>

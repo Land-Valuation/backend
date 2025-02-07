@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import MarkerIcon from '../../../assets/icons/model-base/MarkerIcon';
 import { useState } from 'react';
 import ValuationMap from '../../../components/map/ValuationMap';
+import { useTranslation } from 'react-i18next';
 
 const SelectSampleParcelLandModal = ({ open, onClose }) => {
+  const { t } = useTranslation();
   const [selectedValue, setSelectedValue] = useState(null);
 
   const handleChange = (event) => {
@@ -72,7 +74,7 @@ const SelectSampleParcelLandModal = ({ open, onClose }) => {
             textAlign: 'center',
           }}
         >
-          Select sample parcel of land
+          {t('selectSampleParcel')}
         </Typography>
         <IconButton
           aria-label="close"
@@ -116,7 +118,7 @@ const SelectSampleParcelLandModal = ({ open, onClose }) => {
                     textAlign: 'center',
                   }}
                 >
-                  Parcel need valuation
+                  {t('parcelNeedValuation')}
                 </Typography>
               </Box>
               <Box
@@ -229,7 +231,7 @@ const SelectSampleParcelLandModal = ({ open, onClose }) => {
                     textAlign: 'center',
                   }}
                 >
-                  Reference parcels
+                  {t('referenceParcels')}
                 </Typography>
               </Box>
               {data.map((item) => (
@@ -375,7 +377,7 @@ const SelectSampleParcelLandModal = ({ open, onClose }) => {
           variant="contained"
           onClick={onClose}
         >
-          Cancel
+          {t('cancel')}
         </Button>
         <Button
           sx={{
@@ -393,7 +395,7 @@ const SelectSampleParcelLandModal = ({ open, onClose }) => {
           variant="contained"
           type="submit"
         >
-          Ok
+          {t('ok')}
         </Button>
       </DialogActions>
     </Dialog>

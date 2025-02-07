@@ -3,8 +3,10 @@ import { useState } from "react"
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import SortIcon from "../../../../assets/icons/model-base/SortIcon";
 import CustomTableDataPreprocessing from "./CustomTableDataPreprocessing";
+import { useTranslation } from 'react-i18next';
 
 const DataPreprocessing = () => {
+  const { t } = useTranslation();
   const [adjLength, setAdjLength] = useState(false)
   const [saveAdjLength, setSaveAdjLength] = useState(false)
   const [binningMethod, setBinningMethod] = useState('');
@@ -61,7 +63,7 @@ const DataPreprocessing = () => {
           }}
           variant="outlined"
         >
-          Default
+          {t('default')}
         </Button>
         <Button
           sx={{
@@ -80,7 +82,7 @@ const DataPreprocessing = () => {
           }}
           variant="outlined"
         >
-          Apply All
+          {t('applyAll')}
         </Button>
       </Box>
       <Box sx={{ display: 'flex', gap: '24px', flexWrap: 'wrap', width: '100%' }}>
@@ -105,7 +107,7 @@ const DataPreprocessing = () => {
                     textAlign: 'left',
                   }}
                 >
-                  Road Frontage Length : adj_length
+                  {t('roadFrontageLength')}
                 </Typography>
               </Box>
               <Button
@@ -128,7 +130,7 @@ const DataPreprocessing = () => {
                 variant={saveAdjLength ? "contained" : "outlined"}
                 onClick={() => setSaveAdjLength(!saveAdjLength)}
               >
-                {saveAdjLength ? 'Saved ' : 'Apply'}
+                {saveAdjLength ? t('saved') : t('apply')}
               </Button>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '12px', backgroundColor: '#F5F5F5' }}>
@@ -139,9 +141,9 @@ const DataPreprocessing = () => {
                   size="small"
                   sx={{ minWidth: '200px', backgroundColor: '#fff', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
                 >
-                  <MenuItem value={10}>BinningMethod</MenuItem>
-                  <MenuItem value={20}>BinningMethod</MenuItem>
-                  <MenuItem value={30}>BinningMethod</MenuItem>
+                  <MenuItem value={10}>{t('binningMethod')}</MenuItem>
+                  <MenuItem value={20}>{t('binningMethod')}</MenuItem>
+                  <MenuItem value={30}>{t('binningMethod')}</MenuItem>
                 </Select>
                 <Select
                   value={binningMethodValue}
@@ -165,7 +167,7 @@ const DataPreprocessing = () => {
                     lineHeight: '22px',
                   }}
                 >
-                  Already followed the best suggestion
+                  {t('bestSuggestionFollowed')}
                 </Typography>
               </Box>
               <Box>
@@ -193,7 +195,7 @@ const DataPreprocessing = () => {
                     textAlign: 'left',
                   }}
                 >
-                  description : field
+                  {t('descriptionField')}
                 </Typography>
               </Box>
               <Button
@@ -216,7 +218,7 @@ const DataPreprocessing = () => {
                 variant={saveAdjLength ? "contained" : "outlined"}
                 onClick={() => setSaveAdjLength(!saveAdjLength)}
               >
-                {saveAdjLength ? 'Saved ' : 'Apply'}
+                {saveAdjLength ? t('saved') : t('apply')}
               </Button>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '12px', backgroundColor: '#F5F5F5' }}>
@@ -227,9 +229,9 @@ const DataPreprocessing = () => {
                   size="small"
                   sx={{ minWidth: '200px', backgroundColor: '#fff', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
                 >
-                  <MenuItem value={10}>BinningMethod</MenuItem>
-                  <MenuItem value={20}>BinningMethod</MenuItem>
-                  <MenuItem value={30}>BinningMethod</MenuItem>
+                  <MenuItem value={10}>{t('binningMethod')}</MenuItem>
+                  <MenuItem value={20}>{t('binningMethod')}</MenuItem>
+                  <MenuItem value={30}>{t('binningMethod')}</MenuItem>
                 </Select>
                 <Select
                   value={binningMethodValue}
@@ -253,7 +255,7 @@ const DataPreprocessing = () => {
                     lineHeight: '22px',
                   }}
                 >
-                  Best Arrangements for Land Valuation
+                  {t('bestArrangement')}
                 </Typography>
               </Box>
               <Box>
@@ -283,7 +285,7 @@ const DataPreprocessing = () => {
                     textAlign: 'left',
                   }}
                 >
-                  Land Use : landuse
+                  {t('landUse')}
                 </Typography>
               </Box>
               <Button
@@ -306,7 +308,7 @@ const DataPreprocessing = () => {
                 variant={saveAdjLength ? "contained" : "outlined"}
                 onClick={() => setSaveAdjLength(!saveAdjLength)}
               >
-                {saveAdjLength ? 'Saved ' : 'Apply'}
+                {saveAdjLength ? t('saved') : t('apply')}
               </Button>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '12px', backgroundColor: '#F5F5F5' }}>
@@ -321,7 +323,7 @@ const DataPreprocessing = () => {
                     lineHeight: '22px',
                   }}
                 >
-                  Best Arrangements for Land Valuation
+                  {t('bestArrangement')}
                 </Typography>
               </Box>
               <Box>
@@ -349,7 +351,7 @@ const DataPreprocessing = () => {
                     textAlign: 'left',
                   }}
                 >
-                  description : field
+                  {t('descriptionField')}
                 </Typography>
               </Box>
               <Button
@@ -372,7 +374,7 @@ const DataPreprocessing = () => {
                 variant={saveAdjLength ? "contained" : "outlined"}
                 onClick={() => setSaveAdjLength(!saveAdjLength)}
               >
-                {saveAdjLength ? 'Saved ' : 'Apply'}
+                {saveAdjLength ? t('saved') : t('apply')}
               </Button>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '12px', backgroundColor: '#F5F5F5' }}>
@@ -387,189 +389,11 @@ const DataPreprocessing = () => {
                     lineHeight: '22px',
                   }}
                 >
-                  Already followed the best suggestion
+                  {t('bestSuggestionFollowed')}
                 </Typography>
               </Box>
               <Box>
                 <CustomTableDataPreprocessing data={data1} />
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: 1, flexWrap: 'wrap' }}>
-          <Box sx={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #F0F0F0' }}>
-            <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px 8px 0' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Checkbox checked={adjLength} onChange={() => setAdjLength(!adjLength)} 
-                  sx={{
-                    '&.Mui-checked': {
-                      color: "#1677FF",
-                    },
-                  }} 
-                />
-                <Typography
-                  sx={{
-                    color: '#000000E0',
-                    fontFamily: 'Poppins',
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    lineHeight: '24px',
-                    textAlign: 'left',
-                  }}
-                >
-                  Road Frontage Length : adj_length
-                </Typography>
-              </Box>
-              <Button
-                sx={{
-                  backgroundColor: saveAdjLength ? "#1677FF" : "#fff",
-                  color: saveAdjLength ? "#fff" : "#1677FF",
-                  textTransform: "none",
-                  borderRadius: "6px",
-                  fontFamily: "Poppins",
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  lineHeight: "20px",
-                  boxShadow: 'none',
-                  border: saveAdjLength ? '1px solid #0000001A' : '1px solid #1677FF',
-                  height: '32px',
-                  '&:hover': {
-                    boxShadow: 'none',
-                  }
-                }}
-                variant={saveAdjLength ? "contained" : "outlined"}
-                onClick={() => setSaveAdjLength(!saveAdjLength)}
-              >
-                {saveAdjLength ? 'Saved ' : 'Apply'}
-              </Button>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '12px', backgroundColor: '#F5F5F5' }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
-                <Select
-                  value={binningMethod}
-                  onChange={handleBinningMethodChange}
-                  size="small"
-                  sx={{ minWidth: '200px', backgroundColor: '#fff', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
-                >
-                  <MenuItem value={10}>BinningMethod</MenuItem>
-                  <MenuItem value={20}>BinningMethod</MenuItem>
-                  <MenuItem value={30}>BinningMethod</MenuItem>
-                </Select>
-                <Select
-                  value={binningMethodValue}
-                  onChange={handleBinningMethodValueChange}
-                  size="small"
-                  sx={{ width: '70px', backgroundColor: '#fff', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
-                >
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={10}>10</MenuItem>
-                  <MenuItem value={15}>15</MenuItem>
-                </Select>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <CheckOutlinedIcon />
-                <Typography
-                  sx={{
-                    color: '#000000A6',
-                    fontFamily: 'Poppins',
-                    fontSize: '14px',
-                    fontWeight: 400,
-                    lineHeight: '22px',
-                  }}
-                >
-                  Already followed the best suggestion
-                </Typography>
-              </Box>
-              <Box>
-                <CustomTableDataPreprocessing data={data} />
-              </Box>
-            </Box>
-          </Box>
-          <Box sx={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #F0F0F0' }}>
-            <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px 8px 0' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Checkbox checked={adjLength} onChange={() => setAdjLength(!adjLength)} 
-                  sx={{
-                    '&.Mui-checked': {
-                      color: "#1677FF",
-                    },
-                  }} 
-                />
-                <Typography
-                  sx={{
-                    color: '#000000E0',
-                    fontFamily: 'Poppins',
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    lineHeight: '24px',
-                    textAlign: 'left',
-                  }}
-                >
-                  description : field
-                </Typography>
-              </Box>
-              <Button
-                sx={{
-                  backgroundColor: saveAdjLength ? "#1677FF" : "#fff",
-                  color: saveAdjLength ? "#fff" : "#1677FF",
-                  textTransform: "none",
-                  borderRadius: "6px",
-                  fontFamily: "Poppins",
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  lineHeight: "20px",
-                  boxShadow: 'none',
-                  border: saveAdjLength ? '1px solid #0000001A' : '1px solid #1677FF',
-                  height: '32px',
-                  '&:hover': {
-                    boxShadow: 'none',
-                  }
-                }}
-                variant={saveAdjLength ? "contained" : "outlined"}
-                onClick={() => setSaveAdjLength(!saveAdjLength)}
-              >
-                {saveAdjLength ? 'Saved ' : 'Apply'}
-              </Button>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '12px', backgroundColor: '#F5F5F5' }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
-                <Select
-                  value={binningMethod}
-                  onChange={handleBinningMethodChange}
-                  size="small"
-                  sx={{ minWidth: '200px', backgroundColor: '#fff', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
-                >
-                  <MenuItem value={10}>BinningMethod</MenuItem>
-                  <MenuItem value={20}>BinningMethod</MenuItem>
-                  <MenuItem value={30}>BinningMethod</MenuItem>
-                </Select>
-                <Select
-                  value={binningMethodValue}
-                  onChange={handleBinningMethodValueChange}
-                  size="small"
-                  sx={{ width: '70px', backgroundColor: '#fff', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
-                >
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={10}>10</MenuItem>
-                  <MenuItem value={15}>15</MenuItem>
-                </Select>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <SortIcon />
-                <Typography
-                  sx={{
-                    color: '#1677FF',
-                    fontFamily: 'Poppins',
-                    fontSize: '14px',
-                    fontWeight: 400,
-                    lineHeight: '22px',
-                  }}
-                >
-                  Best Arrangements for Land Valuation
-                </Typography>
-              </Box>
-              <Box>
-                <CustomTableDataPreprocessing data={data} />
               </Box>
             </Box>
           </Box>

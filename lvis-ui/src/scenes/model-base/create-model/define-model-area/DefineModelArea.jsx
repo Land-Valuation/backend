@@ -1,4 +1,4 @@
-import { Box, Button, Grid2, MenuItem, Select, Typography } from "@mui/material"
+import { Box, Button, Grid2, MenuItem, Select, Typography } from "@mui/material";
 import { useState } from "react";
 import { a11yProps, StyledButton, StyledButtonGroup, StyledTab, StyledTabs } from "../common";
 import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
@@ -6,8 +6,11 @@ import MapIcon from '@mui/icons-material/Map';
 import DefineModelTable from "./DefineModelTable";
 import DefineModelMap from "./DefineModelMap";
 import TableIcon from "../../../../assets/icons/model-base/TableIcon";
+import { useTranslation } from 'react-i18next'; // Import translation hook
 
 const DefineModelArea = () => {
+  const { t } = useTranslation(); // Initialize translation hook
+
   const [activeButton, setActiveButton] = useState('village');
   const [district, setDistrict] = useState('');
   const [province, setProvince] = useState('');
@@ -37,13 +40,13 @@ const DefineModelArea = () => {
             active={activeButton === 'village'}
             onClick={() => handleButtonClick('village')}
           >
-            By Village Boundary
+            {t('byVillageBoundary')}
           </StyledButton>
           <StyledButton
             active={activeButton === 'assessment'}
             onClick={() => handleButtonClick('assessment')}
           >
-            By Assessment Area
+            {t('byAssessmentArea')}
           </StyledButton>
         </StyledButtonGroup>
         <Select
@@ -56,11 +59,11 @@ const DefineModelArea = () => {
           sx={{ minWidth: '180px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
         >
           <MenuItem sx={{ display: 'none' }} disabled value="">
-            <Box>List of province</Box>
+            <Box>{t('listOfProvinces')}</Box>
           </MenuItem>
-          <MenuItem value={10}>Province A</MenuItem>
-          <MenuItem value={20}>Province B</MenuItem>
-          <MenuItem value={30}>Province C</MenuItem>
+          <MenuItem value={10}>{t('provinceA')}</MenuItem>
+          <MenuItem value={20}>{t('provinceB')}</MenuItem>
+          <MenuItem value={30}>{t('provinceC')}</MenuItem>
         </Select>
         <Select
           labelId="district-label"
@@ -72,11 +75,11 @@ const DefineModelArea = () => {
           sx={{ minWidth: '180px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
         >
           <MenuItem sx={{ display: 'none' }} disabled value="">
-            <Box>List of district</Box>
+            <Box>{t('listOfDistricts')}</Box>
           </MenuItem>
-          <MenuItem value={10}>District A</MenuItem>
-          <MenuItem value={20}>District B</MenuItem>
-          <MenuItem value={30}>District C</MenuItem>
+          <MenuItem value={10}>{t('districtA')}</MenuItem>
+          <MenuItem value={20}>{t('districtB')}</MenuItem>
+          <MenuItem value={30}>{t('districtC')}</MenuItem>
         </Select>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '16px', width: '100%' }}>
@@ -99,7 +102,7 @@ const DefineModelArea = () => {
             variant="outlined"
             startIcon={<ReplayRoundedIcon sx={{ color: '#00000073', transform: 'scaleX(-1)'}} />}
           >
-            Reload
+            {t('reload')}
           </Button>
           <Typography
             sx={{
@@ -110,13 +113,13 @@ const DefineModelArea = () => {
               lineHeight: '16px',
             }}
           >
-            Selected 3 items
+            {t('selectedItems', { count: 3 })}
           </Typography>
         </Box>
         <Box>
           <Grid2 container alignItems="center" spacing={1}>
             <Grid2 item>
-              <span>Select from</span>
+              {t('selectFrom')}
             </Grid2>
             <Grid2 item>
               <StyledTabs
@@ -124,8 +127,8 @@ const DefineModelArea = () => {
                 onChange={handleTabChange}
                 aria-label="select from options"
               >
-                <StyledTab icon={<TableIcon color={tab === 0 ? '#1677FF' : '#000000A6'} />} label="Table" {...a11yProps(0)} />
-                <StyledTab icon={<MapIcon />} label="Map" {...a11yProps(1)} />
+                <StyledTab icon={<TableIcon color={tab === 0 ? '#1677FF' : '#000000A6'} />} label={t('table')} {...a11yProps(0)} />
+                <StyledTab icon={<MapIcon />} label={t('map')} {...a11yProps(1)} />
               </StyledTabs>
             </Grid2>
           </Grid2>

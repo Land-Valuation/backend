@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "../../../../state/prototypeApi";
+import { useTranslation } from "react-i18next";
 
 const DefineModelTable = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
   // values to be sent to the backend
   const [sort, setSort] = useState({});
   const [paginationModel, setPaginationModel] = useState({
@@ -20,32 +22,32 @@ const DefineModelTable = () => {
   const columns = [
     {
       field: "_id",
-      headerName: "ID",
+      headerName: t('id'),
       flex: 1,
     },
     {
       field: "userId",
-      headerName: "User ID",
+      headerName: t('userID'),
       editable: true,
       flex: 1,
     },
     {
       field: "createdAt",
-      headerName: "CreatedAt",
+      headerName: t('createdAt'),
       editable: true,
       flex: 1,
     },
     {
       field: "products",
-      headerName: "# of Products",
+      headerName: t('numberOfProducts'),
       flex: 0.5,
       sortable: false,
-      description: "This column has a description on product and is sortable.",
+      description: t('columnDescription'),
       renderCell: (params) => params.value.length,
     },
     {
       field: "cost",
-      headerName: "Cost",
+      headerName: t('cost'),
       width: 190,
       editable: true,
       renderCell: (params) => `$${Number(params.value).toFixed(2)}`,

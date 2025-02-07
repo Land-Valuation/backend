@@ -2,8 +2,11 @@ import { Box, Dialog, DialogContent, DialogTitle, IconButton, Typography } from 
 import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from "prop-types";
 import BoxPlotChart from "../../charts/boxplot";
+import { useTranslation } from "react-i18next";
 
 const BoxPlotModal = ({ open, onClose }) => {
+  const { t } = useTranslation();
+
   const data = [
     {
       "group": "Alpha",
@@ -1622,7 +1625,7 @@ const BoxPlotModal = ({ open, onClose }) => {
             textAlign: 'center',
           }}
         >
-          Box Plot
+          {t('boxPlot')}
         </Typography>
         <IconButton
           aria-label="close"
