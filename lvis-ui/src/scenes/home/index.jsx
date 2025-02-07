@@ -130,14 +130,14 @@ const Middle = () => {
           },
         }}
       >
-        <Typography
+        {/* <Typography
           fontFamily="Poppins"
           fontSize="22px"
           fontWeight="500"
           color={theme.palette.neutral.medium}
         >
           ລະບົບຂໍ້ມູນລາຄາທີ່ດິນໃນ ສປປ ລາວ
-        </Typography>
+        </Typography> */}
         <Typography
           sx={{
             color: theme.palette.neutral.medium,
@@ -258,7 +258,7 @@ const HomePage = () => {
                   marginBottom: "8px",
                 }}
               >
-                Login is required to use this function!
+                "Login is required to use this function!"
               </Typography>
               <Typography
                 sx={{
@@ -268,8 +268,7 @@ const HomePage = () => {
                   color: "#000000E0",
                 }}
               >
-                Please login to continue using our services or register if you
-                do not have an account yet.
+                {t('Please login to continue using our services or register if you do not have an account yet.')}
               </Typography>
             </Box>
 
@@ -296,7 +295,7 @@ const HomePage = () => {
                 variant="outlined"
                 startIcon={<LoginIcon />}
               >
-                Login
+                {t('Login')}
               </Button>
               <Button
                 sx={{
@@ -312,7 +311,7 @@ const HomePage = () => {
                 variant="contained"
                 startIcon={<SignupIcon />}
               >
-                Register
+                                {t('Register')}
               </Button>
             </Box>
           </Box>
@@ -344,7 +343,7 @@ const HomePage = () => {
             <Typography
               sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
             >
-              Land Price Explorer
+              {t('Land Price Explorer')}
             </Typography>
             <Typography
               sx={{
@@ -363,7 +362,7 @@ const HomePage = () => {
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
-            See now
+            {t('See now')}
           </Link>
         </Box>
         <Box className="menu-chooser">
@@ -381,7 +380,7 @@ const HomePage = () => {
             <Typography
               sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
             >
-              Land Valuation
+              {t('Land Valuation')}
             </Typography>
             <Typography
               sx={{
@@ -400,7 +399,7 @@ const HomePage = () => {
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
-            See now
+            {t('See now')}
           </Link>
         </Box>
         <Box className="menu-chooser">
@@ -418,7 +417,7 @@ const HomePage = () => {
             <Typography
               sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
             >
-              Model-based land Valuation
+              {t('Model-based land Valuation')}
             </Typography>
             <Typography
               sx={{
@@ -437,7 +436,7 @@ const HomePage = () => {
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
-            See now
+            {t('See now')}
           </Link>
         </Box>
         <Box className="menu-chooser">
@@ -455,7 +454,7 @@ const HomePage = () => {
             <Typography
               sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
             >
-              Parcel Survey Management
+              {t('Parcel Survey Management')}
             </Typography>
             <Typography
               sx={{
@@ -474,7 +473,7 @@ const HomePage = () => {
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
-            See now
+            {t('See now')}
           </Link>
         </Box>
         <Box className="menu-chooser">
@@ -492,7 +491,7 @@ const HomePage = () => {
             <Typography
               sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
             >
-              Admin
+              {t('Admin')}
             </Typography>
             <Typography
               sx={{
@@ -511,7 +510,7 @@ const HomePage = () => {
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
-            See now
+            {t('See now')}
           </Link>
         </Box>
       </Box>

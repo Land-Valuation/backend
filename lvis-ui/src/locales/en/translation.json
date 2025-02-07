@@ -44,7 +44,7 @@
   "Check easily land value information by region":"Check easily land value information by region",
   "Manage Valuation Business":"Business       ",
   "Support to manage various businesses of land valuation process":"Support to manage various businesses of land valuation process",
-  "Land Valuation":"Valuation",
+  "Land Valuation":"Land Valuation",
   "Calculate, analyze and compare land value by region":"Calculate, analyze and compare land value by region",
   "Statistical Information":"Statistics",  
   "Provides visualized and statistical analysis based on land value":"Provide visualized and statistical analysis based on land value",
@@ -217,6 +217,21 @@
   "action": "Action",
   "english": "English",
   "lao": "Lao",
-  "korean": "Korean"
+  "korean": "Korean",
+  "Land Price Information System":"Land Price Information System",
+  "Login is required to use this function!":"Login is required to use this function!",
+  "Login":"Login",
+  "Register":"Register",
+  "Require":"Require",
+  "Please login to continue using our services or register if you do not have an account yet.":  "Please login to continue using our services or register if you do not have an account yet.",
+  "See now":"See now",
+  "Model-based land Valuation":"Model-based land Valuation",
+  "Parcel Survey Management":"Parcel Survey Management",
+  "Admin":"Admin",
+  "New Valuation":"New Valuation",
+  "Evaluation Member":"Evaluation Member",
+  "Committee Duration":"Committee Duration",
+  "Decision Date":"Decision Date",
+  "Vientiane":"Vientiane"
 }
    

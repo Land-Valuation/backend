@@ -43,7 +43,7 @@
     "Check easily land value information by region":"ກວດເບິ່ງຂໍ້ມູນມູນຄ່າທີ່ດິນຕາມພາກພື້ນໄດ້ຢ່າງງ່າຍດາຍ",
     "Manage Valuation Business":"ທຸລະກິດ",
     "Support to manage various businesses of land valuation process":"ສະຫນັບສະຫນູນການຄຸ້ມຄອງທຸລະກິດຕ່າງໆຂອງຂະບວນການປະເມີນມູນຄ່າທີ່ດິນ",
-    "Land Valuation":"ກິດ​ຈະ​ກໍາ​",
+    "Land Valuation":"ການປະເມີນມູນຄ່າທີ່ດິນ",
     "Calculate, analyze and compare land value by region":"ການ​ຄິດ​ໄລ່​, ວິ​ເຄາະ​ແລະ​ສົມ​ທຽບ​ມູນ​ຄ່າ​ທີ່​ດິນ​ຕາມ​ພາກ​ພື້ນ​",
     "Statistical Information":"ຂໍ້ມູນສະຖິຕິ",  
     "Provides visualized and statistical analysis based on land value":"ສະຫນອງການວິເຄາະພາບແລະສະຖິຕິໂດຍອີງໃສ່ມູນຄ່າທີ່ດິນ",
@@ -216,6 +216,28 @@
     "action": "ການກະທຳ",
     "english": "ພາສາອັງກິດ",
     "lao": "ພາສາລາວ",
-    "korean": "ພາສາເກົາຫລີ"
+    "korean": "ພາສາເກົາຫລີ",
+    "Land Price Information System":"ລະບົບຂໍ້ມູນລາຄາທີ່ດິນ",
+    "Login is required to use this function!":"ຕ້ອງເຂົ້າສູ່ລະບົບເພື່ອໃຊ້ຟັງຊັນນີ້!",
+    "Login":"ເຂົ້າສູ່ລະບົບ",
+    "Register":"ລົງທະບຽນ",
+  "Require":"ຕ້ອງການ",
+    "Please login to continue using our services or register if you do not have an account yet.":"ກະລຸນາເຂົ້າສູ່ລະບົບເພື່ອສືບຕໍ່ໃຊ້ບໍລິການຂອງພວກເຮົາ ຫຼືລົງທະບຽນຖ້າທ່ານບໍ່ມີບັນຊີເທື່ອ.",
+    "Land Price Explorer":"ຄົ້ນຫາລາຄາທີ່ດິນ",
+  "See now":"ເບິ່ງດຽວນີ້",
+  "Model-based land Valuation":"ການປະເມີນມູນຄ່າທີ່ດິນຕາມຕົວແບບ",
+  "Parcel Survey Management":"ການຄຸ້ມຄອງການສໍາຫຼວດທີ່ດິນ",
+  "Admin":"ບໍລິຫານ",
+  "New Valuation":"ການປະເມີນມູນຄ່າໃໝ່",
+  "Evaluation Member":"ສະມາຊິກປະເມີນຜົນ",
+  "Committee Duration":"ໄລຍະເວລາຂອງຄະນະກໍາມະການ",
+  "Decision Date":"ວັນທີຕັດສິນ",
+  "Vientiane":"ວຽງຈັນ"
+
+
+
+
+
+
 }
   
