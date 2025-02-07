@@ -28,6 +28,7 @@ import Footer from "../../../components/Footer";
 import SvgIcon from "@mui/material/SvgIcon";
 import { Link } from "react-router-dom";
 import UserService from "../../../state/UserService";
+import { useTranslation } from "react-i18next";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -267,143 +268,145 @@ const StyledTableCell = styled(TableCell)({
   color: "#000000E0",
 });
 
-const rows = [
-  createData(
-    "2024",
-    "Draft",
-    "Vientiane",
-    false,
-    "0/11",
-    "Title A",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2024 to 09-11-2024",
-    "N/A"
-  ),
-  createData(
-    "2024",
-    "In Progress",
-    "Savannakhet",
-    false,
-    "2/15",
-    "Title B",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2024 to 09-11-2024",
-    "N/A"
-  ),
-  createData(
-    "2024",
-    "Rejected",
-    "Champasak",
-    false,
-    "0/11",
-    "Title C",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2024 to 09-11-2024",
-    "N/A"
-  ),
-  createData(
-    "2020",
-    "Approved",
-    "Xiangkhoang",
-    false,
-    "15/15",
-    "Title D",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2020 to 09-11-2020",
-    "09-11-2020"
-  ),
-  createData(
-    "2016",
-    "Approved",
-    "Xaignabouli",
-    true,
-    "15/15",
-    "Title E",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2016 to 09-11-2016",
-    "09-11-2016"
-  ),
-  createData(
-    "2014",
-    "Approved",
-    "Xaisomboun",
-    true,
-    "15/15",
-    "Title F",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2014 to 09-11-2014",
-    "09-11-2014"
-  ),
-];
-
-const rows2 = [
-  createData2(
-    "2024",
-    "Requested",
-    false,
-    "0/15",
-    "Title A",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2024 to 09-11-2024",
-    "N/A"
-  ),
-  createData2(
-    "2024",
-    "Requested",
-    false,
-    "0/15",
-    "Title B",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2024 to 09-11-2024",
-    "N/A"
-  ),
-  createData2(
-    "2024",
-    "In Progress",
-    false,
-    "5/15",
-    "Title C",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2024 to 09-11-2024",
-    "N/A"
-  ),
-  createData2(
-    "2020",
-    "Completed",
-    false,
-    "15/15",
-    "Title D",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2020 to 09-11-2020",
-    "09-11-2020"
-  ),
-  createData2(
-    "2016",
-    "Completed",
-    true,
-    "15/15",
-    "Title E",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2016 to 09-11-2016",
-    "09-11-2016"
-  ),
-  createData2(
-    "2014",
-    "Completed",
-    true,
-    "15/15",
-    "Title F",
-    "000,000,000,0000,000,000,000,0000",
-    "01-09-2014 to 09-11-2014",
-    "09-11-2014"
-  ),
-];
 const Valuation = () => {
   // const theme = useTheme();
+  const { t } = useTranslation();
+  
   const userRole = UserService.getTokenParsed().realm_access.roles;
   console.log(userRole, " role");
   const hasCentralRole = userRole.some((role) => role.includes("CENTRAL"));
   // const hasLocalRole = userRole.some(role => role.includes("LOCAL"));
+  const rows = [
+    createData(
+      "2024",
+      "Draft",
+      "Vientiane",
+      false,
+      "0/11",
+      "Title A",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2024 to 09-11-2024",
+      "N/A"
+    ),
+    createData(
+      "2024",
+      "In Progress",
+      "Savannakhet",
+      false,
+      "2/15",
+      "Title B",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2024 to 09-11-2024",
+      "N/A"
+    ),
+    createData(
+      "2024",
+      "Rejected",
+      "Champasak",
+      false,
+      "0/11",
+      "Title C",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2024 to 09-11-2024",
+      "N/A"
+    ),
+    createData(
+      "2020",
+      "Approved",
+      "Xiangkhoang",
+      false,
+      "15/15",
+      "Title D",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2020 to 09-11-2020",
+      "09-11-2020"
+    ),
+    createData(
+      "2016",
+      "Approved",
+      "Xaignabouli",
+      true,
+      "15/15",
+      "Title E",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2016 to 09-11-2016",
+      "09-11-2016"
+    ),
+    createData(
+      "2014",
+      "Approved",
+      "Xaisomboun",
+      true,
+      "15/15",
+      "Title F",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2014 to 09-11-2014",
+      "09-11-2014"
+    ),
+  ];
+  
+  const rows2 = [
+    createData2(
+      "2024",
+      "Requested",
+      false,
+      "0/15",
+      "Title A",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2024 to 09-11-2024",
+      "N/A"
+    ),
+    createData2(
+      "2024",
+      "Requested",
+      false,
+      "0/15",
+      "Title B",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2024 to 09-11-2024",
+      "N/A"
+    ),
+    createData2(
+      "2024",
+      "In Progress",
+      false,
+      "5/15",
+      "Title C",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2024 to 09-11-2024",
+      "N/A"
+    ),
+    createData2(
+      "2020",
+      "Completed",
+      false,
+      "15/15",
+      "Title D",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2020 to 09-11-2020",
+      "09-11-2020"
+    ),
+    createData2(
+      "2016",
+      "Completed",
+      true,
+      "15/15",
+      "Title E",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2016 to 09-11-2016",
+      "09-11-2016"
+    ),
+    createData2(
+      "2014",
+      "Completed",
+      true,
+      "15/15",
+      "Title F",
+      "000,000,000,0000,000,000,000,0000",
+      "01-09-2014 to 09-11-2014",
+      "09-11-2014"
+    ),
+  ];
   return (
     <>
       {hasCentralRole ? (
@@ -425,7 +428,7 @@ const Valuation = () => {
               }}
             >
               <Header
-                title="Land Valuation"
+                title={t("Land Valuation")}
                 subtitle="Find your land valuation materials."
               />
               <Box sx={{ display: "flex", flexDirection: "row", gap: "12px" }}>
@@ -448,7 +451,7 @@ const Valuation = () => {
                     textWrap: "nowrap",
                   }}
                 >
-                  New Valuation
+                  {t('New Valuation')}
                 </Button>
                 </Link>
                 <Button
@@ -482,15 +485,15 @@ const Valuation = () => {
               >
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell>Base Year</StyledTableCell>
-                    <StyledTableCell>Status</StyledTableCell>
-                    <StyledTableCell>Province</StyledTableCell>
-                    <StyledTableCell>Issued to Local</StyledTableCell>
-                    <StyledTableCell>Applied Area</StyledTableCell>
-                    <StyledTableCell>Title</StyledTableCell>
-                    <StyledTableCell>Evaluation Member</StyledTableCell>
-                    <StyledTableCell>Committee Duration</StyledTableCell>
-                    <StyledTableCell>Decision Date</StyledTableCell>
+                    <StyledTableCell>{t("baseYear")}</StyledTableCell>
+                    <StyledTableCell>{t("status")}</StyledTableCell>
+                    <StyledTableCell>{t("province")}</StyledTableCell>
+                    <StyledTableCell>{t("issuedToLocal")}</StyledTableCell>
+                    <StyledTableCell>{t("appliedArea")}</StyledTableCell>
+                    <StyledTableCell>{t("title")}</StyledTableCell>
+                    <StyledTableCell>{t("Evaluation Member")}</StyledTableCell>
+                    <StyledTableCell>{t("Committee Duration")}</StyledTableCell>
+                    <StyledTableCell>{t("Decision Date")}</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -530,7 +533,7 @@ const Valuation = () => {
                             </Box>
                           </Link>
                         </TableCell>
-                        <TableCell>{row.province}</TableCell>
+                        <TableCell>{t(row.province)}</TableCell>
                         <TableCell>
                           <AntSwitch
                             checked={row.issue}

@@ -101,7 +101,7 @@ const TopBox = () => {
             startIcon={<LoginIcon />}
             onClick={handleLogin}
           >
-            Login
+            {t('Login')}
           </Button>
           <Button
             sx={{
@@ -117,7 +117,7 @@ const TopBox = () => {
             startIcon={<SignupIcon />}
             onClick={handleRegister}
           >
-            Register
+            {t('Register')}
           </Button>
           <Button
             sx={{
@@ -132,7 +132,7 @@ const TopBox = () => {
             variant="contained"
             onClick={handleRequireLogin}
           >
-            Require
+            {t('Require')}
           </Button>
 
           {/* <LanguageSwitcher /> */}
