@@ -446,7 +446,7 @@ function Sidebar() {
             zIndex: 1000,
             left: "55px",
             top: "-15px",
-            width: "220px",
+            width: "170px",
             borderRadius:"8px",
             "& .MuiPaper-root": {
               position: "relative",
