@@ -16,13 +16,11 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-
-const validationSchema = Yup.object({
-  year: Yup.string().required('year is required'),
-  model: Yup.string().required('model is required'),
-});
+import { useTranslation } from 'react-i18next';
 
 const SelectSampleParcels = () => {
+  const { t } = useTranslation();
+
   const [tab, setTab] = useState(0);
   const [isHistogramModalOpen, setIsHistogramModalOpen] = useState(false)
   const [isBoxPlotModalOpen, setIsBoxPlotModalOpen] = useState(false)
@@ -48,6 +46,11 @@ const SelectSampleParcels = () => {
   const handleOpenBoxPlotModal = () => {
     setIsBoxPlotModalOpen(true);
   }
+
+  const validationSchema = Yup.object({
+    year: Yup.string().required(t('yearRequired')),
+    model: Yup.string().required(t('modelRequired')),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -85,7 +88,7 @@ const SelectSampleParcels = () => {
                   lineHeight: '22px',
                 }}
               >
-                You have selected <b>2,000</b> standard land parcels and <b>30</b> standard land parcels to survey
+                {t('selectedParcels', { standard: '2,000', surveyed: '30' })}
               </Typography>
               <Box sx={{
                 display: "flex",
@@ -95,7 +98,7 @@ const SelectSampleParcels = () => {
                 cursor: "pointer",
               }} onClick={() => setIsHasData(false)}>
                 <ChangeSelectionIcon />
-                Change selection
+                {t('changeSelection')}
               </Box>
             </Box>
           </Box>
@@ -122,7 +125,7 @@ const SelectSampleParcels = () => {
                 startIcon={<HistogramIcon />}
                 onClick={handleOpenHistogramModal}
               >
-                Histogram
+                {t('histogram')}
               </Button>
               <Button
                 sx={{
@@ -145,13 +148,13 @@ const SelectSampleParcels = () => {
                 startIcon={<BoxPlotIcon />}
                 onClick={handleOpenBoxPlotModal}
               >
-                Box Plot
+                {t('boxPlot')}
               </Button>
             </Box>
             <Box>
               <Grid2 container alignItems="center" spacing={1}>
                 <Grid2 item>
-                  <span>Select from</span>
+                  <span>{t('selectFrom')}</span>
                 </Grid2>
                 <Grid2 item>
                   <StyledTabs
@@ -159,8 +162,8 @@ const SelectSampleParcels = () => {
                     onChange={handleTabChange}
                     aria-label="select from options"
                   >
-                    <StyledTab icon={<TableIcon color={tab === 0 ? '#1677FF' : '#000000A6'} />} label="Table" {...a11yProps(0)} />
-                    <StyledTab icon={<MapIcon />} label="Map" {...a11yProps(1)} />
+                    <StyledTab icon={<TableIcon color={tab === 0 ? '#1677FF' : '#000000A6'} />} label={t('table')} {...a11yProps(0)} />
+                    <StyledTab icon={<MapIcon />} label={t('map')} {...a11yProps(1)} />
                   </StyledTabs>
                 </Grid2>
               </Grid2>
@@ -186,7 +189,7 @@ const SelectSampleParcels = () => {
                 variant="outlined"
                 startIcon={<ReplayRoundedIcon sx={{ color: '#00000073', transform: 'scaleX(-1)'}} />}
               >
-                Reload
+                {t('reload')}
               </Button>
               <Typography
                 sx={{
@@ -197,7 +200,7 @@ const SelectSampleParcels = () => {
                   lineHeight: '16px',
                 }}
               >
-                Selected 3 items
+                {t('selectedItems', { count: 3 })}
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Checkbox checked={isOnlySurveyedStandardLots} onChange={() => setIsOnlySurveyedStandardLots(!isOnlySurveyedStandardLots)} 
@@ -217,7 +220,7 @@ const SelectSampleParcels = () => {
                     textAlign: 'left',
                   }}
                 >
-                  Only Surveyed Standard Lots
+                  {t('onlySurveyedLots')}
                 </Typography>
               </Box>
             </Box>
@@ -234,7 +237,7 @@ const SelectSampleParcels = () => {
                   lineHeight: '16px',
                 }}
               >
-                Parcels not selected as Standard Lots
+                {t('parcelsNotSelected')}
               </Typography>
             </Box>
           </Box>
@@ -260,7 +263,7 @@ const SelectSampleParcels = () => {
                 lineHeight: '24px',
               }}
             >
-              Recalculates the land prices of the remaining Standard Lots using the Surveyed Standard Lots and the selected model.
+              {t('recalculatesLandPrices')}
             </Typography>
             <form onSubmit={formik.handleSubmit}>
               <Box sx={{
@@ -272,7 +275,7 @@ const SelectSampleParcels = () => {
               }}>
                 <Box sx={{ width: '120px' }} >
                   <Typography component="label" htmlFor="year" sx={{ display: 'block', mb: 0.5 }}>
-                    Year
+                    {t('year')}
                   </Typography>
                   <FormControl fullWidth error={formik.touched.year && Boolean(formik.errors.year)}>
                     <Select
@@ -312,7 +315,7 @@ const SelectSampleParcels = () => {
                 </Box>
                 <Box sx={{ width: '120px', flex: 1 }}>
                   <Typography component="label" htmlFor="year" sx={{ display: 'block', mb: 0.5 }}>
-                    Model
+                    {t('model')}
                   </Typography>
                   <FormControl fullWidth error={formik.touched.model && Boolean(formik.errors.model)}>
                     <Select
@@ -370,7 +373,7 @@ const SelectSampleParcels = () => {
                   variant="contained"
                   onClick={formik.handleSubmit}
                 >
-                  Automatic calculation
+                  {t('automaticCalculation')}
                 </Button>
               </Box>
             </form>

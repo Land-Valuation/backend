@@ -22,20 +22,23 @@ import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { CalendarIcon } from '@mui/x-date-pickers';
 import SaveIcon from '../../../assets/icons/model-base/SaveIcon';
-
-const validationSchema = Yup.object({
-  characteristic1: Yup.string().required('Characteristic 1 is required'),
-  characteristic2: Yup.string().required('Characteristic 2 is required'),
-  characteristic3: Yup.string().required('Characteristic 3 is required'),
-  characteristic4: Yup.string().required('Characteristic 4 is required'),
-  characteristic5: Yup.string().required('Characteristic 5 is required'),
-  characteristic6: Yup.date().nullable().required('Characteristic 6 is required'),
-  characteristic7: Yup.string().required('Characteristic 7 is required'),
-  characteristic8: Yup.string().required('Characteristic 8 is required'),
-  characteristic9: Yup.date().nullable().required('Characteristic 9 is required'),
-});
+import { useTranslation } from 'react-i18next';
 
 const LandCharacteristicsDialog = ({ open, onClose }) => {
+  const { t } = useTranslation();
+
+  const validationSchema = Yup.object({
+    characteristic1: Yup.string().required(t('characteristic1Required')),
+    characteristic2: Yup.string().required(t('characteristic2Required')),
+    characteristic3: Yup.string().required(t('characteristic3Required')),
+    characteristic4: Yup.string().required(t('characteristic4Required')),
+    characteristic5: Yup.string().required(t('characteristic5Required')),
+    characteristic6: Yup.date().nullable().required(t('characteristic6Required')),
+    characteristic7: Yup.string().required(t('characteristic7Required')),
+    characteristic8: Yup.string().required(t('characteristic8Required')),
+    characteristic9: Yup.date().nullable().required(t('characteristic9Required')),
+  });
+
   const formik = useFormik({
     initialValues: {
       characteristic1: '',
@@ -66,7 +69,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
             lineHeight: '24px',
           }}
         >
-          Land Characteristics: AI-001
+          {t('landCharacteristics')} AI-001
         </Typography>
         <IconButton
           aria-label="close"
@@ -109,7 +112,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
             <Grid item size={4}>
               <Box>
                 <Typography component="label" htmlFor="characteristic1" sx={{ display: 'block', mb: 0.5 }}>
-                  Characteristic 1
+                  {t('characteristic1')}
                 </Typography>
                 <FormControl fullWidth error={formik.touched.characteristic1 && Boolean(formik.errors.characteristic1)}>
                   <Select
@@ -124,7 +127,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
                     }}
                   >
                     <MenuItem sx={{ display: 'none' }} value="">
-                      <em>Chọn</em>
+                      <em>{t('chon')}</em>
                     </MenuItem>
                     <MenuItem value={10}>Ten</MenuItem>
                     <MenuItem value={20}>Twenty</MenuItem>
@@ -150,7 +153,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
             <Grid item size={4}>
               <Box>
                 <Typography component="label" htmlFor="characteristic2" sx={{ display: 'block', mb: 0.5 }}>
-                  Characteristic 2
+                  {t('characteristic2')}
                 </Typography>
                 <TextField
                   fullWidth
@@ -168,7 +171,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
             <Grid item size={4}>
               <Box>
                 <Typography component="label" htmlFor="characteristic3" sx={{ display: 'block', mb: 0.5 }}>
-                  Characteristic 3
+                  {t('characteristic3')}
                 </Typography>
                 <FormControl fullWidth error={formik.touched.characteristic3 && Boolean(formik.errors.characteristic3)}>
                   <Select
@@ -183,7 +186,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
                     }}
                   >
                     <MenuItem sx={{ display: 'none' }} value="">
-                      <em>Chọn</em>
+                      <em>{t('chon')}</em>
                     </MenuItem>
                     <MenuItem value={10}>Ten</MenuItem>
                     <MenuItem value={20}>Twenty</MenuItem>
@@ -210,7 +213,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
             <Grid item size={4}>
               <Box>
                 <Typography component="label" htmlFor="characteristic4" sx={{ display: 'block', mb: 0.5 }}>
-                  Characteristic 4
+                  {t('characteristic4')}
                 </Typography>
                 <TextField
                   fullWidth
@@ -228,7 +231,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
             <Grid item size={4}>
               <Box>
                 <Typography component="label" htmlFor="characteristic5" sx={{ display: 'block', mb: 0.5 }}>
-                  Characteristic 5
+                  {t('characteristic5')}
                 </Typography>
                 <TextField
                   fullWidth
@@ -246,7 +249,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
             <Grid item size={4}>
               <Box>
                 <Typography component="label" htmlFor="characteristic6" sx={{ display: 'block', mb: 0.5 }}>
-                  Characteristic 6
+                  {t('characteristic6')}
                 </Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
@@ -289,7 +292,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
             <Grid item size={4}>
               <Box>
                 <Typography component="label" htmlFor="characteristic7" sx={{ display: 'block', mb: 0.5 }}>
-                  Characteristic 7
+                  {t('characteristic7')}
                 </Typography>
                 <FormControl fullWidth error={formik.touched.characteristic7 && Boolean(formik.errors.characteristic7)}>
                   <Select
@@ -304,7 +307,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
                     }}
                   >
                     <MenuItem sx={{ display: 'none' }} value="">
-                      <em>Chọn</em>
+                      <em>{t('chon')}</em>
                     </MenuItem>
                     <MenuItem value={10}>Ten</MenuItem>
                     <MenuItem value={20}>Twenty</MenuItem>
@@ -330,7 +333,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
             <Grid item size={4}>
               <Box>
                 <Typography component="label" htmlFor="characteristic8" sx={{ display: 'block', mb: 0.5 }}>
-                  Characteristic 8
+                  {t('characteristic8')}
                 </Typography>
                 <TextField
                   fullWidth
@@ -348,7 +351,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
             <Grid item size={4}>
               <Box>
                 <Typography component="label" htmlFor="characteristic9" sx={{ display: 'block', mb: 0.5 }}>
-                  Characteristic 9
+                  {t('characteristic9')}
                 </Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
@@ -411,7 +414,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
           startIcon={<CloseIcon />}
           onClick={onClose}
         >
-          Cancel
+          {t('cancel')}
         </Button>
         <Button
           sx={{
@@ -431,7 +434,7 @@ const LandCharacteristicsDialog = ({ open, onClose }) => {
           type="submit"
           onClick={formik.handleSubmit}
         >
-          Save
+          {t('save')}
         </Button>
       </DialogActions>
     </Dialog>
@@ -442,4 +445,4 @@ LandCharacteristicsDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
-export default LandCharacteristicsDialog;
+export default LandCharacteristicsDialog

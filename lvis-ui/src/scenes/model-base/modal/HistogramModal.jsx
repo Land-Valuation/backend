@@ -2,8 +2,10 @@ import { Box, Dialog, DialogContent, DialogTitle, IconButton, Typography } from 
 import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from "prop-types";
 import BarChart from "../../charts/bar/BarChart";
+import { useTranslation } from 'react-i18next';
 
 const HistogramModal = ({ open, onClose }) => {
+  const { t } = useTranslation();
   const data = [
     {
       "id": "Category 1",
@@ -54,7 +56,7 @@ const HistogramModal = ({ open, onClose }) => {
             textAlign: 'center',
           }}
         >
-          Histogram
+          {t('histogram')}
         </Typography>
         <IconButton
           aria-label="close"

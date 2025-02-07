@@ -2,8 +2,10 @@ import { Box, Radio, Typography } from '@mui/material';
 import CustomTable from '../../../../components/customMUI/CustomTable';
 import { useMemo, useState } from 'react';
 import FeatureModal from '../../modal/FeatureModal';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 
 const SelectOptionalModelTable = () => {
+  const { t } = useTranslation(); // Initialize translation hook
   const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
   const [sortConfig, setSortConfig] = useState(null);
 
@@ -94,7 +96,7 @@ const SelectOptionalModelTable = () => {
         ),
     },
     {
-      title: 'No.',
+      title: t('no'),
       dataIndex: 'no',
       key: 'no',
       render: (value) => (
@@ -104,7 +106,7 @@ const SelectOptionalModelTable = () => {
       ),
     },
     {
-      title: 'Features',
+      title: t('features'),
       dataIndex: 'features',
       key: 'features',
       align: 'left',
@@ -115,7 +117,7 @@ const SelectOptionalModelTable = () => {
       ),
     },
     {
-      title: 'adj R-Square',
+      title: t('adjRSquare'),
       dataIndex: 'adjRSquare',
       key: 'adjRSquare',
       align: 'right',
@@ -127,7 +129,7 @@ const SelectOptionalModelTable = () => {
       ),
     },
     {
-      title: 'F-Statistics',
+      title: t('fStatistics'),
       dataIndex: 'fStatistics',
       key: 'fStatistics',
       align: 'right',

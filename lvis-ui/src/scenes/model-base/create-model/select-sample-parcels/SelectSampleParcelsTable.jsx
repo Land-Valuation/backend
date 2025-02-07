@@ -4,9 +4,11 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "../../../../state/prototypeApi";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 
 const SelectSampleParcelsTable = () => {
   const theme = useTheme();
+  const { t } = useTranslation(); // Initialize translation hook
   // values to be sent to the backend
   const [sort, setSort] = useState({});
   const [paginationModel, setPaginationModel] = useState({
@@ -22,12 +24,12 @@ const SelectSampleParcelsTable = () => {
   const columns = [
     {
       field: "_id",
-      headerName: "ID",
+      headerName: t('id'),
       flex: 1,
     },
     {
       field: "userId",
-      headerName: "Surveyed",
+      headerName: t('surveyed'),
       flex: 0.5,
       sortable: false,
       renderCell: () => {
@@ -45,28 +47,28 @@ const SelectSampleParcelsTable = () => {
     },
     {
       field: "createdAt",
-      headerName: "CreatedAt",
+      headerName: t('createdAt'),
       editable: true,
       flex: 1,
     },
     {
       field: "products",
-      headerName: "# of Products",
+      headerName: t('numberOfProducts'),
       flex: 0.5,
       sortable: false,
-      description: "This column has a description on product and is sortable.",
+      description: t('productColumnDescription'),
       renderCell: (params) => params.value.length,
     },
     {
       field: "cost",
-      headerName: "Cost",
+      headerName: t('cost'),
       width: 190,
       editable: true,
       renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: t('action'),
       width: 150,
       cellClassName: "actions",
       renderCell: () => {
@@ -220,4 +222,4 @@ const SelectSampleParcelsTable = () => {
   );
 };
 
-export default SelectSampleParcelsTable;
+export default SelectSampleParcelsTable

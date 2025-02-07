@@ -3,8 +3,11 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import PropTypes from "prop-types";
+import { useTranslation } from 'react-i18next';
 
 const FilterSelectSampleParcels = ({ onChangeView }) => {
+  const { t } = useTranslation();
+
   const generateRamdonHandler = () => {
     onChangeView(true)
   }
@@ -14,6 +17,7 @@ const FilterSelectSampleParcels = ({ onChangeView }) => {
       display: "flex",
       flexDirection: "column",
       gap: "24px",
+      width: "100%",
     }}>
       <Box sx={{
         padding: '32px',
@@ -33,7 +37,7 @@ const FilterSelectSampleParcels = ({ onChangeView }) => {
             lineHeight: '16px',
           }}
         >
-          Please filter out the standard land parcels in the tool below.
+          {t('pleaseFilterLandParcels')}
         </Typography>
       </Box>
       <Box sx={{
@@ -62,7 +66,7 @@ const FilterSelectSampleParcels = ({ onChangeView }) => {
                 lineHeight: '22px',
               }}
             >
-              Limit on the number of standard land plots:
+              {t('limitOnStandardLandPlots')}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px'}}>
               <Typography
@@ -74,7 +78,7 @@ const FilterSelectSampleParcels = ({ onChangeView }) => {
                   lineHeight: '22px',
                 }}
               >
-                Total Standard Lot
+                {t('totalStandardLot')}
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Box sx={{ 
@@ -123,7 +127,7 @@ const FilterSelectSampleParcels = ({ onChangeView }) => {
                   lineHeight: '22px',
                 }}
               >
-                Surveyed Standard Lot
+                {t('surveyedStandardLot')}
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Box sx={{ 
@@ -178,7 +182,7 @@ const FilterSelectSampleParcels = ({ onChangeView }) => {
                 lineHeight: '22px',
               }}
             >
-              Exclude Land Price Outliers:
+              {t('excludeLandPriceOutliers')}
             </Typography>
             <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
               <Typography
@@ -190,7 +194,7 @@ const FilterSelectSampleParcels = ({ onChangeView }) => {
                   lineHeight: '22px',
                 }}
               >
-                Lower Bound
+                {t('lowerBound')}
               </Typography>
               <FormControl sx={{ width: '100px' }} variant="outlined">
                 <OutlinedInput
@@ -210,7 +214,7 @@ const FilterSelectSampleParcels = ({ onChangeView }) => {
                   lineHeight: '22px',
                 }}
               >
-                Lower Bound
+                {t('upperBound')}
               </Typography>
               <FormControl sx={{ width: '100px' }} variant="outlined">
                 <OutlinedInput
@@ -249,9 +253,9 @@ const FilterSelectSampleParcels = ({ onChangeView }) => {
               variant="contained"
               onClick={generateRamdonHandler}
             >
-              <Box>Generate</Box>
-              <Box>Random</Box>
-              <Box>Standard Lot</Box>
+              <Box>{t('generate')}</Box>
+              <Box>{t('random')}</Box>
+              <Box>{t('standardLot')}</Box>
             </Button>
           </Box>
         </Box>

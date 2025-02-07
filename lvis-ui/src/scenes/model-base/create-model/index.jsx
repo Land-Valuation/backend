@@ -15,15 +15,16 @@ import DataVerification from './data-verification/DataVerification';
 import SetModelVariables from './set-model-variables/SetModelVariables';
 import SelectOptionalModel from './select-optional-model/SelectOptionalModel';
 import FinalizeAdjustmentTable from './finalize-adjustment-table/FinalizeAdjustmentTable';
+import { useTranslation } from 'react-i18next';
 
 const steps = [
-  'Define Model Area',
-  'Select Sample Parcels',
-  'Data Preprocessing',
-  'Data verification',
-  'Set Model Variables',
-  'Select Optimal Model',
-  'Finalize Adjustment Table',
+  'defineModelArea',
+  'selectSampleParcels',
+  'dataPreprocessing',
+  'dataVerification',
+  'setModelVariables',
+  'selectOptimalModel',
+  'finalizeAdjustmentTable',
 ];
 
 const StepperStyled = styled(Stepper)(({ theme }) => ({
@@ -129,9 +130,11 @@ const ColorlibConnector = styled(StepConnector)(() => ({
 }));
 
 const CreateNewModel = () => {
+  const { t } = useTranslation();
+
   const breadcrumbData = [
-    { name: 'Home', href: '/' },
-    { name: 'MODEL-BASED LAND VALUATION', href: '/model-base' },
+    { name: t('home'), href: '/' },
+    { name: t('modelBasedLandValuation'), href: '/model-base' },
   ];
 
   const [activeStep, setActiveStep] = useState(0);
@@ -171,7 +174,7 @@ const CreateNewModel = () => {
   return (
     <LayoutPageCommon
       breadcrumbData={breadcrumbData}
-      title="Create a new model"
+      title={t('createNewModel')}
       actions={
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Button
@@ -197,7 +200,7 @@ const CreateNewModel = () => {
             startIcon={<ArrowBackIcon />}
             onClick={handleBack}
           >
-            Previous
+            {t('previous')}
           </Button>
           {
             !isLastStep &&
@@ -221,7 +224,7 @@ const CreateNewModel = () => {
               endIcon={<ArrowForwardIcon />}
               onClick={handleNext}
             >
-              Next
+              {t('next')}
             </Button>
           }
         </Box>
@@ -241,7 +244,7 @@ const CreateNewModel = () => {
                       lineHeight: '24px',
                     }}
                   >
-                    {label}
+                    {t(label)}
                   </Typography>
                 </StepLabel>
               </Step>
@@ -267,7 +270,7 @@ const CreateNewModel = () => {
                 },
               }}
             >
-              Save as Draft
+              {t('saveAsDraft')}
             </Button>
             <Button
               variant="contained"
@@ -288,7 +291,7 @@ const CreateNewModel = () => {
                 },
               }}
             >
-              Finalization
+              {t('finalization')}
             </Button>
           </Box>
         </Box>
@@ -301,4 +304,4 @@ const CreateNewModel = () => {
   );
 };
 
-export default CreateNewModel;
+export default CreateNewModel

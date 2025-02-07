@@ -10,12 +10,14 @@ import ImportIcon from "../../../../assets/icons/model-base/ImportIcon";
 import { IOSSwitch } from "../../../../components/customMUI/CustomIOSSwitch";
 import ParcelTable from "./ParcelTable";
 import PopConfirm from "../../../../components/customMUI/PopConfirm";
-
+import { useTranslation } from 'react-i18next';
 
 const RequestForInvesgationDetail = () => {
+  const { t } = useTranslation();
+
   const breadcrumbData = [
-    { name: 'Home', href: '/' },
-    { name: 'MODEL-BASED LAND VALUATION', href: '/model-base' },
+    { name: t('home'), href: '/' },
+    { name: t('modelBasedLandValuation'), href: '/model-base' },
   ];
 
   const navigate = useNavigate();
@@ -27,17 +29,17 @@ const RequestForInvesgationDetail = () => {
 
   const renderStatus = (status) => {
     const statusConfigs = {
-      Requested: {
+      [t('requested')]: { 
         color: '#FAAD14',
         borderColor: '#FFE58F',
         icon: <ErrorOutlineIcon style={{ color: '#FAAD14', fontSize: '14px' }} />,
       },
-      Confirmed: {
+      [t('confirmed')]: {
         color: '#52C41A',
         borderColor: '#B7EB8F',
         icon: <CheckCircleOutlineIcon style={{ color: '#52C41A', fontSize: '14px' }} />,
       },
-      Inprogress: {
+      [t('inprogress')]: {
         color: '#1677FF',
         borderColor: '#91CAFF',
         icon: <CachedIcon style={{ color: '#1677FF', fontSize: '14px' }} />,
@@ -145,7 +147,7 @@ const RequestForInvesgationDetail = () => {
                 lineHeight: '16px',
               }}
             >
-              Save and return
+              {t('saveAndReturn')}
             </Typography>
           </Box>
           <Box sx={{ width: '1px', height: '32px', backgroundColor: '#0000001A'}}></Box>
@@ -158,7 +160,7 @@ const RequestForInvesgationDetail = () => {
               lineHeight: "28px",
             }}
           >
-            Request for investigation of land characteristics of land parcels
+            {t('requestForInvestigationTitle')}
           </Box>
         </Box>
       </Box>
@@ -173,23 +175,23 @@ const RequestForInvesgationDetail = () => {
             <Table aria-label="simple table">
               <TableBody>
                 <TableRow>
-                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>Status</TableCell>
-                  <TableCell sx={{ ...defaultCellStyle }}>{renderStatus('Inprogress')}</TableCell>
-                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>Request Date</TableCell>
+                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>{t('status')}</TableCell>
+                  <TableCell sx={{ ...defaultCellStyle }}>{renderStatus(t('inprogress'))}</TableCell>
+                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>{t('requestDate')}</TableCell>
                   <TableCell sx={{ ...defaultCellStyle }}>09-11-2024</TableCell>
-                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>Base Year</TableCell>
+                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>{t('baseYear')}</TableCell>
                   <TableCell sx={{ ...defaultCellStyle }}>2024</TableCell>
-                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>Area</TableCell>
+                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>{t('area')}</TableCell>
                   <TableCell sx={{ ...defaultCellStyle }}>A1</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>Features</TableCell>
+                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>{t('features')}</TableCell>
                   <TableCell colSpan={3} sx={{ ...defaultCellStyle }}>000,000,000,0000,000,000,000,0000</TableCell>
-                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>Applied Area Name</TableCell>
+                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>{t('appliedAreaName')}</TableCell>
                   <TableCell colSpan={3} sx={{ ...defaultCellStyle }}>Thapangthong, Savannakhet</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>Model</TableCell>
+                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>{t('model')}</TableCell>
                   <TableCell colSpan={7} sx={{ ...defaultCellStyle }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
                       <Typography
@@ -201,7 +203,7 @@ const RequestForInvesgationDetail = () => {
                           lineHeight: '22px',
                         }}
                       >
-                        Model name
+                        {t('modelName')}
                       </Typography>
                       <Typography
                         sx={{
@@ -212,13 +214,13 @@ const RequestForInvesgationDetail = () => {
                           lineHeight: '22px',
                         }}
                       >
-                        Adjustment of Standardization Ratio
+                        {t('adjustmentStandardizationRatio')}
                       </Typography>
                     </Box>
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>Land Characteristics</TableCell>
+                  <TableCell sx={{ ...defaultCellStyle, ...backgroundGreyCellStyle }}>{t('landCharacteristics')}</TableCell>
                   <TableCell colSpan={7} sx={{ ...defaultCellStyle }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
                       Lorem ipsum dolor sit amet consectetur. Enim est in odio nulla felis morbi at sit eget. Enim aliquam non quis egestas risus aliquet arcu. Nullam dapibus blandit sed sit diam. Rhoncus nec sed hendrerit a nam tellus proin. At tincidunt arcu eget ut nibh. Leo rhoncus mauris tortor tristique tortor fames fermentum vel. Vulputate adipiscing id lacus eu viverra. Et id suspendisse tristique mi enim sit elit. 
@@ -262,7 +264,7 @@ const RequestForInvesgationDetail = () => {
               }}
               variant={"outlined"}
             >
-              Accuracy Verification(COD)
+              {t('accuracyVerificationCOD')}
             </Button>
             <Button
               sx={{
@@ -284,7 +286,7 @@ const RequestForInvesgationDetail = () => {
               }}
               variant={"outlined"}
             >
-              Accuracy Verification(COD)
+              {t('accuracyVerificationCOD')}
             </Button>
           </Box>
           <Box sx={{
@@ -313,7 +315,7 @@ const RequestForInvesgationDetail = () => {
               variant={"outlined"}
               startIcon={<ExportIcon color={'#1677FF'} />}
             >
-              Export to Excel
+              {t('exportToExcel')}
             </Button>
             <Button
               sx={{
@@ -336,7 +338,7 @@ const RequestForInvesgationDetail = () => {
               variant={"outlined"}
               startIcon={<ImportIcon color={'#1677FF'} />}
             >
-              Import to Excel
+              {t('importToExcel')}
             </Button>
             <Box sx={{ width: '1px', height: '32px', backgroundColor: '#0000001A', margin: '0 8px' }}></Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -349,11 +351,11 @@ const RequestForInvesgationDetail = () => {
                   lineHeight: '22px',
                 }}
               >
-                Submit to Central
+                {t('submitToCentral')}
               </Typography>
               <PopConfirm
-                title={'Thông báo'}
-                content={'Bạn có chắc chắn xóa không?'}
+                title={t('notification')}
+                content={t('areYouSureToDelete')}
                 onConfirm={() => {}}
                 onCancel={() => {}}
               >

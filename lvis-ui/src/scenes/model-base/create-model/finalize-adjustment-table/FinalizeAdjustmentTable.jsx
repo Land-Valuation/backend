@@ -3,8 +3,10 @@ import { CalendarIcon, DatePicker, LocalizationProvider } from "@mui/x-date-pick
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useState } from "react";
 import CustomTable from "../../../../components/customMUI/CustomTable";
+import { useTranslation } from 'react-i18next';
 
  const FinalizeAdjustmentTable = () => {
+  const { t } = useTranslation(); 
   const [selectedYear, setSelectedYear] = useState(new Date(2024, 0, 1));
 
   const dataSource = [
@@ -57,7 +59,7 @@ import CustomTable from "../../../../components/customMUI/CustomTable";
 
   const columns = [
     {
-      title: 'Standard plot',
+      title: t('standardPlot'),
       dataIndex: 'standardPlot',
       key: 'standardPlot',
       align: 'left',
@@ -65,41 +67,41 @@ import CustomTable from "../../../../components/customMUI/CustomTable";
       sortable: true,
     },
     {
-      title: 'Individual plot',
+      title: t('individualPlot'),
       key: 'individualPlot',
       align: 'center',
       colSpan: 5, // Cột này sẽ chiếm 5 cột
     },
     {
-      title: 'UDb',
+      title: t('uDb'),
       dataIndex: 'UDb',
       key: 'UDb',
       align: 'center',
       sortable: true,
     },
     {
-      title: 'N',
+      title: t('n'),
       dataIndex: 'N',
       key: 'N',
       align: 'center',
       sortable: true,
     },
     {
-      title: 'UBb',
+      title: t('uBb'),
       dataIndex: 'UBb',
       key: 'UBb',
       align: 'center',
       sortable: true,
     },
     {
-      title: 'UEa',
+      title: t('uEa'),
       dataIndex: 'UEa',
       key: 'UEa',
       align: 'center',
       sortable: true,
     },
     {
-      title: 'UEb',
+      title: t('uEb'),
       dataIndex: 'UEb',
       key: 'UEb',
       align: 'center',
@@ -129,7 +131,7 @@ import CustomTable from "../../../../components/customMUI/CustomTable";
             lineHeight: '22px',
           }}
         >
-          Model Description: Independent Variables(Variable Name/Coefficient), Accuracy 1, Accuracy 2, Accuracy 3
+          {t('modelDescription')}
         </Typography>
         <Button
           sx={{
@@ -150,18 +152,18 @@ import CustomTable from "../../../../components/customMUI/CustomTable";
           }}
           variant="contained"
         >
-          Adjustment Table
+          {t('adjustmentTable')}
         </Button>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flexWrap: 'wrap' }}>
         <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, flexWrap: 'wrap' }}>
           <Box sx={{ flex: 1 }}>
             <Typography variant="subtitle1" component="label" sx={{ display: 'block', mb: 0.5 }}>
-            <Typography component="span" sx={{ color: 'red' }}>*</Typography> Title 
+            <Typography component="span" sx={{ color: 'red' }}>*</Typography> {t('title')}
             </Typography>
             <TextField
               fullWidth
-              placeholder="Enter title"
+              placeholder={t('enterTitle')}
               variant="outlined"
               size="small"
               sx={{ height: '40px', '&:hover fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important' }}}
@@ -169,7 +171,7 @@ import CustomTable from "../../../../components/customMUI/CustomTable";
           </Box>
           <Box sx={{ flexShrink: 0, width: 150 }}>
             <Typography variant="subtitle1" component="label" sx={{ display: 'block', mb: 0.5 }}>
-              <Typography component="span" sx={{ color: 'red' }}>*</Typography> Base year 
+              <Typography component="span" sx={{ color: 'red' }}>*</Typography> {t('baseYear')}
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
@@ -209,11 +211,11 @@ import CustomTable from "../../../../components/customMUI/CustomTable";
         </Box>
         <Box>
           <Typography variant="subtitle1" component="label" sx={{ display: 'block', mb: 0.5 }}>
-            Note
+            {t('note')}
           </Typography>
           <TextField
             fullWidth
-            placeholder="Enter content"
+            placeholder={t('enterContent')}
             multiline
             rows={1}
             variant="outlined"

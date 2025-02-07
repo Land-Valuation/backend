@@ -1,8 +1,10 @@
 import { Box, Button } from "@mui/material"
 import ExportIcon from "../../../../assets/icons/model-base/ExportIcon"
 import DataVerificationTable from "./DataVerificationTable"
+import { useTranslation } from 'react-i18next';
 
 const DataVerification = () => {
+  const { t } = useTranslation();
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
       <Box>
@@ -24,7 +26,7 @@ const DataVerification = () => {
           variant="outlined"
           startIcon={<ExportIcon />}
         >
-          Export
+          {t('export')}
         </Button>
       </Box>
       <Box>

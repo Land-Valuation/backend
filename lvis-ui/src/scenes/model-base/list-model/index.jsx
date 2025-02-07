@@ -6,8 +6,10 @@ import CustomTable from "../../../components/customMUI/CustomTable";
 import { IOSSwitch } from "../../../components/customMUI/CustomIOSSwitch";
 import AppliedAreasModal from "../modal/AppliedAreasModal";
 import FeatureModal from "../modal/FeatureModal";
+import { useTranslation } from 'react-i18next';
 
 const ListModel = () => {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 7 }, (_, i) => currentYear - i)
   const [yearSelected, setYearSelected] = useState(currentYear)
@@ -33,84 +35,84 @@ const ListModel = () => {
 
   const data = [
     {
-      status: 'Draft',
+      status: t('draft'),
       issuedToLocal: false,
-      appliedArea: 'N/A',
+      appliedArea: t('notApplicable'),
       title: 'Model A',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
     {
-      status: 'Confirmed',
+      status: t('confirmed'),
       issuedToLocal: true,
       appliedArea: '5/5',
       title: 'Model B',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
     {
-      status: 'Confirmed',
+      status: t('confirmed'),
       issuedToLocal: false,
       appliedArea: '3/6',
       title: 'Model C',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
     {
-      status: 'Draft',
+      status: t('draft'),
       issuedToLocal: false,
-      appliedArea: 'N/A',
+      appliedArea: t('notApplicable'),
       title: 'Model D',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
     {
-      status: 'Draft',
+      status: t('draft'),
       issuedToLocal: false,
-      appliedArea: 'N/A',
+      appliedArea: t('notApplicable'),
       title: 'Model E',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
     {
-      status: 'Draft',
+      status: t('draft'),
       issuedToLocal: false,
-      appliedArea: 'N/A',
+      appliedArea: t('notApplicable'),
       title: 'Model F',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
   ];
 
   const columns = [
     {
-      title: 'Status',
+      title: t('status'),
       dataIndex: 'status',
       key: 'status',
       render: (status) => (
         <Box
           sx={{
-            backgroundColor: status === 'Confirmed' ? '#F6FFED' : '#FFFBE6',
-            color: status === 'Confirmed' ? '#52C41A' : '#FAAD14',
-            border: status === 'Confirmed' ? '1px solid #B7EB8F' : '1px solid #FFE58F',
+            backgroundColor: status === t('confirmed') ? '#F6FFED' : '#FFFBE6',
+            color: status === t('confirmed') ? '#52C41A' : '#FAAD14',
+            border: status === t('confirmed') ? '1px solid #B7EB8F' : '1px solid #FFE58F',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '4px',
@@ -121,19 +123,19 @@ const ListModel = () => {
             fontFamily: 'Poppins',
           }}
         >
-          {status === 'Confirmed' ? <CheckCircleOutlineIcon style={{ color: '#52C41A', fontSize: '14px' }} /> : <ErrorOutlineIcon style={{ color: '#FAAD14', fontSize: '14px' }} />} {status}
+          {status === t('confirmed') ? <CheckCircleOutlineIcon style={{ color: '#52C41A', fontSize: '14px' }} /> : <ErrorOutlineIcon style={{ color: '#FAAD14', fontSize: '14px' }} />} {status}
         </Box>
       ),
     },
     {
-      title: 'Issued to Local',
+      title: t('issuedToLocal'),
       dataIndex: 'issuedToLocal',
       key: 'issuedToLocal',
       render: (issuedToLocal) => (<IOSSwitch checked={issuedToLocal} />),
       align: 'center',
     },
     {
-      title: 'Applied Area',
+      title: t('appliedArea'),
       dataIndex: 'appliedArea',
       key: 'appliedArea',
       render: (appliedArea) => (
@@ -143,12 +145,12 @@ const ListModel = () => {
       ),
     },
     {
-      title: 'Title',
+      title: t('title'),
       dataIndex: 'title',
       key: 'title',
     },
     {
-      title: 'Features',
+      title: t('features'),
       dataIndex: 'features',
       key: 'features',
       render: (features) => (
@@ -158,24 +160,24 @@ const ListModel = () => {
       ),
     },
     {
-      title: 'adj R-Square',
+      title: t('adjRSquare'),
       dataIndex: 'adjRSquare',
       key: 'adjRSquare',
       align: 'right',
     },
     {
-      title: 'F-Statistics',
+      title: t('fStatistics'),
       dataIndex: 'fStatistics',
       key: 'fStatistics',
       align: 'right',
     },
     {
-      title: 'Region',
+      title: t('region'),
       dataIndex: 'region',
       key: 'region',
     },
     {
-      title: 'Updated',
+      title: t('updated'),
       dataIndex: 'updated',
       key: 'updated',
     },
@@ -204,7 +206,7 @@ const ListModel = () => {
             marginBottom: '12px',
           }}
         >
-          Base Year
+          {t('baseYear')}
         </Typography>
         {years && years.length > 0 && years.map((year) => (
           <Box
@@ -242,7 +244,7 @@ const ListModel = () => {
             marginBottom: '12px',
           }}
         >
-          List models
+          {t('listModels')}
         </Typography>
         <CustomTable dataSource={data} columns={columns} />
       </Box>

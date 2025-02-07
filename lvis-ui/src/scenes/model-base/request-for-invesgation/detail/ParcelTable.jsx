@@ -7,6 +7,7 @@ import LandCharacteristicsDialog from '../../modal/LandCharacteristicsDialog';
 import { useState } from 'react';
 import MarkerIcon from '../../../../assets/icons/model-base/MarkerIcon';
 import SelectSampleParcelLandModal from '../../modal/SelectSampleParcelLandModal';
+import { useTranslation } from 'react-i18next';
 
 const data = [
   { id: 1, parcelId: 'A1-001', referenceParcel: 'A2-123', price: '30,000', characteristic1: 'Row data 1', characteristic2: 'Row data 1', characteristic3: 'Row data 1', characteristic4: 'Row data 1' },
@@ -23,6 +24,8 @@ const data = [
 
 const ParcelTable = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
+
   const [isOpenLandCharacteristicsDialog, setIsOpenLandCharacteristicsDialog] = useState(false)
   const [isOpenSelectSampleParcelLandDialog, setIsSelectSampleParcelLandDialog] = useState(false)
 
@@ -46,7 +49,7 @@ const ParcelTable = () => {
   const columns = [
     {
       field: 'parcelId',
-      headerName: 'Parcel ID',
+      headerName: t('parcelID'),
       flex: 1,
       renderCell: (params) => (
         <Typography
@@ -68,7 +71,7 @@ const ParcelTable = () => {
     },
     {
       field: 'referenceParcel',
-      headerName: 'Reference Parcel',
+      headerName: t('referenceParcel'),
       flex: 2,
       sortable: false,
       renderHeader: () => (
@@ -83,7 +86,7 @@ const ParcelTable = () => {
               wordBreak: 'break-word',
             }}
           >
-            Reference Parcel
+            {t('referenceParcel')}
           </Typography>
           <Button
             sx={{
@@ -105,7 +108,7 @@ const ParcelTable = () => {
             variant="contained"
             startIcon={<LoopIcon />}
           >
-            Auto
+            {t('auto')}
           </Button>
         </Box>
       ),
@@ -128,11 +131,11 @@ const ParcelTable = () => {
         </Box>
       ),
     },
-    { field: 'price', headerName: 'Price (LAK/m²)', flex: 1 },
-    { field: 'characteristic1', headerName: 'Characteristic 1', flex: 1 },
-    { field: 'characteristic2', headerName: 'Characteristic 2', flex: 1 },
-    { field: 'characteristic3', headerName: 'Characteristic 3', flex: 1 },
-    { field: 'characteristic4', headerName: 'Characteristic 4', flex: 1 },
+    { field: 'price', headerName: t('priceLAK'), flex: 1 },
+    { field: 'characteristic1', headerName: t('characteristic1'), flex: 1 },
+    { field: 'characteristic2', headerName: t('characteristic2'), flex: 1 },
+    { field: 'characteristic3', headerName: t('characteristic3'), flex: 1 },
+    { field: 'characteristic4', headerName: t('characteristic4'), flex: 1 },
   ];
 
   return (

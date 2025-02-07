@@ -9,8 +9,10 @@ import AppliedAreasModal from "../modal/AppliedAreasModal";
 import FeatureModal from "../modal/FeatureModal";
 import CachedIcon from '@mui/icons-material/Cached';
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const RequestForInvesgation = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const currentYear = new Date().getFullYear();
@@ -47,25 +49,25 @@ const RequestForInvesgation = () => {
 
   const renderStatus = (status) => {
     const statusConfigs = {
-      Requested: {
+      [t('requested')]: {
         color: '#FAAD14',
         borderColor: '#FFE58F',
         icon: <ErrorOutlineIcon style={{ color: '#FAAD14', fontSize: '14px' }} />,
       },
-      Confirmed: {
+      [t('confirmed')]: {
         color: '#52C41A',
         borderColor: '#B7EB8F',
         icon: <CheckCircleOutlineIcon style={{ color: '#52C41A', fontSize: '14px' }} />,
       },
-      Inprogress: {
+      [t('inprogress')]: {
         color: '#1677FF',
         borderColor: '#91CAFF',
         icon: <CachedIcon style={{ color: '#1677FF', fontSize: '14px' }} />,
       },
     };
-  
+
     const config = statusConfigs[status];
-  
+
     if (config) {
       return (
         <Box
@@ -94,76 +96,76 @@ const RequestForInvesgation = () => {
 
   const data = [
     {
-      status: 'Requested',
+      status: t('requested'),
       issuedToLocal: false,
-      appliedArea: 'N/A',
+      appliedArea: t('notApplicable'),
       title: 'Model A',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
     {
-      status: 'Confirmed',
+      status: t('confirmed'),
       issuedToLocal: true,
       appliedArea: '5/5',
       title: 'Model B',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
     {
-      status: 'Inprogress',
+      status: t('inprogress'),
       issuedToLocal: false,
       appliedArea: '3/6',
       title: 'Model C',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
     {
-      status: 'Confirmed',
+      status: t('confirmed'),
       issuedToLocal: false,
-      appliedArea: 'N/A',
+      appliedArea: t('notApplicable'),
       title: 'Model D',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
     {
-      status: 'Confirmed',
+      status: t('confirmed'),
       issuedToLocal: false,
-      appliedArea: 'N/A',
+      appliedArea: t('notApplicable'),
       title: 'Model E',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
     {
-      status: 'Requested',
+      status: t('requested'),
       issuedToLocal: false,
-      appliedArea: 'N/A',
+      appliedArea: t('notApplicable'),
       title: 'Model F',
       features: '000,000,000,000,000,000,000,000,000,...',
       adjRSquare: 0.001,
       fStatistics: 0.001,
-      region: 'Row data',
+      region: t('rowData'),
       updated: '09-11-2024',
     },
   ];
 
   const columns = [
     {
-      title: 'Status',
+      title: t('status'),
       dataIndex: 'status',
       key: 'status',
       render: (status) => {
@@ -171,14 +173,14 @@ const RequestForInvesgation = () => {
       }
     },
     {
-      title: 'Issued to Local',
+      title: t('issuedToLocal'),
       dataIndex: 'issuedToLocal',
       key: 'issuedToLocal',
       render: (issuedToLocal) => (<IOSSwitch checked={issuedToLocal} />),
       align: 'center',
     },
     {
-      title: 'Applied Area',
+      title: t('appliedArea'),
       dataIndex: 'appliedArea',
       key: 'appliedArea',
       render: (appliedArea) => (
@@ -188,12 +190,12 @@ const RequestForInvesgation = () => {
       ),
     },
     {
-      title: 'Title',
+      title: t('title'),
       dataIndex: 'title',
       key: 'title',
     },
     {
-      title: 'Features',
+      title: t('features'),
       dataIndex: 'features',
       key: 'features',
       render: (features) => (
@@ -203,49 +205,49 @@ const RequestForInvesgation = () => {
       ),
     },
     {
-      title: 'adj R-Square',
+      title: t('adjRSquare'),
       dataIndex: 'adjRSquare',
       key: 'adjRSquare',
       align: 'right',
       sortable: true,
     },
     {
-      title: 'F-Statistics',
+      title: t('fStatistics'),
       dataIndex: 'fStatistics',
       key: 'fStatistics',
       align: 'right',
     },
     {
-      title: 'Region',
+      title: t('region'),
       dataIndex: 'region',
       key: 'region',
     },
     {
-      title: 'Updated',
+      title: t('updated'),
       dataIndex: 'updated',
       key: 'updated',
     },
   ];
 
   const rowStyle = (row) => {
-    if (row.status === 'Requested') {
+    if (row.status === t('requested')) {
       return { backgroundColor: '#FFFBE6 ' };
     }
-    if (row.status === 'Confirmed') { 
+    if (row.status === t('confirmed')) {
       return { backgroundColor: '#F0F9EB' };
     }
-    if (row.status === 'Inprogress') { 
+    if (row.status === t('inprogress')) {
       return { backgroundColor: '#E6F7FF' };
     }
     return {};
   };
-  
+
   const selectYear = (year) => {
     setYearSelected(year.year);
   }
 
   return (
-    <Box 
+    <Box
       sx={{
         display: 'flex',
         gap: '24px',
@@ -263,7 +265,7 @@ const RequestForInvesgation = () => {
             marginBottom: '12px',
           }}
         >
-          Base Year
+          {t('baseYear')}
         </Typography>
         {years && years.length > 0 && years.map((year) => (
           <Box
@@ -285,7 +287,7 @@ const RequestForInvesgation = () => {
               gap: '4px',
             }}
           >
-            {year.year} { year.isWarning && <ErrorIcon sx={{ color: '#FAAD14', fontSize: '14px' }} />} 
+            {year.year} {year.isWarning && <ErrorIcon sx={{ color: '#FAAD14', fontSize: '14px' }} />}
           </Box>
         ))}
       </Box>
@@ -304,7 +306,7 @@ const RequestForInvesgation = () => {
             marginBottom: '12px',
           }}
         >
-          Request for investigation of land characteristics of land parcels
+          {t('requestForInvestigationTitle')}
         </Typography>
         <CustomTable dataSource={data} columns={columns} rowStyle={rowStyle} />
       </Box>

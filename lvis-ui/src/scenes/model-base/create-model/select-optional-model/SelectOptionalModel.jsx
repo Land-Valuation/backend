@@ -5,8 +5,11 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SelectOptionalModelTable from "./SelectOptionalModelTable";
+import { useTranslation } from 'react-i18next';
 
 const SelectOptionalModel = () => {
+  const { t } = useTranslation();
+
   return (
     <Box sx={{
       display: 'flex',
@@ -36,7 +39,7 @@ const SelectOptionalModel = () => {
                     lineHeight: '22px',
                   }}
                 >
-                  Adj R-Square
+                  {t('adjRSquare')}
                 </Typography>
                 <Box>
                   <ArrowBackIosNewIcon sx={{ fontSize: 14, color: '#00000073' }} />
@@ -88,7 +91,7 @@ const SelectOptionalModel = () => {
                     lineHeight: '22px',
                   }}
                 >
-                  F-Statistic
+                  {t('fStatistic')}
                 </Typography>
                 <Box>
                   <ArrowBackIosNewIcon sx={{ fontSize: 14, color: '#00000073' }} />
@@ -151,7 +154,7 @@ const SelectOptionalModel = () => {
                   variant="contained"
                   startIcon={<RestartAltIcon />}
                 >
-                  Run Analysis
+                  {t('runAnalysis')}
                 </Button>
               </Box>
             </Box>
@@ -165,7 +168,7 @@ const SelectOptionalModel = () => {
                   lineHeight: '22px',
                 }}
               >
-                Analyzing: area(Area), Rec_Area(Minimum bounding rectangular area),  Con_Area(Convex hull area), ...
+                {t('analyzingVariables')}
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center'}}>
                 <Typography
@@ -209,7 +212,7 @@ const SelectOptionalModel = () => {
             mb: '16px',
           }}
         >
-          Analysis Results
+          {t('analysisResults')}
         </Typography>
         <Box>
           <SelectOptionalModelTable />
