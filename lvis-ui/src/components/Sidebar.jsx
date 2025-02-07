@@ -220,17 +220,22 @@ import ListItem from "@mui/material/ListItem";
 import {
   Divider,
   Box,
-  Popper,
   Typography,
   Tooltip,
   IconButton,
   Menu,
   MenuItem,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserService from "../state/UserService";
+import { useTranslation } from "react-i18next";
+import EnglishIcon from "../assets/icons/country/EnglishIcon";
+import LaoIcon from "../assets/icons/country/LAOIcon";
+import KoreanIcon from "../assets/icons/country/KoreanIcon";
 
 const drawerWidth = 64;
 
@@ -238,9 +243,42 @@ function Sidebar() {
   const username = UserService.getUsername();
   const navigate = useNavigate();
   const location = useLocation();
+  const { i18n, t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
+  const openLanguage = Boolean(languageAnchorEl);
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
+
+  const handleLanguageClick = (event) => {
+    setLanguageAnchorEl(event.currentTarget);
+  };
+
+  const handleLanguageClose = () => {
+    setLanguageAnchorEl(null);
+  };
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setSelectedLanguage(lng);
+    handleLanguageClose();
+  };
+
+  const getFlagIcon = () => {
+    switch (selectedLanguage) {
+      case 'en':
+        return <EnglishIcon />;
+      case 'lo':
+        return <LaoIcon />;
+      case 'ko':
+        return <KoreanIcon />;
+      default:
+        return <EnglishIcon />;
+    }
+  };
+
   const handleMenuOpen = (event) => {
     setAnchorEl(open ? null : event.currentTarget);
   };
@@ -388,7 +426,66 @@ function Sidebar() {
         }}
       >
         <Divider variant="middle" sx={{ width: "31px" }} />
-        <img width="24px" height="18px" alt="flag" src="../lao_flag.svg" />
+        <Box
+          aria-label="select language"
+          aria-controls="language-menu"
+          aria-haspopup="true"
+          onClick={handleLanguageClick}
+        >
+          {getFlagIcon()}
+        </Box>
+        <Menu
+          id="language-menu"
+          anchorEl={languageAnchorEl}
+          open={openLanguage}
+          onClose={handleLanguageClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+          sx={{
+            zIndex: 1000,
+            left: "55px",
+            top: "-15px",
+            width: "220px",
+            borderRadius:"8px",
+            "& .MuiPaper-root": {
+              position: "relative",
+              overflow: "visible",
+              borderRadius: "8px", 
+              "&::before": {
+                content: '""',
+                display: "block",
+                position: "absolute",
+                top: 10,
+                left: -5,
+                width: 10,
+                height: 10,
+                bgcolor: "background.paper",
+                transform: "rotate(45deg)",
+                zIndex: 0,
+              },
+            },
+          }}
+        >
+          <MenuItem onClick={() => changeLanguage('en')}>
+            <ListItemIcon>
+              <EnglishIcon />
+            </ListItemIcon>
+            <ListItemText>{t('english')}</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={() => changeLanguage('lo')}>
+            <ListItemIcon>
+              <LaoIcon />
+            </ListItemIcon>
+            <ListItemText>{t('lao')}</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={() => changeLanguage('ko')}>
+            <ListItemIcon>
+              <KoreanIcon />
+            </ListItemIcon>
+            <ListItemText>{t('korean')}</ListItemText>
+          </MenuItem>
+        </Menu>
         <img width="20px" height="20px" alt="noti bell" src="../bell ico.svg" />
         <IconButton onClick={handleMenuOpen} sx={{ cursor: "pointer" }}>
           <img

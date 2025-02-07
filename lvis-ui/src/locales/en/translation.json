@@ -214,6 +214,9 @@
   "yearRequired": "year is required",
   "modelRequired": "model is required",
   "productColumnDescription": "This column has a description on product and is sortable.",
-  "action": "Action"
+  "action": "Action",
+  "english": "English",
+  "lao": "Lao",
+  "korean": "Korean"
 }
    
