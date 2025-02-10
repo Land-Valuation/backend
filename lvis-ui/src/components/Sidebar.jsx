@@ -234,7 +234,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import UserService from "../state/UserService";
 import { useTranslation } from "react-i18next";
 import EnglishIcon from "../assets/icons/country/EnglishIcon";
-import LaoIcon from "../assets/icons/country/LAOIcon";
+import LaoIcon from "../assets/icons/country/LaoIcon";
 import KoreanIcon from "../assets/icons/country/KoreanIcon";
 
 const drawerWidth = 64;
