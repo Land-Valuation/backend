@@ -246,6 +246,7 @@ const RequestForInvesgationDetail = () => {
           }}>
             <Button
               sx={{
+                display:"none",
                 backgroundColor: "#fff",
                 color: "#1677FF",
                 textTransform: "none",
@@ -268,6 +269,7 @@ const RequestForInvesgationDetail = () => {
             </Button>
             <Button
               sx={{
+                display:"none",
                 backgroundColor: "#fff",
                 color: "#1677FF",
                 textTransform: "none",
