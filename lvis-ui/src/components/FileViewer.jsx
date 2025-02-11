@@ -8,6 +8,7 @@ import { Box, IconButton, Typography } from '@mui/material';
 import ImagePreview from './ImagePreview';
 import AddIcon from '@mui/icons-material/Add';
 import LinearProgress from '@mui/material/LinearProgress';
+import { useTranslation } from "react-i18next";
 
 const FileViewer = ({
   fileList,
@@ -24,6 +25,7 @@ const FileViewer = ({
   const [previewImageUrl, setPreviewImageUrl] = useState('');
   const [fileListDisplay, setFileListDisplay] = useState([]);
   const fileInputRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setFileListDisplay(fileList ?? []);
@@ -199,7 +201,7 @@ const FileViewer = ({
               lineHeight: '22px',
             }}
           >
-            Upload
+            {t("Upload")}
           </Typography>
         </Box>
       }

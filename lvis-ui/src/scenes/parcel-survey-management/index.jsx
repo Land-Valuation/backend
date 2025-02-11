@@ -7,6 +7,7 @@ import PLaceIcon from "../../assets/icons/model-base/PLaceIcon";
 import DetailIcon from "../../assets/icons/model-base/DetailIcon";
 import SurveyInformation from "./modal/SurveyInformation";
 import RegisterSurveyInformationModal from "./modal/RegisterSurveyInformationModal";
+import { useTranslation } from "react-i18next";
 
 const ParcelSurveyManagement = () => {
   const [district, setDistrict] = useState('');
@@ -15,6 +16,7 @@ const ParcelSurveyManagement = () => {
   const [isOpenSurveyInformationDialog, setIsOpenSurveyInformationDialog] = useState(false);
   const [isRegisterSurveyInformationModal, setIsRegisterSurveyInformationModal] = useState(false);
   const [isHasData, setIsHasData] = useState(false);
+  const {t} = useTranslation()
 
   const handleDistrictChange = (event) => {
     setDistrict(event.target.value);
@@ -84,7 +86,7 @@ const ParcelSurveyManagement = () => {
 
   return (
     <LayoutPageCommon
-      title="Parcel Survey Management"
+      title={t("Parcel Survey Management")}
       actions={ 
         <>
           <Button
@@ -143,7 +145,7 @@ const ParcelSurveyManagement = () => {
               sx={{ minWidth: '128px', borderRadius: '6px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
             >
               <MenuItem sx={{ display: 'none' }} disabled value="">
-                <Box>Province</Box>
+                <Box>{t("province")}</Box>
               </MenuItem>
               <MenuItem value={10}>Province A</MenuItem>
               <MenuItem value={20}>Province B</MenuItem>
@@ -159,7 +161,7 @@ const ParcelSurveyManagement = () => {
               sx={{ minWidth: '128px', borderRadius: '6px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
             >
               <MenuItem sx={{ display: 'none' }} disabled value="">
-                <Box>District</Box>
+                <Box>{t("district")}</Box>
               </MenuItem>
               <MenuItem value={10}>District A</MenuItem>
               <MenuItem value={20}>District B</MenuItem>
