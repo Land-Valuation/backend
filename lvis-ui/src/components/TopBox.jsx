@@ -26,7 +26,7 @@ import RequireLogin from "../scenes/auth/modal/RequireLogin";
 import LoginIcon from "../assets/icons/auth/LoginIcon";
 import SignupIcon from "../assets/icons/auth/SignupIcon";
 import EnglishIcon from "../assets/icons/country/EnglishIcon";
-import LaoIcon from "../assets/icons/country/LAOIcon";
+import LaoIcon from "../assets/icons/country/LaoIcon";
 import KoreanIcon from "../assets/icons/country/KoreanIcon";
 
 const TopBox = () => {
