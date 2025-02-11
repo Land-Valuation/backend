@@ -529,7 +529,7 @@ const Valuation = () => {
                                 fontWeight: 400,
                               }}
                             >
-                              {icon} {row.status}
+                              {icon} {t(row.status)}
                             </Box>
                           </Link>
                         </TableCell>

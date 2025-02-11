@@ -234,6 +234,7 @@ const FilterSelectSampleParcels = ({ onChangeView }) => {
                 gap: "8px",
                 justifyContent: "center",
                 alignItems: "center",
+                width:"150px",
                 backgroundColor: "#1677FF",
                 color: "#fff",
                 textTransform: "none",

@@ -1,8 +1,8 @@
 import React from 'react'
 
-const KoreanIcon = () => {
+const KoreanIcon = ({ width = 24, height = 18 }) => {
   return (
-    <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={width} height={height} viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="0.5" y="0.928589" width="23" height="16.1429" rx="3.5" fill="white" stroke="#F5F5F5"/>
       <mask id="mask0_7950_7856" style={{ maskType: "luminance" }} maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="18">
       <rect x="0.5" y="0.928589" width="23" height="16.1429" rx="3.5" fill="white" stroke="white"/>
