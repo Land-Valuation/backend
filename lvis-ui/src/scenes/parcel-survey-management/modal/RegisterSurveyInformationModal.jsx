@@ -3,11 +3,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from "prop-types";
 import { CalendarIcon, DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import SaveIcon from "../../../assets/icons/model-base/SaveIcon";
 import FileViewer from "../../../components/FileViewer";
+import { useGetAllListDataQuery } from "../../../state/localSurveyInformationApi";
 
 const validationSchema = Yup.object({
   buildingType: Yup.string().required('Required'),
@@ -32,6 +33,29 @@ const validationSchema = Yup.object({
 const RegisterSurveyInformationModal = ({ open, onClose }) => {
   const [selectDate, setSelectDate] = useState(null);
   const [fileList] = useState([])
+  const [buildingTypes, setBuildingTypes] = useState([]);
+  const [landUseTypes, setLandUseTypes] = useState([]);
+  const [materialTypes, setMaterialTypes] = useState([]);
+  const [priceTypes, setPriceTypes] = useState([]);
+  const [qualityTypes, setQualityTypes] = useState([]);
+  const [roadTypes, setRoadTypes] = useState([]);
+  const [shapeTypes, setShapeTypes] = useState([]);
+  const [surfaceTypes, setSurfaceTypes] = useState([]);
+  const [surveySourceTypes, setSurveySourceTypes] = useState([]);
+
+  const { data: allListData } = useGetAllListDataQuery();
+
+  useEffect(() => {
+    setBuildingTypes(allListData?.buildingTypes || []);
+    setLandUseTypes(allListData?.landUseTypes || []);
+    setMaterialTypes(allListData?.materialTypes || []);
+    setPriceTypes(allListData?.priceTypes || []);
+    setQualityTypes(allListData?.qualityTypes || []);
+    setRoadTypes(allListData?.roadTypes || []);
+    setShapeTypes(allListData?.shapeTypes || []);
+    setSurfaceTypes(allListData?.surfaceTypes || []);
+    setSurveySourceTypes(allListData?.surveySourceTypes || []);
+  }, [allListData])
 
   const formik = useFormik({
     initialValues: {
@@ -248,9 +272,11 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           <MenuItem sx={{ display: 'none' }} value="">
                             <em>Chọn</em>
                           </MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {(buildingTypes ?? []).map((item) => (
+                            <MenuItem key={item.code} value={item.code}>
+                              {item.display_value}
+                            </MenuItem>
+                          ))}
                         </Select>
                         {formik.touched.buildingType && formik.errors.buildingType && (
                           <Typography
@@ -302,9 +328,11 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           <MenuItem sx={{ display: 'none' }} value="">
                             <em>Chọn</em>
                           </MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {(materialTypes ?? []).map((item) => (
+                            <MenuItem key={item.code} value={item.code}>
+                              {item.display_value}
+                            </MenuItem>
+                          ))}
                         </Select>
                         {formik.touched.material && formik.errors.material && (
                           <Typography
@@ -356,9 +384,11 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           <MenuItem sx={{ display: 'none' }} value="">
                             <em>Chọn</em>
                           </MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {(qualityTypes ?? []).map((item) => (
+                            <MenuItem key={item.code} value={item.code}>
+                              {item.display_value}
+                            </MenuItem>
+                          ))}
                         </Select>
                         {formik.touched.quality && formik.errors.quality && (
                           <Typography
@@ -410,9 +440,11 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           <MenuItem sx={{ display: 'none' }} value="">
                             <em>Chọn</em>
                           </MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {(priceTypes ?? []).map((item) => (
+                            <MenuItem key={item.code} value={item.code}>
+                              {item.display_value}
+                            </MenuItem>
+                          ))}
                         </Select>
                         {formik.touched.priceBuilding && formik.errors.priceBuilding && (
                           <Typography
@@ -548,9 +580,11 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           <MenuItem sx={{ display: 'none' }} value="">
                             <em>Chọn</em>
                           </MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {(roadTypes ?? []).map((item) => (
+                            <MenuItem key={item.code} value={item.code}>
+                              {item.display_value}
+                            </MenuItem>
+                          ))}
                         </Select>
                         {formik.touched.roadType && formik.errors.roadType && (
                           <Typography
@@ -602,9 +636,11 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           <MenuItem sx={{ display: 'none' }} value="">
                             <em>Chọn</em>
                           </MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {(surfaceTypes ?? []).map((item) => (
+                            <MenuItem key={item.code} value={item.code}>
+                              {item.display_value}
+                            </MenuItem>
+                          ))}
                         </Select>
                         {formik.touched.roadSurface && formik.errors.roadSurface && (
                           <Typography
@@ -656,9 +692,11 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           <MenuItem sx={{ display: 'none' }} value="">
                             <em>Chọn</em>
                           </MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {(shapeTypes ?? []).map((item) => (
+                            <MenuItem key={item.code} value={item.code}>
+                              {item.display_value}
+                            </MenuItem>
+                          ))}
                         </Select>
                         {formik.touched.landShape && formik.errors.landShape && (
                           <Typography
@@ -710,9 +748,11 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           <MenuItem sx={{ display: 'none' }} value="">
                             <em>Chọn</em>
                           </MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {(landUseTypes ?? []).map((item) => (
+                            <MenuItem key={item.code} value={item.code}>
+                              {item.display_value}
+                            </MenuItem>
+                          ))}
                         </Select>
                         {formik.touched.landUseType && formik.errors.landUseType && (
                           <Typography
@@ -794,9 +834,11 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           <MenuItem sx={{ display: 'none' }} value="">
                             <em>Chọn</em>
                           </MenuItem>
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {(surveySourceTypes ?? []).map((item) => (
+                            <MenuItem key={item.code} value={item.code}>
+                              {item.display_value}
+                            </MenuItem>
+                          ))}
                         </Select>
                         {formik.touched.sourceOfFunds && formik.errors.sourceOfFunds && (
                           <Typography
