@@ -69,6 +69,7 @@ import ExpandIcon from "../../../assets/icons/land-valuation/ExpandIcon";
 import ParcelList2 from "./ParcelList2";
 import ParcelList from "./ParcelList";
 import { attachments, customIcon, customIcon1, customIcon2, CustomTab, FileCard, FileIcon, fileIcons, geoData, geoJsonStyle, position, position1, position2, position3, position4, position5, position6, VisuallyHiddenInput } from "./common";
+import { useTranslation } from "react-i18next";
 // import {geoData} from "../../../data/geoData";
 
 const theme = createTheme({
@@ -159,6 +160,8 @@ const backgroundGreyCellStyle = {
 };
 
 const LandValuationDetail = () => {
+  const { t } = useTranslation();
+
   const [selectedYear, setSelectedYear] = useState(new Date(2024, 0, 1));
   const [selectedProvince, setSelectedProvince] = useState(1);
   const [committeeStatus, setCommitteeStatus] = useState("");
@@ -174,7 +177,6 @@ const LandValuationDetail = () => {
   const [showBox, setShowBox] = useState(true);
   const [showBox2, setShowBox2] = useState(true);
   const [showMarker, setShowMarker] = useState(false);
-  const { t } = useTranslation();
 
   const handleCloneButton = () => {
     setShowBox2(false);
