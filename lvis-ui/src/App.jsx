@@ -61,6 +61,21 @@ function App() {
     dispatch(initializeAuth());
   }, [dispatch]);
 
+  const storedLanguage = localStorage.getItem("language");
+  useEffect(() => {
+    // Initialize i18n
+    const initialLanguage = storedLanguage || "en";
+
+    i18n.use(initReactI18next).init({
+      resources,
+      lng: initialLanguage,
+      fallbackLng: "en",
+      interpolation: {
+        escapeValue: false,
+      },
+    });
+  }, [storedLanguage]);
+
   return (
     <div className="app">
       <BrowserRouter>
