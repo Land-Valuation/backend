@@ -233,9 +233,7 @@ import { styled } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserService from "../state/UserService";
 import { useTranslation } from "react-i18next";
-import EnglishIcon from "../assets/icons/country/EnglishIcon";
-import LaoIcon from "../assets/icons/country/LAOIcon";
-import KoreanIcon from "../assets/icons/country/KoreanIcon";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const drawerWidth = 64;
 
@@ -247,37 +245,6 @@ function Sidebar() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
-  const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
-  const openLanguage = Boolean(languageAnchorEl);
-  const [selectedLanguage, setSelectedLanguage] = useState("en");
-
-  const handleLanguageClick = (event) => {
-    setLanguageAnchorEl(event.currentTarget);
-  };
-
-  const handleLanguageClose = () => {
-    setLanguageAnchorEl(null);
-  };
-
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    setSelectedLanguage(lng);
-    handleLanguageClose();
-  };
-
-  const getFlagIcon = () => {
-    switch (selectedLanguage) {
-      case "en":
-        return <EnglishIcon />;
-      case "lo":
-        return <LaoIcon />;
-      case "ko":
-        return <KoreanIcon />;
-      default:
-        return <EnglishIcon />;
-    }
-  };
 
   const handleMenuOpen = (event) => {
     setAnchorEl(open ? null : event.currentTarget);
@@ -426,55 +393,7 @@ function Sidebar() {
         }}
       >
         <Divider variant="middle" sx={{ width: "31px" }} />
-        <Box
-          aria-label="select language"
-          aria-controls="language-menu"
-          aria-haspopup="true"
-          onClick={handleLanguageClick}
-          sx={{ cursor: "pointer" }}
-        >
-          {getFlagIcon()}
-        </Box>
-        <Menu
-          id="language-menu"
-          anchorEl={languageAnchorEl}
-          open={openLanguage}
-          onClose={handleLanguageClose}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
-          }}
-          sx={{
-            zIndex: 1000,
-            left: "45px",
-            top: "-28px",
-            width: "170px",
-            borderRadius: "8px",
-            "& .MuiPaper-root": {
-              position: "relative",
-              overflow: "visible",
-              borderRadius: "8px",
-            },
-          }}
-        >
-          <MenuItem onClick={() => changeLanguage("en")}>
-            <ListItemIcon>
-              <EnglishIcon />
-            </ListItemIcon>
-            <ListItemText>English</ListItemText>
-          </MenuItem>
-          <MenuItem onClick={() => changeLanguage("lo")}>
-            <ListItemIcon>
-              <LaoIcon />
-            </ListItemIcon>
-            <ListItemText>ພາສາລາວ</ListItemText>
-          </MenuItem>
-          <MenuItem onClick={() => changeLanguage("ko")}>
-            <ListItemIcon>
-              <KoreanIcon />
-            </ListItemIcon>
-            <ListItemText>한국인</ListItemText>
-          </MenuItem>
-        </Menu>
+       <LanguageSwitcher height="18px" left="55px" top="-38px" />
         <img width="20px" height="20px" alt="noti bell" src="../bell ico.svg" />
         <IconButton onClick={handleMenuOpen} sx={{ cursor: "pointer" }}>
           <img
