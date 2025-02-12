@@ -160,8 +160,6 @@ const backgroundGreyCellStyle = {
 };
 
 const LandValuationDetail = () => {
-  const { t } = useTranslation();
-
   const [selectedYear, setSelectedYear] = useState(new Date(2024, 0, 1));
   const [selectedProvince, setSelectedProvince] = useState(1);
   const [committeeStatus, setCommitteeStatus] = useState("");
