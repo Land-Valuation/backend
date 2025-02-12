@@ -309,24 +309,24 @@ function Sidebar() {
   }, [location.pathname]);
 
   const menuItems = [
-    { src: "/home ico.svg", alt: "Home", path: "/home" },
-    { src: "/land-price.svg", alt: "Land Price Explorer", path: "/montoring" },
+    { src: "/home ico.svg", alt: t("home"), path: "/home" },
+    { src: "/land-price.svg", alt: t("Land Price Explorer"), path: "/montoring" },
     {
       src: "/land-valuation.svg",
-      alt: "Land Valuation",
+      alt: t("Land Valuation"),
       path: "/land-valuation",
     },
     {
       src: "/model-based.svg",
-      alt: "Model-based land valuation",
+      alt: t("Model-based land Valuation"),
       path: "/model-base",
     },
     {
       src: "/parcel-survey.svg",
-      alt: "Parcel survey management",
+      alt: t("Parcel Survey Management"),
       path: "/parcel-survey-management",
     },
-    { src: "/admin.svg", alt: "Admin", path: "/customers" },
+    { src: "/admin.svg", alt: t("Admin"), path: "/customers" },
   ];
 
   const LightTooltip = styled(({ className, ...props }) => (
@@ -444,6 +444,7 @@ function Sidebar() {
           aria-controls="language-menu"
           aria-haspopup="true"
           onClick={handleLanguageClick}
+          sx={{ cursor: "pointer" }}
         >
           {getFlagIcon()}
         </Box>
@@ -453,50 +454,38 @@ function Sidebar() {
           open={openLanguage}
           onClose={handleLanguageClose}
           MenuListProps={{
-            'aria-labelledby': 'basic-button',
+            "aria-labelledby": "basic-button",
           }}
           sx={{
             zIndex: 1000,
-            left: "55px",
-            top: "-15px",
+            left: "45px",
+            top: "-28px",
             width: "170px",
-            borderRadius:"8px",
+            borderRadius: "8px",
             "& .MuiPaper-root": {
               position: "relative",
               overflow: "visible",
-              borderRadius: "8px", 
-              "&::before": {
-                content: '""',
-                display: "block",
-                position: "absolute",
-                top: 10,
-                left: -5,
-                width: 10,
-                height: 10,
-                bgcolor: "background.paper",
-                transform: "rotate(45deg)",
-                zIndex: 0,
-              },
+              borderRadius: "8px",
             },
           }}
         >
-          <MenuItem onClick={() => changeLanguage('en')}>
+          <MenuItem onClick={() => changeLanguage("en")}>
             <ListItemIcon>
               <EnglishIcon />
             </ListItemIcon>
-            <ListItemText>{t('english')}</ListItemText>
+            <ListItemText>English</ListItemText>
           </MenuItem>
-          <MenuItem onClick={() => changeLanguage('lo')}>
+          <MenuItem onClick={() => changeLanguage("lo")}>
             <ListItemIcon>
               <LaoIcon />
             </ListItemIcon>
-            <ListItemText>{t('lao')}</ListItemText>
+            <ListItemText>ພາສາລາວ</ListItemText>
           </MenuItem>
-          <MenuItem onClick={() => changeLanguage('ko')}>
+          <MenuItem onClick={() => changeLanguage("ko")}>
             <ListItemIcon>
               <KoreanIcon />
             </ListItemIcon>
-            <ListItemText>{t('korean')}</ListItemText>
+            <ListItemText>한국인</ListItemText>
           </MenuItem>
         </Menu>
         <img width="20px" height="20px" alt="noti bell" src="../bell ico.svg" />
@@ -518,11 +507,11 @@ function Sidebar() {
             left: "55px",
             top: "-15px",
             width: "220px",
-            borderRadius:"8px",
+            borderRadius: "8px",
             "& .MuiPaper-root": {
               position: "relative",
               overflow: "visible",
-              borderRadius: "8px", 
+              borderRadius: "8px",
               "&::before": {
                 content: '""',
                 display: "block",
@@ -544,7 +533,7 @@ function Sidebar() {
                 display: "flex",
                 alignItems: "center",
                 marginBottom: "12px",
-                marginLeft:"12px"
+                marginLeft: "12px",
               }}
             >
               <img

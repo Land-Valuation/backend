@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import SaveIcon from "../../../assets/icons/model-base/SaveIcon";
 import FileViewer from "../../../components/FileViewer";
 import { useGetAllListDataQuery } from "../../../state/localSurveyInformationApi";
+import { useTranslation } from "react-i18next";
 
 const validationSchema = Yup.object({
   buildingType: Yup.string().required('Required'),
@@ -31,6 +32,8 @@ const validationSchema = Yup.object({
 });
 
 const RegisterSurveyInformationModal = ({ open, onClose }) => {
+  const { t } = useTranslation();
+
   const [selectDate, setSelectDate] = useState(null);
   const [fileList] = useState([])
   const [buildingTypes, setBuildingTypes] = useState([]);
@@ -96,7 +99,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
             textAlign: 'center',
           }}
         >
-          Register Survey Information
+          {t("Register Survey Information")}
         </Typography>
         <IconButton
           aria-label="close"
@@ -137,7 +140,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                   lineHeight: '24px',
                 }}
               >
-                Surveyed Date
+                {t("Survey Date")}
               </Typography>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
@@ -227,7 +230,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                         lineHeight: '24px',
                       }}
                     >
-                      Building Information
+                      {t("Building information")}
                     </Typography>
                   </Box>
                   <Box
@@ -254,7 +257,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Building Type
+                        {t("Building type")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.buildingType && Boolean(formik.errors.buildingType)}>
                         <Select
@@ -310,7 +313,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Material
+                                                {t("Material")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.material && Boolean(formik.errors.material)}>
                         <Select
@@ -366,7 +369,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Quality
+                        {t("Quality")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.quality && Boolean(formik.errors.quality)}>
                         <Select
@@ -422,7 +425,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Price
+                        {t("price")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.priceBuilding && Boolean(formik.errors.priceBuilding)}>
                         <Select
@@ -478,7 +481,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        User
+                        {t("User")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.user && Boolean(formik.errors.user)}>
                         <Select
@@ -535,7 +538,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                         lineHeight: '24px',
                       }}
                     >
-                      Land Information
+                      {t("Land Information")}
                     </Typography>
                   </Box>
                   <Box
@@ -562,7 +565,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Road Type
+                        {t("Road type")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.roadType && Boolean(formik.errors.roadType)}>
                         <Select
@@ -618,7 +621,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Road Surface
+                        {t("Road surface")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.roadSurface && Boolean(formik.errors.roadSurface)}>
                         <Select
@@ -674,7 +677,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Land Shape
+                        {t("Land shape")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.landShape && Boolean(formik.errors.landShape)}>
                         <Select
@@ -730,7 +733,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Land Use Type
+                        {t("Land use type")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.landUseType && Boolean(formik.errors.landUseType)}>
                         <Select
@@ -789,7 +792,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                         lineHeight: '24px',
                       }}
                     >
-                      Price Information
+                      {t("Price information")}
                     </Typography>
                   </Box>
                   <Box
@@ -816,7 +819,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Source of Funds
+                        {t("Source of funds")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.sourceOfFunds && Boolean(formik.errors.sourceOfFunds)}>
                         <Select
@@ -872,7 +875,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Price
+                        {t("price")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.price && Boolean(formik.errors.price)}>
                         <TextField
@@ -910,7 +913,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                         lineHeight: '24px',
                       }}
                     >
-                      Surveyor Information
+                      {t("surveyor information")}
                     </Typography>
                   </Box>
                   <Box
@@ -937,7 +940,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Organization
+                        {t("Organization")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.organization && Boolean(formik.errors.organization)}>
                         <TextField
@@ -982,7 +985,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Position
+                        {t("Position")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.position && Boolean(formik.errors.position)}>
                         <TextField
@@ -1027,7 +1030,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Name
+                        {t("Name")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.name && Boolean(formik.errors.name)}>
                         <TextField
@@ -1072,7 +1075,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                           lineHeight: '22px',
                         }}
                       >
-                        Phone Number
+                        {t("Phone Number")}
                       </Typography>
                       <FormControl fullWidth error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}>
                         <TextField
@@ -1123,7 +1126,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                         lineHeight: '24px',
                       }}
                     >
-                      Attach image
+                      {t("Attach image")}
                     </Typography>
                   </Box>
                   <Box>
@@ -1154,7 +1157,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
           startIcon={<CloseIcon />}
           onClick={onClose}
         >
-          Cancel
+          {t("cancel")}
         </Button>
         <Button
           sx={{
@@ -1174,7 +1177,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
           type="submit"
           onClick={formik.handleSubmit}
         >
-          Save
+          {t("save")}
         </Button>
       </DialogActions>
     </Dialog>

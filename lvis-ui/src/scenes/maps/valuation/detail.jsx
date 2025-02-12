@@ -50,7 +50,7 @@ import {
   useMap,
   useMapEvent,
   Rectangle,
-  GeoJSON
+  GeoJSON,
 } from "react-leaflet";
 import { useEventHandlers } from "@react-leaflet/core";
 import UserService from "../../../state/UserService";
@@ -83,7 +83,7 @@ const theme = createTheme({
     MuiAccordionSummary: {
       styleOverrides: {
         content: {
-          alignItems: 'center', 
+          alignItems: "center",
         },
       },
     },
@@ -174,6 +174,7 @@ const LandValuationDetail = () => {
   const [showBox, setShowBox] = useState(true);
   const [showBox2, setShowBox2] = useState(true);
   const [showMarker, setShowMarker] = useState(false);
+  const { t } = useTranslation();
 
   const handleCloneButton = () => {
     setShowBox2(false);
@@ -303,37 +304,37 @@ const LandValuationDetail = () => {
     { field: "id", headerName: "ID", flex: 1, hide: true },
     {
       field: "memberType",
-      headerName: "Member Type",
+      headerName: t("Member Type"),
       editable: true,
       flex: 1,
     },
     {
       field: "organization",
-      headerName: "Organization",
+      headerName: t("Organization"),
       editable: true,
       flex: 1,
     },
     {
       field: "name",
-      headerName: "Name",
+      headerName: t("Name"),
       editable: true,
       flex: 1,
     },
     {
       field: "position",
-      headerName: "Position",
+      headerName: t("Position"),
       editable: true,
       flex: 1,
     },
     {
       field: "phone",
-      headerName: "Phone Number",
+      headerName: t("Phone Number"),
       editable: true,
       flex: 1,
     },
     {
       field: "email",
-      headerName: "Email",
+      headerName: t("Email"),
       editable: true,
       flex: 1,
     },
@@ -422,7 +423,7 @@ const LandValuationDetail = () => {
   const initialRows = [
     {
       id: 1,
-      memberType: "Member",
+      memberType: t("Member"),
       organization: "000 Association",
       name: "Somchai Vongxay",
       position: "Professors",
@@ -431,7 +432,7 @@ const LandValuationDetail = () => {
     },
     {
       id: 2,
-      memberType: "Chairperson",
+      memberType: t("Chairperson"),
       organization: "000 Association",
       name: "Chanthavy Inthavong",
       position: "Ph.D., Master",
@@ -440,7 +441,7 @@ const LandValuationDetail = () => {
     },
     {
       id: 3,
-      memberType: "Member",
+      memberType: t("Member"),
       organization: "000 Association",
       name: "Soudalay Phommasone",
       position: "Professors",
@@ -449,7 +450,7 @@ const LandValuationDetail = () => {
     },
     {
       id: 4,
-      memberType: "Member",
+      memberType: t("Member"),
       organization: "000 Association",
       name: "Khamla Phanthavong",
       position: "Ph.D., Master",
@@ -458,7 +459,7 @@ const LandValuationDetail = () => {
     },
     {
       id: 5,
-      memberType: "Member",
+      memberType: t("Member"),
       organization: "000 Association",
       name: "Keo Sihalath",
       position: "Ph.D., Master",
@@ -714,15 +715,15 @@ const LandValuationDetail = () => {
   };
 
   const breadcrumbData = [
-    { name: "Home", href: "/" },
-    { name: "Land Valuation", href: "/land-valuation" },
+    { name: t("home"), href: "/" },
+    { name: t("Land Valuation"), href: "/land-valuation" },
   ];
 
   return (
     <>
       <LayoutPageCommon
         breadcrumbData={breadcrumbData}
-        title="Detail information on land valuation profile"
+        title={t("Detail information on land valuation profile")}
         actions={
           <>
             <Button
@@ -741,7 +742,7 @@ const LandValuationDetail = () => {
               variant="contained"
               startIcon={<CloseIcon />}
             >
-              Cancel
+              {t("cancel")}
             </Button>
             <Button
               sx={{
@@ -759,7 +760,7 @@ const LandValuationDetail = () => {
               variant="contained"
               startIcon={<SaveIcon />}
             >
-              Save
+              {t("save")}
             </Button>
           </>
         }
@@ -776,7 +777,7 @@ const LandValuationDetail = () => {
                 marginBottom: "16px",
               }}
             >
-              Overview
+              {t("Overview")}
             </Typography>
             <Box
               sx={{
@@ -794,7 +795,7 @@ const LandValuationDetail = () => {
                 }}
               >
                 <label htmlFor="calendar">
-                  <span style={{ color: "red" }}>*</span> Base year
+                  <span style={{ color: "red" }}>*</span> {t("baseYear")}
                 </label>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
@@ -838,24 +839,24 @@ const LandValuationDetail = () => {
                 }}
               >
                 <label htmlFor="province">
-                  <span style={{ color: "red" }}>*</span> Province
+                  <span style={{ color: "red" }}>*</span> {t("province")}
                 </label>
                 <Select
                   value={selectedProvince}
                   onChange={(e) => setSelectedProvince(e.target.value)}
                   sx={{ height: "40px" }}
                 >
-                  <MenuItem value="1">Vientiane</MenuItem>
+                  <MenuItem value="1">{t("Vientiane")}</MenuItem>
                 </Select>
               </Box>
               <Box
                 sx={{ display: "flex", flexDirection: "column", width: "100%" }}
               >
                 <label htmlFor="province">
-                  <span style={{ color: "red" }}>*</span> Title
+                  <span style={{ color: "red" }}>*</span> {t("title")}
                 </label>
                 <TextField
-                  placeholder="Enter title"
+                  placeholder={t("enterTitle")}
                   sx={{
                     "& .MuiInputBase-root": {
                       height: "40px",
@@ -864,14 +865,14 @@ const LandValuationDetail = () => {
                 ></TextField>
               </Box>
             </Box>
-            <label style={{ marginTop: "17px" }}>Note</label>
+            <label style={{ marginTop: "17px" }}>{t("note")}</label>
             <TextField
               sx={{
                 "& .MuiInputBase-root": {
                   height: "40px",
                 },
               }}
-              placeholder="Enter content"
+              placeholder={t("enterContent")}
             ></TextField>
             <Box
               sx={{
@@ -905,7 +906,7 @@ const LandValuationDetail = () => {
                     color: "#000000E0",
                   }}
                 >
-                  Approval Status
+                  {t("Approval Status")}
                 </Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
@@ -918,22 +919,22 @@ const LandValuationDetail = () => {
                           lineHeight: "22px",
                         }}
                       >
-                        <span style={{ color: "red" }}>*</span> Committee
-                        Approval Status
+                        <span style={{ color: "red" }}>*</span>
+                        {t("Committee Approval Status")}
                       </label>
                       <Select
                         displayEmpty
-                        defaultValue="Select"
+                        defaultValue={t("Select")}
                         value={committeeStatus}
                         onChange={handleCommitteeStatusChange}
                         sx={{ height: "40px" }}
                       >
                         <MenuItem disabled value="">
-                          Select
+                        {t("Select")}
                         </MenuItem>
-                        <MenuItem value="approved">Approved</MenuItem>
-                        <MenuItem value="pending">Pending</MenuItem>
-                        <MenuItem value="rejected">Rejected</MenuItem>
+                        <MenuItem value="approved">{t("Approved")}</MenuItem>
+                        <MenuItem value="pending">{t("Pending")}</MenuItem>
+                        <MenuItem value="rejected">{t("Rejected")}</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -947,8 +948,8 @@ const LandValuationDetail = () => {
                           lineHeight: "22px",
                         }}
                       >
-                        <span style={{ color: "red" }}>*</span> Land Valuation
-                        Result Approval Status
+                        <span style={{ color: "red" }}>*</span>
+                        {t("Land Valuation Result Approval Status")}
                       </label>
                       <Select
                         displayEmpty
@@ -958,11 +959,11 @@ const LandValuationDetail = () => {
                         sx={{ height: "40px" }}
                       >
                         <MenuItem disabled value="">
-                          Select
+                        {t("Select")}
                         </MenuItem>
-                        <MenuItem value="approved">Approved</MenuItem>
-                        <MenuItem value="pending">Pending</MenuItem>
-                        <MenuItem value="rejected">Rejected</MenuItem>
+                        <MenuItem value="approved">{t("Approved")}</MenuItem>
+                        <MenuItem value="pending">{t("Pending")}</MenuItem>
+                        <MenuItem value="rejected">{t("Rejected")}</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -982,7 +983,7 @@ const LandValuationDetail = () => {
                     color: "#1677FF",
                   }}
                 >
-                  Attach
+                  {t("Attach")}
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleFileUpload}
@@ -1041,7 +1042,7 @@ const LandValuationDetail = () => {
                 marginBottom: "24px",
               }}
             >
-              Land Valuation Committee Information
+              {t("Land Valuation Committee Information")}
             </Typography>
             <Box
               sx={{
@@ -1065,7 +1066,7 @@ const LandValuationDetail = () => {
                   color: "#000000E0",
                 }}
               >
-                Committee Information
+                {t("Committee Information")}
               </Typography>
               <Box
                 sx={{
@@ -1083,7 +1084,7 @@ const LandValuationDetail = () => {
                   }}
                 >
                   <label>
-                    <span style={{ color: "red" }}>*</span> Description
+                    <span style={{ color: "red" }}>*</span> {t("Description")}
                   </label>
                   <TextField
                     sx={{
@@ -1091,7 +1092,7 @@ const LandValuationDetail = () => {
                         height: "40px",
                       },
                     }}
-                    placeholder="Enter title"
+                    placeholder={t("enterTitle")}
                   ></TextField>
                 </Box>
                 <Box
@@ -1102,7 +1103,8 @@ const LandValuationDetail = () => {
                   }}
                 >
                   <label>
-                    <span style={{ color: "red" }}>*</span> Committee Duration
+                    <span style={{ color: "red" }}>*</span>{" "}
+                    {t("Committee Duration")}
                   </label>
                   <DateRangePicker
                     clearIcon={null}
@@ -1149,8 +1151,8 @@ const LandValuationDetail = () => {
                   color: "#000000E0",
                 }}
               >
-                Land Valuation Reference Data
-                <span style={{ fontWeight: 400 }}> (To Local Government)</span>
+                {t("Land Valuation Reference Data (To Local Government)")}
+                {/* <span style={{ fontWeight: 400 }}> (To Local Government)</span> */}
               </Typography>
               <Button
                 component="label"
@@ -1167,7 +1169,7 @@ const LandValuationDetail = () => {
                   color: "#1677FF",
                 }}
               >
-                Upload document
+                {t("Upload document")}
                 <VisuallyHiddenInput
                   type="file"
                   onChange={handleFileUpload2}
@@ -1190,7 +1192,7 @@ const LandValuationDetail = () => {
                 marginBottom: "24px",
               }}
             >
-              Data Received from Local Government
+              {t("Data Received from Local Government")}
             </Typography>
             <Box
               sx={{
@@ -1217,7 +1219,7 @@ const LandValuationDetail = () => {
                     lineHeight: "22px",
                   }}
                 >
-                  District
+                  {t("district")}
                 </Typography>
                 <Stack spacing={"8px"} sx={{ margin: "0 16px 16px 16px" }}>
                   <DistrictList />
@@ -1248,8 +1250,8 @@ const LandValuationDetail = () => {
                     },
                   }}
                 >
-                  <Tab label="Overview" />
-                  <Tab label="Land Valuation" />
+                  <Tab label={t("Overview")} />
+                  <Tab label={t("Land Valuation")} />
                 </Tabs>
                 {value === 0 && (
                   <Box
@@ -1265,7 +1267,7 @@ const LandValuationDetail = () => {
                           fontWeight: 500,
                         }}
                       >
-                        Land Valuation Result
+                        {t("Land Valuation Result")}
                       </Typography>
                       <Box sx={{ display: "flex", gap: "24px" }}>
                         <Button
@@ -1279,7 +1281,7 @@ const LandValuationDetail = () => {
                             borderRadius: "8px",
                           }}
                         >
-                          Download All Land Valuation Areas (*.shp)
+                          {t("Download All Land Valuation Areas")} (*.shp)
                         </Button>
                         <Button
                           variant="outlined"
@@ -1292,7 +1294,7 @@ const LandValuationDetail = () => {
                             borderRadius: "8px",
                           }}
                         >
-                          Download All Land Valuation Tables (*.xlsx)
+                          {t("Download All Land Valuation Tables")} (*.xlsx)
                         </Button>
                       </Box>
                     </Box>
@@ -1306,7 +1308,7 @@ const LandValuationDetail = () => {
                         color: "#00000073",
                       }}
                     >
-                      Attachments:
+                      {t("Attachments")}:
                     </Typography>
                     <Box
                       sx={{
@@ -1367,7 +1369,7 @@ const LandValuationDetail = () => {
                         color: "#000000E0",
                       }}
                     >
-                      Committee Members
+                      {t("Committee Members")}
                     </Typography>
                     <Typography
                       sx={{
@@ -1379,7 +1381,7 @@ const LandValuationDetail = () => {
                         color: "#00000073",
                       }}
                     >
-                      Description:
+                      {t("Description")}:
                     </Typography>
                     <Typography
                       sx={{
@@ -1406,38 +1408,37 @@ const LandValuationDetail = () => {
                         color: "#00000073",
                       }}
                     >
-                      Committee Duration:
+                      {t("Committee Duration")}:
                     </Typography>
                     <Typography sx={{ marginBottom: "16px" }}>
                       01-09-2024 to 09-11-2024
                     </Typography>
                     <Box
-                            mt="20px"
-                            height="360px"
-                            display="grid"
-                            gridTemplateColumns="repeat(12, minmax(0, 1fr))"
-                            justifyContent="space-between"
-                            rowGap="20px"
-                            columnGap="1.33%"
-                            sx={{
-                              "& > div": { gridColumn: "span 12" },
-                              width: "100%",
-                              "& .MuiDataGrid-root": {
-                                borderRadius: "8px",
-                              },
-                              "& .MuiDataGrid-cell": {
-                                borderBottom: "none",
-                              },
-                              "& .MuiDataGrid-container--top [role=row]": {
-                                borderBottom: "none",
-                              },
-                              "& .MuiDataGrid-virtualScroller": {
-                              },
-                              "& .MuiDataGrid-footerContainer": {
-                                borderTop: "none",
-                              },
-                            }}
-                          >
+                      mt="20px"
+                      height="360px"
+                      display="grid"
+                      gridTemplateColumns="repeat(12, minmax(0, 1fr))"
+                      justifyContent="space-between"
+                      rowGap="20px"
+                      columnGap="1.33%"
+                      sx={{
+                        "& > div": { gridColumn: "span 12" },
+                        width: "100%",
+                        "& .MuiDataGrid-root": {
+                          borderRadius: "8px",
+                        },
+                        "& .MuiDataGrid-cell": {
+                          borderBottom: "none",
+                        },
+                        "& .MuiDataGrid-container--top [role=row]": {
+                          borderBottom: "none",
+                        },
+                        "& .MuiDataGrid-virtualScroller": {},
+                        "& .MuiDataGrid-footerContainer": {
+                          borderTop: "none",
+                        },
+                      }}
+                    >
                       <DataGrid
                         rows={rows}
                         columns={visibleColumns}
@@ -1502,8 +1503,8 @@ const LandValuationDetail = () => {
                           marginBottom: "12px",
                         }}
                       >
-                        <CustomTab label="Zone" />
-                        <CustomTab label="Survey" />
+                        <CustomTab label={t("Zone")} />
+                        <CustomTab label={t("Survey")} />
                       </Tabs>
                       {value1 === 0 && (
                         <Box
@@ -1547,11 +1548,11 @@ const LandValuationDetail = () => {
                         <Box sx={{ display: "flex", gap: "24px" }}>
                           <Box sx={{ display: "flex", gap: "8px" }}>
                             <img src="/red pin.svg" alt="surveyed" />
-                            <Typography>Surveyed Parcel</Typography>
+                            <Typography>{t("Surveyed Parcel")}</Typography>
                           </Box>
                           <Box sx={{ display: "flex", gap: "8px" }}>
                             <img src="/gray pin.svg" alt="surveyed" />
-                            <Typography>Not surveyed</Typography>
+                            <Typography>{t("Not surveyed")}</Typography>
                           </Box>
                         </Box>
                         <Box>
@@ -1563,7 +1564,7 @@ const LandValuationDetail = () => {
                               },
                             }}
                           />
-                          Label
+                          {t("Label")}
                         </Box>
                       </Box>
                       <Box>
@@ -1582,7 +1583,7 @@ const LandValuationDetail = () => {
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                           />
-                          <GeoJSON data={geoData} style={geoJsonStyle}/>
+                          <GeoJSON data={geoData} style={geoJsonStyle} />
                           <ZoomControl />
                           <MinimapControl position="topright" zoom={15} />
                           <Marker position={position} icon={customIcon1}>
@@ -1634,7 +1635,7 @@ const LandValuationDetail = () => {
                                         margin: "0 !important",
                                       }}
                                     >
-                                      Main Street:
+                                      {t("Main Street")}:
                                     </Typography>
                                     <Typography
                                       sx={{
@@ -1664,7 +1665,7 @@ const LandValuationDetail = () => {
                                         margin: "0 !important",
                                       }}
                                     >
-                                      Connecting Roads:
+                                      {t("Connecting Roads")}:
                                     </Typography>
                                     <Typography
                                       sx={{
@@ -1694,7 +1695,7 @@ const LandValuationDetail = () => {
                                         margin: "0 !important",
                                       }}
                                     >
-                                      Junction Street:
+                                      {t("Junction Street")}:
                                     </Typography>
                                     <Typography
                                       sx={{
@@ -1726,7 +1727,7 @@ const LandValuationDetail = () => {
                                         margin: "0 !important",
                                       }}
                                     >
-                                      Streets as they used to be:
+                                      {t("Streets as they used to be")}:
                                     </Typography>
                                     <Typography
                                       sx={{
@@ -1744,16 +1745,30 @@ const LandValuationDetail = () => {
                               </Box>
                             </Popup>
                           </Marker>
-                          <Marker position={position1} icon={customIcon}></Marker>
-                          <Marker position={position2} icon={customIcon}></Marker>
-                          <Marker position={position3} icon={customIcon}>
-                          </Marker>
-                          <Marker position={position4} icon={customIcon2}>
-                          </Marker>
-                          <Marker position={position5} icon={customIcon2}>
-                          </Marker>
-                          <Marker position={position6} icon={customIcon2}>
-                          </Marker>
+                          <Marker
+                            position={position1}
+                            icon={customIcon}
+                          ></Marker>
+                          <Marker
+                            position={position2}
+                            icon={customIcon}
+                          ></Marker>
+                          <Marker
+                            position={position3}
+                            icon={customIcon}
+                          ></Marker>
+                          <Marker
+                            position={position4}
+                            icon={customIcon2}
+                          ></Marker>
+                          <Marker
+                            position={position5}
+                            icon={customIcon2}
+                          ></Marker>
+                          <Marker
+                            position={position6}
+                            icon={customIcon2}
+                          ></Marker>
                         </MapContainer>
                       </Box>
                     </Box>
@@ -2035,7 +2050,7 @@ const LandValuationDetail = () => {
                       display: "flex",
                       flexDirection: "row",
                       gap: "24px",
-                      marginBottom:"24px"
+                      marginBottom: "24px",
                     }}
                   >
                     <Box

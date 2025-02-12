@@ -6,6 +6,9 @@ import {
   MenuItem,
   Typography,
   useTheme,
+  Box,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
 
 import { Menu as MenuIcon } from "@mui/icons-material";
@@ -22,6 +25,9 @@ import RegisterModal from "../scenes/auth/modal/RegisterModal";
 import RequireLogin from "../scenes/auth/modal/RequireLogin";
 import LoginIcon from "../assets/icons/auth/LoginIcon";
 import SignupIcon from "../assets/icons/auth/SignupIcon";
+import EnglishIcon from "../assets/icons/country/EnglishIcon";
+import LaoIcon from "../assets/icons/country/LaoIcon";
+import KoreanIcon from "../assets/icons/country/KoreanIcon";
 
 const TopBox = () => {
   const theme = useTheme();
@@ -31,12 +37,48 @@ const TopBox = () => {
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
 
-  const [isLogin, setIsLogin] = useState(false)
-  const [isRegister, setIsRegister] = useState(false)
-  const [isRequireLogin, setIsRequireLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
+  const [isRequireLogin, setIsRequireLogin] = useState(false);
+  const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
+  const openLanguage = Boolean(languageAnchorEl);
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
 
+  const handleLanguageClick = (event) => {
+    setLanguageAnchorEl(event.currentTarget);
+  };
+
+  const handleLanguageClose = () => {
+    setLanguageAnchorEl(null);
+  };
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setSelectedLanguage(lng);
+    handleLanguageClose();
+  };
+
+  const getFlagIcon = () => {
+    switch (selectedLanguage) {
+      case "en":
+        return <EnglishIcon width={46} height={34} />;
+      case "lo":
+        return <LaoIcon width={46} height={34} />;
+      case "ko":
+        return <KoreanIcon width={46} height={34} />;
+      default:
+        return <EnglishIcon width={46} height={34} />;
+    }
+  };
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(open ? null : event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
   const handleLogin = () => {
     setIsLogin(true);
   };
@@ -69,19 +111,59 @@ const TopBox = () => {
         boxShadow: "none",
       }}
     >
-      <Toolbar sx={{ justifyContent: "flex-end", gap: "24px" }}>
+      <Toolbar
+        sx={{ justifyContent: "flex-end", gap: "24px", alignItems: "center" }}
+      >
         {/* LEFT SIDE */}
         <FlexBetween>
-          <img
-            width="46px"
-            height="33px"
-            alt="flag"
-            src="../lao_flag.svg"
-            style={{ objectFit: "cover",  }}
-            onClick={() => {
-              navigate(`/`);
+          <Box
+            aria-label="select language"
+            aria-controls="language-menu"
+            aria-haspopup="true"
+            onClick={handleLanguageClick}
+            sx={{ height: "34px", cursor: "pointer" }}
+          >
+            {getFlagIcon()}
+          </Box>
+          <Menu
+            id="language-menu"
+            anchorEl={languageAnchorEl}
+            open={openLanguage}
+            onClose={handleLanguageClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
             }}
-          />
+            sx={{
+              zIndex: 1000,
+              top: "15px",
+              width: "170px",
+              borderRadius: "8px",
+              "& .MuiPaper-root": {
+                position: "relative",
+                overflow: "visible",
+                borderRadius: "8px",
+              },
+            }}
+          >
+            <MenuItem onClick={() => changeLanguage("en")}>
+              <ListItemIcon>
+                <EnglishIcon />
+              </ListItemIcon>
+              <ListItemText>English</ListItemText>
+            </MenuItem>
+            <MenuItem onClick={() => changeLanguage("lo")}>
+              <ListItemIcon>
+                <LaoIcon />
+              </ListItemIcon>
+              <ListItemText>ພາສາລາວ</ListItemText>
+            </MenuItem>
+            <MenuItem onClick={() => changeLanguage("ko")}>
+              <ListItemIcon>
+                <KoreanIcon />
+              </ListItemIcon>
+              <ListItemText>한국인</ListItemText>
+            </MenuItem>
+          </Menu>
         </FlexBetween>
 
         {/* RIGHT SIDE */}
@@ -101,7 +183,7 @@ const TopBox = () => {
             startIcon={<LoginIcon />}
             onClick={handleLogin}
           >
-            {t('Login')}
+            {t("Login")}
           </Button>
           <Button
             sx={{
@@ -117,7 +199,7 @@ const TopBox = () => {
             startIcon={<SignupIcon />}
             onClick={handleRegister}
           >
-            {t('Register')}
+            {t("Register")}
           </Button>
           <Button
             sx={{
@@ -132,7 +214,7 @@ const TopBox = () => {
             variant="contained"
             onClick={handleRequireLogin}
           >
-            {t('Require')}
+            {t("Require")}
           </Button>
 
           {/* <LanguageSwitcher /> */}
@@ -174,9 +256,16 @@ const TopBox = () => {
               </FlexBetween>
             </MenuItem>
           </Menu> */}
-          <LoginModal open={isLogin} onClose={handleLoginClose} onRegister={() => { }} />
+          <LoginModal
+            open={isLogin}
+            onClose={handleLoginClose}
+            onRegister={() => {}}
+          />
           <RegisterModal open={isRegister} onClose={handleRegisterClose} />
-          <RequireLogin open={isRequireLogin} onClose={handleRequireLoginClose} />
+          <RequireLogin
+            open={isRequireLogin}
+            onClose={handleRequireLoginClose}
+          />
         </FlexBetween>
       </Toolbar>
     </AppBar>

@@ -8,8 +8,11 @@ import DetailIcon from "../../assets/icons/model-base/DetailIcon";
 import SurveyInformation from "./modal/SurveyInformation";
 import RegisterSurveyInformationModal from "./modal/RegisterSurveyInformationModal";
 import { useGetAllProvincesQuery } from "../../state/provinceApi";
+import { useTranslation } from "react-i18next";
 
 const ParcelSurveyManagement = () => {
+  const {t} = useTranslation()
+
   const [district, setDistrict] = useState('');
   const [province, setProvince] = useState('');
   const [itemActive, setItemActive] = useState('A1');
@@ -97,7 +100,7 @@ const ParcelSurveyManagement = () => {
 
   return (
     <LayoutPageCommon
-      title="Parcel Survey Management"
+      title={t("Parcel Survey Management")}
       actions={ 
         <>
           <Button
@@ -156,7 +159,7 @@ const ParcelSurveyManagement = () => {
               sx={{ minWidth: '128px', borderRadius: '6px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
             >
               <MenuItem sx={{ display: 'none' }} disabled value="">
-                <Box>Province</Box>
+                <Box>{t("province")}</Box>
               </MenuItem>
               {(provinces ?? []).map((item) => (
                 <MenuItem key={item.provinceCode} value={item.provinceCode}>
@@ -174,7 +177,7 @@ const ParcelSurveyManagement = () => {
               sx={{ minWidth: '128px', borderRadius: '6px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
             >
               <MenuItem sx={{ display: 'none' }} disabled value="">
-                <Box>District</Box>
+                <Box>{t("district")}</Box>
               </MenuItem>
               {(districts ?? []).map((item) => (
                 <MenuItem key={item.districtcode} value={item.districtcode}>
