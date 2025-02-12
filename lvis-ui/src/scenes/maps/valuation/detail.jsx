@@ -177,7 +177,11 @@ const LandValuationDetail = () => {
   const [showBox, setShowBox] = useState(true);
   const [showBox2, setShowBox2] = useState(true);
   const [showMarker, setShowMarker] = useState(false);
-
+  const { t } = useTranslation();
+  const onDelete = (index) => {
+    const newFiles = uploadedFiles.filter((_, i) => i !== index);
+    setUploadedFiles(newFiles);
+  };
   const handleCloneButton = () => {
     setShowBox2(false);
   };
