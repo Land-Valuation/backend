@@ -115,7 +115,7 @@ const TopBox = () => {
         sx={{ justifyContent: "flex-end", gap: "24px", alignItems: "center" }}
       >
         {/* LEFT SIDE */}
-        <FlexBetween>
+        {/* <FlexBetween>
           <Box
             aria-label="select language"
             aria-controls="language-menu"
@@ -164,8 +164,8 @@ const TopBox = () => {
               <ListItemText>한국인</ListItemText>
             </MenuItem>
           </Menu>
-        </FlexBetween>
-
+        </FlexBetween> */}
+        <LanguageSwitcher height="34px" top="10px"/>
         {/* RIGHT SIDE */}
         <FlexBetween sx={{ gap: "12px" }}>
           <Button
