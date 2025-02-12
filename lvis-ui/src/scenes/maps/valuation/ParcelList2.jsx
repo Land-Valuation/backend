@@ -128,7 +128,7 @@ const ParcelList2 = () => {
                   color: "#000000A6",
                 }}
               >
-                Main Street:
+                Map Sheet:
               </Typography>
               <Typography
                 sx={{
@@ -138,7 +138,7 @@ const ParcelList2 = () => {
                   color: "#000000E0",
                 }}
               >
-                {parcel.mainStreet?.toLocaleString() || "N/A"}
+                {parcel.mapSheet || "N/A"}
               </Typography>
             </Box>
             <Box
@@ -156,7 +156,7 @@ const ParcelList2 = () => {
                   color: "#000000A6",
                 }}
               >
-                Connecting Roads:
+                Parcel No.:
               </Typography>
               <Typography
                 sx={{
@@ -166,7 +166,7 @@ const ParcelList2 = () => {
                   color: "#000000E0",
                 }}
               >
-                {parcel.connectingRoad?.toLocaleString() || "N/A"}
+                {parcel.parcelNo || "N/A"}
               </Typography>
             </Box>
             <Box
@@ -184,7 +184,7 @@ const ParcelList2 = () => {
                   color: "#000000A6",
                 }}
               >
-                Junction Street:
+                Surveyed Price:
               </Typography>
               <Typography
                 sx={{
@@ -194,7 +194,7 @@ const ParcelList2 = () => {
                   color: "#000000E0",
                 }}
               >
-                {parcel.junctionStreet?.toLocaleString() || "N/A"}
+                {parcel.surveyedPrice || "N/A"}
               </Typography>
             </Box>
             <Box
@@ -213,7 +213,7 @@ const ParcelList2 = () => {
                   maxWidth: "120px",
                 }}
               >
-                Streets as they used to be:
+                Road Type:
               </Typography>
               <Typography
                 sx={{
@@ -223,7 +223,20 @@ const ParcelList2 = () => {
                   color: "#000000E0",
                 }}
               >
-                {parcel.streetAsTheyUsedToBe?.toLocaleString() || "N/A"}
+                {parcel.roadType || "N/A"}
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "row", gap: "8px", cursor: "pointer" }}>
+              <img src="/view more.svg" alt="view-more" />
+              <Typography
+                sx={{
+                  color: "#1677FF",
+                  fontFamily: "Poppins",
+                  fontSize: "12px",
+                  fontWeight: 400,
+                }}
+              >
+                View More
               </Typography>
             </Box>
           </Box>
