@@ -2,21 +2,34 @@ import { Box, Button, MenuItem, Select, Typography } from "@mui/material"
 import LayoutPageCommon from "../../components/LayoutPageCommon"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ValuationMap from "../../components/map/ValuationMap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PLaceIcon from "../../assets/icons/model-base/PLaceIcon";
 import DetailIcon from "../../assets/icons/model-base/DetailIcon";
 import SurveyInformation from "./modal/SurveyInformation";
 import RegisterSurveyInformationModal from "./modal/RegisterSurveyInformationModal";
+import { useGetAllProvincesQuery } from "../../state/provinceApi";
 import { useTranslation } from "react-i18next";
 
 const ParcelSurveyManagement = () => {
+  const {t} = useTranslation()
+
   const [district, setDistrict] = useState('');
   const [province, setProvince] = useState('');
   const [itemActive, setItemActive] = useState('A1');
   const [isOpenSurveyInformationDialog, setIsOpenSurveyInformationDialog] = useState(false);
   const [isRegisterSurveyInformationModal, setIsRegisterSurveyInformationModal] = useState(false);
   const [isHasData, setIsHasData] = useState(false);
-  const {t} = useTranslation()
+  const [provinces, setProvinces] = useState([])
+  const [districts, setDistricts] = useState([])
+
+  const { data: allProvinceData } = useGetAllProvincesQuery();
+
+  useEffect(() => {
+    setProvinces(allProvinceData || []);
+    setDistricts(allProvinceData?.[0]?.districts || []);
+    setProvince(allProvinceData?.[0]?.provinceCode || '');
+    setDistrict(allProvinceData?.[0]?.districts?.[0]?.districtcode || '');
+  }, [allProvinceData])
 
   const handleDistrictChange = (event) => {
     setDistrict(event.target.value);
@@ -24,6 +37,7 @@ const ParcelSurveyManagement = () => {
 
   const handleProvinceChange = (event) => {
     setProvince(event.target.value);
+    setDistricts(provinces.find(item => item.provinceCode === event.target.value)?.districts);
   };
 
   const handleItemClick = (item) => {
@@ -147,9 +161,11 @@ const ParcelSurveyManagement = () => {
               <MenuItem sx={{ display: 'none' }} disabled value="">
                 <Box>{t("province")}</Box>
               </MenuItem>
-              <MenuItem value={10}>Province A</MenuItem>
-              <MenuItem value={20}>Province B</MenuItem>
-              <MenuItem value={30}>Province C</MenuItem>
+              {(provinces ?? []).map((item) => (
+                <MenuItem key={item.provinceCode} value={item.provinceCode}>
+                  {item.provinceEnglish}
+                </MenuItem>
+              ))}
             </Select>
             <Select
               labelId="district-label"
@@ -163,9 +179,11 @@ const ParcelSurveyManagement = () => {
               <MenuItem sx={{ display: 'none' }} disabled value="">
                 <Box>{t("district")}</Box>
               </MenuItem>
-              <MenuItem value={10}>District A</MenuItem>
-              <MenuItem value={20}>District B</MenuItem>
-              <MenuItem value={30}>District C</MenuItem>
+              {(districts ?? []).map((item) => (
+                <MenuItem key={item.districtcode} value={item.districtcode}>
+                  {item.districtEnglish}
+                </MenuItem>
+              ))}
             </Select>
           </Box>
           <Box sx={{

@@ -246,6 +246,49 @@ function Sidebar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
+  const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
+  const openLanguage = Boolean(languageAnchorEl);
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+
+  useEffect(() => {
+    if (localStorage.getItem('language')) {
+      setSelectedLanguage(localStorage.getItem('language'));
+    } else {
+      setSelectedLanguage(LANGUAGE.LO);
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('language', selectedLanguage);
+  }, [selectedLanguage])
+
+  const handleLanguageClick = (event) => {
+    setLanguageAnchorEl(event.currentTarget);
+  };
+
+  const handleLanguageClose = () => {
+    setLanguageAnchorEl(null);
+  };
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setSelectedLanguage(lng);
+    handleLanguageClose();
+  };
+
+  const getFlagIcon = () => {
+    switch (selectedLanguage) {
+      case LANGUAGE.EN:
+        return <EnglishIcon />;
+      case LANGUAGE.LO:
+        return <LaoIcon />;
+      case LANGUAGE.KO:
+        return <KoreanIcon />;
+      default:
+        return <EnglishIcon />;
+    }
+  };
+
   const handleMenuOpen = (event) => {
     setAnchorEl(open ? null : event.currentTarget);
   };
