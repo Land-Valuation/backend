@@ -213,10 +213,10 @@
 // };
 
 // export default Sidebar;
-import { useState, useEffect } from "react";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
+import {useState, useEffect} from 'react';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import {
   Divider,
   Box,
@@ -227,23 +227,29 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
-} from "@mui/material";
-import { tooltipClasses } from "@mui/material/Tooltip";
-import { styled } from "@mui/material/styles";
-import { useNavigate, useLocation } from "react-router-dom";
-import UserService from "../state/UserService";
-import { useTranslation } from "react-i18next";
-import EnglishIcon from "../assets/icons/country/EnglishIcon";
-import LaoIcon from "../assets/icons/country/LaoIcon";
-import KoreanIcon from "../assets/icons/country/KoreanIcon";
+} from '@mui/material';
+import {tooltipClasses} from '@mui/material/Tooltip';
+import {styled} from '@mui/material/styles';
+import {useNavigate, useLocation} from 'react-router-dom';
+import UserService from '../state/UserService';
+import {useTranslation} from 'react-i18next';
+import EnglishIcon from '../assets/icons/country/EnglishIcon';
+import LaoIcon from '../assets/icons/country/LaoIcon';
+import KoreanIcon from '../assets/icons/country/KoreanIcon';
+import {logoutUser} from '@/state/authService.js';
+import {useDispatch} from 'react-redux';
+import {selectIsAuthenticated, selectUser, selectToken} from '@/state';
+import {useSelector} from 'react-redux';
 
 const drawerWidth = 64;
 
 function Sidebar() {
+  const dispatch = useDispatch();
   const username = UserService.getUsername();
+  const email = UserService.getUsername();
   const navigate = useNavigate();
   const location = useLocation();
-  const { i18n, t } = useTranslation();
+  const {i18n, t} = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -251,6 +257,7 @@ function Sidebar() {
   const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
   const openLanguage = Boolean(languageAnchorEl);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const handleLanguageClick = (event) => {
     setLanguageAnchorEl(event.currentTarget);
@@ -269,13 +276,13 @@ function Sidebar() {
   const getFlagIcon = () => {
     switch (selectedLanguage) {
       case 'en':
-        return <EnglishIcon />;
+        return <EnglishIcon/>;
       case 'lo':
-        return <LaoIcon />;
+        return <LaoIcon/>;
       case 'ko':
-        return <KoreanIcon />;
+        return <KoreanIcon/>;
       default:
-        return <EnglishIcon />;
+        return <EnglishIcon/>;
     }
   };
 
@@ -288,7 +295,7 @@ function Sidebar() {
 
   useEffect(() => {
     const currentIndex = menuItems.findIndex((item) =>
-      location.pathname.includes(item.path.toLowerCase())
+        location.pathname.includes(item.path.toLowerCase()),
     );
     if (currentIndex !== -1) {
       setActiveIndex(currentIndex);
@@ -296,297 +303,321 @@ function Sidebar() {
   }, [location.pathname]);
 
   const menuItems = [
-    { src: "/home ico.svg", alt: "Home", path: "/home" },
-    { src: "/land-price.svg", alt: "Land Price Explorer", path: "/montoring" },
+    {src: '/home ico.svg', alt: 'Home', path: '/home'},
+    {src: '/land-price.svg', alt: 'Land Price Explorer', path: '/montoring'},
     {
-      src: "/land-valuation.svg",
-      alt: "Land Valuation",
-      path: "/land-valuation",
+      src: '/land-valuation.svg',
+      alt: 'Land Valuation',
+      path: '/land-valuation',
     },
     {
-      src: "/model-based.svg",
-      alt: "Model-based land valuation",
-      path: "/model-base",
+      src: '/model-based.svg',
+      alt: 'Model-based land valuation',
+      path: '/model-base',
     },
     {
-      src: "/parcel-survey.svg",
-      alt: "Parcel survey management",
-      path: "/parcel-survey-management",
+      src: '/parcel-survey.svg',
+      alt: 'Parcel survey management',
+      path: '/parcel-survey-management',
     },
-    { src: "/admin.svg", alt: "Admin", path: "/customers" },
+    {src: '/admin.svg', alt: 'Admin', path: '/customers'},
   ];
 
-  const LightTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
+  const LightTooltip = styled(({className, ...props}) => (
+      <Tooltip {...props} classes={{popper: className}}/>
+  ))(({theme}) => ({
     [`& .${tooltipClasses.arrow}`]: {
       color: theme.palette.common.white,
-      position: "relative",
-      filter: "drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1))",
+      position: 'relative',
+      filter: 'drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1))',
     },
     [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: theme.palette.common.white,
-      color: "rgba(0, 0, 0, 0.87)",
-      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+      color: 'rgba(0, 0, 0, 0.87)',
+      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
       fontSize: 14,
     },
   }));
 
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box",
-          justifyContent: "space-between",
-        },
-      }}
-    >
-      <div>
-        <Box
+      <Drawer
+          variant="permanent"
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: "16px 0",
+            width: drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+              justifyContent: 'space-between',
+            },
           }}
-        >
-          <img
-            src="/Logo.svg"
-            alt="Logo"
-            style={{ width: "40px", height: "40px", objectFit: "cover" }}
-          />
-        </Box>
-        <Divider variant="middle" />
-        <List
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "12px",
-          }}
-        >
-          {menuItems.map((item, index) => (
-            <LightTooltip
-              title={item.alt}
-              arrow
-              key={item.alt}
-              placement="right"
-            >
-              <ListItem
-                sx={{
-                  width: "40px",
-                  height: "40px",
-                  padding: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  background: activeIndex === index ? "#E6F4FF" : "#F4F4F4",
-                  opacity: activeIndex === index ? 1 : 0.7,
-                  boxShadow:
-                    activeIndex === index
-                      ? "0px 6px 16px 0px #00000029"
-                      : "none",
-                  "&:hover": {
-                    background: "#E6F4FF",
-                    opacity: 1,
-                    boxShadow: "0px 6px 16px 0px #00000029",
-                  },
-                }}
-                button="true"
-                key={item.alt}
-                onClick={() => {
-                  // setActiveIndex(index);
-                  navigate(item.path);
-                }}
-              >
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  style={{ width: "20px", height: "20px" }}
-                />
-              </ListItem>
-            </LightTooltip>
-          ))}
-        </List>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "16px",
-          marginBottom: "20px",
-        }}
       >
-        <Divider variant="middle" sx={{ width: "31px" }} />
-        <Box
-          aria-label="select language"
-          aria-controls="language-menu"
-          aria-haspopup="true"
-          onClick={handleLanguageClick}
-        >
-          {getFlagIcon()}
-        </Box>
-        <Menu
-          id="language-menu"
-          anchorEl={languageAnchorEl}
-          open={openLanguage}
-          onClose={handleLanguageClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button',
-          }}
-          sx={{
-            zIndex: 1000,
-            left: "55px",
-            top: "-15px",
-            width: "170px",
-            borderRadius:"8px",
-            "& .MuiPaper-root": {
-              position: "relative",
-              overflow: "visible",
-              borderRadius: "8px", 
-              "&::before": {
-                content: '""',
-                display: "block",
-                position: "absolute",
-                top: 10,
-                left: -5,
-                width: 10,
-                height: 10,
-                bgcolor: "background.paper",
-                transform: "rotate(45deg)",
-                zIndex: 0,
-              },
-            },
-          }}
-        >
-          <MenuItem onClick={() => changeLanguage('en')}>
-            <ListItemIcon>
-              <EnglishIcon />
-            </ListItemIcon>
-            <ListItemText>{t('english')}</ListItemText>
-          </MenuItem>
-          <MenuItem onClick={() => changeLanguage('lo')}>
-            <ListItemIcon>
-              <LaoIcon />
-            </ListItemIcon>
-            <ListItemText>{t('lao')}</ListItemText>
-          </MenuItem>
-          <MenuItem onClick={() => changeLanguage('ko')}>
-            <ListItemIcon>
-              <KoreanIcon />
-            </ListItemIcon>
-            <ListItemText>{t('korean')}</ListItemText>
-          </MenuItem>
-        </Menu>
-        <img width="20px" height="20px" alt="noti bell" src="../bell ico.svg" />
-        <IconButton onClick={handleMenuOpen} sx={{ cursor: "pointer" }}>
-          <img
-            width="32px"
-            height="32px"
-            alt="flag"
-            src="../sample avatar.svg"
-          />
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleMenuClose}
-          onClick={handleMenuClose}
-          sx={{
-            zIndex: 1000,
-            left: "55px",
-            top: "-15px",
-            width: "220px",
-            borderRadius:"8px",
-            "& .MuiPaper-root": {
-              position: "relative",
-              overflow: "visible",
-              borderRadius: "8px", 
-              "&::before": {
-                content: '""',
-                display: "block",
-                position: "absolute",
-                bottom: 10,
-                left: -5,
-                width: 10,
-                height: 10,
-                bgcolor: "background.paper",
-                transform: "rotate(45deg)",
-                zIndex: 0,
-              },
-            },
-          }}
-        >
-          <div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "12px",
-                marginLeft:"12px"
+        <div>
+          <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '16px 0',
               }}
-            >
-              <img
-                width="32px"
-                height="32px"
-                alt="flag"
-                src="../sample avatar.svg"
-              />
-              <div style={{ marginLeft: "8px" }}>
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    lineHeight: "20px",
-                    color: "#333333",
-                    marginBottom: "2px",
-                  }}
+          >
+            <img
+                src="/Logo.svg"
+                alt="Logo"
+                style={{width: '40px', height: '40px', objectFit: 'cover'}}
+            />
+          </Box>
+          <Divider variant="middle"/>
+          <List
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+          >
+            {menuItems.map((item, index) => (
+                <LightTooltip
+                    title={item.alt}
+                    arrow
+                    key={item.alt}
+                    placement="right"
                 >
-                  {username}
-                </Typography>
-                <Typography sx={{ fontWeight: 400, color: "#00000073" }}>
-                  user@mail.com
-                </Typography>
-              </div>
-            </div>
-            <MenuItem
-              onClick={handleMenuClose}
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-            >
-              <img src="/personal info.svg" alt="" />
-              <Typography>Personal Information</Typography>
+                  <ListItem
+                      sx={{
+                        width: '40px',
+                        height: '40px',
+                        padding: 0,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        background: activeIndex === index ?
+                            '#E6F4FF' :
+                            '#F4F4F4',
+                        opacity: activeIndex === index ? 1 : 0.7,
+                        boxShadow:
+                            activeIndex === index
+                                ? '0px 6px 16px 0px #00000029'
+                                : 'none',
+                        '&:hover': {
+                          background: '#E6F4FF',
+                          opacity: 1,
+                          boxShadow: '0px 6px 16px 0px #00000029',
+                        },
+                      }}
+                      button="true"
+                      key={item.alt}
+                      onClick={() => {
+                        // setActiveIndex(index);
+                        navigate(item.path);
+                      }}
+                  >
+                    <img
+                        src={item.src}
+                        alt={item.alt}
+                        style={{width: '20px', height: '20px'}}
+                    />
+                  </ListItem>
+                </LightTooltip>
+            ))}
+          </List>
+        </div>
+        <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '16px',
+              marginBottom: '20px',
+            }}
+        >
+          <Divider variant="middle" sx={{width: '31px'}}/>
+          <Box
+              aria-label="select language"
+              aria-controls="language-menu"
+              aria-haspopup="true"
+              onClick={handleLanguageClick}
+          >
+            {getFlagIcon()}
+          </Box>
+          <Menu
+              id="language-menu"
+              anchorEl={languageAnchorEl}
+              open={openLanguage}
+              onClose={handleLanguageClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+              sx={{
+                zIndex: 1000,
+                left: '55px',
+                top: '-15px',
+                width: '170px',
+                borderRadius: '8px',
+                '& .MuiPaper-root': {
+                  position: 'relative',
+                  overflow: 'visible',
+                  borderRadius: '8px',
+                  '&::before': {
+                    content: '""',
+                    display: 'block',
+                    position: 'absolute',
+                    top: 10,
+                    left: -5,
+                    width: 10,
+                    height: 10,
+                    bgcolor: 'background.paper',
+                    transform: 'rotate(45deg)',
+                    zIndex: 0,
+                  },
+                },
+              }}
+          >
+            <MenuItem onClick={() => changeLanguage('en')}>
+              <ListItemIcon>
+                <EnglishIcon/>
+              </ListItemIcon>
+              <ListItemText>{t('english')}</ListItemText>
             </MenuItem>
-            <MenuItem
-              onClick={handleMenuClose}
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-            >
-              <img src="/change pw.svg" alt="" />
-              <Typography>Change password</Typography>
+            <MenuItem onClick={() => changeLanguage('lo')}>
+              <ListItemIcon>
+                <LaoIcon/>
+              </ListItemIcon>
+              <ListItemText>{t('lao')}</ListItemText>
             </MenuItem>
-            <MenuItem
-              onClick={handleMenuClose}
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-            >
-              <img src="/logout ico.svg" alt="" />
-              <Typography
-                onClick={() => UserService.doLogout()}
-                style={{ cursor: "pointer" }}
-              >
-                Log out
-              </Typography>
+            <MenuItem onClick={() => changeLanguage('ko')}>
+              <ListItemIcon>
+                <KoreanIcon/>
+              </ListItemIcon>
+              <ListItemText>{t('korean')}</ListItemText>
             </MenuItem>
-          </div>
-        </Menu>
-      </div>
-    </Drawer>
+          </Menu>
+          <img width="20px" height="20px" alt="noti bell"
+               src="../bell ico.svg"/>
+          {
+              isAuthenticated &&
+              (
+                  <>
+                    <IconButton onClick={handleMenuOpen}
+                                sx={{cursor: 'pointer'}}>
+                      <img
+                          width="32px"
+                          height="32px"
+                          alt="flag"
+                          src="../sample avatar.svg"
+                      />
+                    </IconButton>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleMenuClose}
+                        onClick={handleMenuClose}
+                        sx={{
+                          zIndex: 1000,
+                          left: '55px',
+                          top: '-15px',
+                          width: '220px',
+                          borderRadius: '8px',
+                          '& .MuiPaper-root': {
+                            position: 'relative',
+                            overflow: 'visible',
+                            borderRadius: '8px',
+                            '&::before': {
+                              content: '""',
+                              display: 'block',
+                              position: 'absolute',
+                              bottom: 10,
+                              left: -5,
+                              width: 10,
+                              height: 10,
+                              bgcolor: 'background.paper',
+                              transform: 'rotate(45deg)',
+                              zIndex: 0,
+                            },
+                          },
+                        }}
+                    >
+                      <div>
+                        <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginBottom: '12px',
+                              marginLeft: '12px',
+                            }}
+                        >
+                          <img
+                              width="32px"
+                              height="32px"
+                              alt="flag"
+                              src="../sample avatar.svg"
+                          />
+                          <div style={{marginLeft: '8px'}}>
+                            <Typography
+                                sx={{
+                                  fontSize: '14px',
+                                  fontWeight: 'bold',
+                                  lineHeight: '20px',
+                                  color: '#333333',
+                                  marginBottom: '2px',
+                                }}
+                            >
+                              {username}
+                            </Typography>
+                            <Typography
+                                sx={{fontWeight: 400, color: '#00000073', wordWrap: 'break-word', whiteSpace: 'normal', wordBreak: 'break-word'}}>
+                              {email}
+                            </Typography>
+                          </div>
+                        </div>
+                        <MenuItem
+                            onClick={handleMenuClose}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                            }}
+                        >
+                          <img src="/personal info.svg" alt=""/>
+                          <Typography>Personal Information</Typography>
+                        </MenuItem>
+                        <MenuItem
+                            onClick={handleMenuClose}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                            }}
+                        >
+                          <img src="/change pw.svg" alt=""/>
+                          <Typography>Change password</Typography>
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() => dispatch(logoutUser())}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                            }}
+                        >
+                          <img src="/logout ico.svg" alt=""/>
+                          <Typography
+                              style={{cursor: 'pointer'}}
+                          >
+                            Log out
+                          </Typography>
+                        </MenuItem>
+                      </div>
+                    </Menu>
+                  </>
+              )
+          }
+
+        </div>
+      </Drawer>
   );
 }
 

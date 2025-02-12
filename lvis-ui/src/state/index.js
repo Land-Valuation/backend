@@ -20,10 +20,15 @@ export const globalSlice = createSlice({
       state.token = action.payload.token;
       state.user = action.payload.user;
     },
+    logout: (state, action) => {
+      state.isAuthenticated = false;
+      state.token = null;
+      state.user = null;
+    },
   },
 });
 
-export const { setMode, setAuthState } = globalSlice.actions;
+export const { setMode, setAuthState, logout } = globalSlice.actions;
 export const initializeAuth = () => (dispatch) => {
   const keycloak = getKeycloak();
   if (keycloak.authenticated) {
@@ -36,4 +41,20 @@ export const initializeAuth = () => (dispatch) => {
     );
   }
 };
+
+export const initialLoginAuth = () => ({ token, payload, dispatch}) => {
+    dispatch(
+        setAuthState({
+            isAuthenticated: true,
+            token: token,
+            user: payload,
+        })
+    );
+};
+
+export const selectAuth = (state) => state.global;
+export const selectIsAuthenticated = (state) => state.global.isAuthenticated;
+export const selectUser = (state) => state.global.user;
+export const selectToken = (state) => state.global.token;
+
 export default globalSlice.reducer;

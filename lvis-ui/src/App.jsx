@@ -56,6 +56,7 @@ function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const dispatch = useDispatch();
+
   useEffect(() => {
     // Dispatch the action once when the component mounts
     dispatch(initializeAuth());
@@ -66,9 +67,6 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <RenderOnAnonymous>
-            <Welcome />
-          </RenderOnAnonymous>
           <RenderOnAuthenticated>
             <Routes>
               <Route path="/" element={<Navigate to="/home" />} />

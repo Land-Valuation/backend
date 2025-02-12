@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 
 import App from "./App";
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import globalReducer from "./state";
 import { Provider } from "react-redux";
 import { prototypeApi } from "./state/prototypeApi";
@@ -27,12 +27,23 @@ import { PersistGate } from "redux-persist/integration/react";
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, globalReducer);
 
+const appReducer = combineReducers( {
+  global: persistedReducer,
+  [prototypeApi.reducerPath]: prototypeApi.reducer,
+  [egisApi.reducerPath]: egisApi.reducer,
+});
+
+const rootReducer = (state, action) => {
+  if (action.type === 'global/logout') {
+    storage.removeItem('persist:root');
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
 const store = configureStore({
-  reducer: {
-    global: persistedReducer,
-    [prototypeApi.reducerPath]: prototypeApi.reducer,
-    [egisApi.reducerPath]: egisApi.reducer,
-  },
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -54,4 +65,4 @@ const renderApp = () => root.render(
   </Provider>
 );
 
-UserService.initKeycloak(renderApp);
+renderApp();
