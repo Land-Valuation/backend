@@ -236,6 +236,7 @@ import { useTranslation } from "react-i18next";
 import EnglishIcon from "../assets/icons/country/EnglishIcon";
 import LaoIcon from "../assets/icons/country/LaoIcon";
 import KoreanIcon from "../assets/icons/country/KoreanIcon";
+import { LANGUAGE } from "../utils/constant";
 
 const drawerWidth = 64;
 
@@ -250,7 +251,19 @@ function Sidebar() {
 
   const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
   const openLanguage = Boolean(languageAnchorEl);
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+
+  useEffect(() => {
+    if (localStorage.getItem('language')) {
+      setSelectedLanguage(localStorage.getItem('language'));
+    } else {
+      setSelectedLanguage(LANGUAGE.LO);
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('language', selectedLanguage);
+  }, [selectedLanguage])
 
   const handleLanguageClick = (event) => {
     setLanguageAnchorEl(event.currentTarget);
@@ -268,11 +281,11 @@ function Sidebar() {
 
   const getFlagIcon = () => {
     switch (selectedLanguage) {
-      case 'en':
+      case LANGUAGE.EN:
         return <EnglishIcon />;
-      case 'lo':
+      case LANGUAGE.LO:
         return <LaoIcon />;
-      case 'ko':
+      case LANGUAGE.KO:
         return <KoreanIcon />;
       default:
         return <EnglishIcon />;

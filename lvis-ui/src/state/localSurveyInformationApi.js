@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const BASE_URL = import.meta.env.VITE_DATA_MODEL_API_BASE_URL;
-console.log('BASE_URL :>> ', BASE_URL);
+
 export const localSurveyInformationApi = createApi({
   reducerPath: "localSurveyInformationApi",
   baseQuery: fetchBaseQuery({

@@ -234,7 +234,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                     sx={{
                       width: '100%',
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(5, 1fr)',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
                       gap: '16px',
                     }}
                   >
@@ -542,7 +542,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                     sx={{
                       width: '100%',
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
                       gap: '16px',
                     }}
                   >
@@ -917,7 +917,7 @@ const RegisterSurveyInformationModal = ({ open, onClose }) => {
                     sx={{
                       width: '100%',
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
                       gap: '16px',
                     }}
                   >
