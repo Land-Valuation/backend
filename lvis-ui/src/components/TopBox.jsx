@@ -15,7 +15,7 @@ import { Menu as MenuIcon } from "@mui/icons-material";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import FlexBetween from "./FlexBetween";
 import LanguageSwitcher from "./LanguageSwitcher";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import UserService from "../state/UserService";
@@ -25,9 +25,7 @@ import RegisterModal from "../scenes/auth/modal/RegisterModal";
 import RequireLogin from "../scenes/auth/modal/RequireLogin";
 import LoginIcon from "../assets/icons/auth/LoginIcon";
 import SignupIcon from "../assets/icons/auth/SignupIcon";
-import EnglishIcon from "../assets/icons/country/EnglishIcon";
-import LaoIcon from "../assets/icons/country/LaoIcon";
-import KoreanIcon from "../assets/icons/country/KoreanIcon";
+import { LANGUAGE } from "../utils/constant";
 
 const TopBox = () => {
   const theme = useTheme();
@@ -43,12 +41,20 @@ const TopBox = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [isRequireLogin, setIsRequireLogin] = useState(false);
   const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
-  const openLanguage = Boolean(languageAnchorEl);
-  const [selectedLanguage, setSelectedLanguage] = useState("en");
 
-  const handleLanguageClick = (event) => {
-    setLanguageAnchorEl(event.currentTarget);
-  };
+  const [selectedLanguage, setSelectedLanguage] = useState("");
+
+useEffect(() => {
+    if (localStorage.getItem('language')) {
+      setSelectedLanguage(localStorage.getItem('language'));
+    } else {
+      setSelectedLanguage(LANGUAGE.LO);
+    }
+  }, [])
+
+useEffect(() => {
+    localStorage.setItem('language', selectedLanguage);
+  }, [selectedLanguage])
 
   const handleLanguageClose = () => {
     setLanguageAnchorEl(null);
@@ -58,19 +64,6 @@ const TopBox = () => {
     i18n.changeLanguage(lng);
     setSelectedLanguage(lng);
     handleLanguageClose();
-  };
-
-  const getFlagIcon = () => {
-    switch (selectedLanguage) {
-      case "en":
-        return <EnglishIcon width={46} height={34} />;
-      case "lo":
-        return <LaoIcon width={46} height={34} />;
-      case "ko":
-        return <KoreanIcon width={46} height={34} />;
-      default:
-        return <EnglishIcon width={46} height={34} />;
-    }
   };
 
   const handleMenuOpen = (event) => {
@@ -165,7 +158,7 @@ const TopBox = () => {
             </MenuItem>
           </Menu>
         </FlexBetween> */}
-        <LanguageSwitcher height="34px" top="10px"/>
+        <LanguageSwitcher height="34px" top="10px" selectedLanguage={selectedLanguage} changeLanguage={changeLanguage}/>
         {/* RIGHT SIDE */}
         <FlexBetween sx={{ gap: "12px" }}>
           <Button
@@ -261,7 +254,7 @@ const TopBox = () => {
             onClose={handleLoginClose}
             onRegister={() => {}}
           />
-          <RegisterModal open={isRegister} onClose={handleRegisterClose} />
+          <RegisterModal open={isRegister} onClose={handleRegisterClose} onLogin={()=>{}}/>
           <RequireLogin
             open={isRequireLogin}
             onClose={handleRequireLoginClose}

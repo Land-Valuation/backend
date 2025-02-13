@@ -1,22 +1,20 @@
 import { useState } from "react";
-import {
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Box,
-} from "@mui/material";
+import { Menu, MenuItem, ListItemIcon, ListItemText, Box } from "@mui/material";
 import FlexBetween from "./FlexBetween";
 import EnglishIcon from "../assets/icons/country/EnglishIcon";
 import LaoIcon from "../assets/icons/country/LaoIcon";
 import KoreanIcon from "../assets/icons/country/KoreanIcon";
-import { useTranslation } from "react-i18next";
+import { LANGUAGE } from "../utils/constant";
 
-const LanguageSwitcher = ({ height, top, left }) => {
+const LanguageSwitcher = ({
+  height,
+  top,
+  left,
+  selectedLanguage,
+  changeLanguage,
+}) => {
   const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
   const openLanguage = Boolean(languageAnchorEl);
-  const [selectedLanguage, setSelectedLanguage] = useState(null);
-  const { i18n } = useTranslation();
 
   const handleLanguageClick = (event) => {
     setLanguageAnchorEl(event.currentTarget);
@@ -26,24 +24,19 @@ const LanguageSwitcher = ({ height, top, left }) => {
     setLanguageAnchorEl(null);
   };
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    setSelectedLanguage(lng);
-    handleLanguageClose();
-  };
-
   const getFlagIcon = () => {
     switch (selectedLanguage) {
-      case "en":
+      case LANGUAGE.EN:
         return <EnglishIcon width={46} height={height} />;
-      case "lo":
+      case LANGUAGE.LO:
         return <LaoIcon width={46} height={height} />;
-      case "ko":
+      case LANGUAGE.KO:
         return <KoreanIcon width={46} height={height} />;
       default:
         return <EnglishIcon width={46} height={height} />;
     }
   };
+
   return (
     <FlexBetween>
       <Box
@@ -98,49 +91,5 @@ const LanguageSwitcher = ({ height, top, left }) => {
     </FlexBetween>
   );
 };
-// const LanguageSwitcher = () => {
-//   const { i18n } = useTranslation();
-//   const theme = useTheme();
-//   const handleLanguageChange = (e) => {
-//     const newLang = e.target.value;
-//     i18n.changeLanguage(newLang);
-//   };
-
-//   return (
-//     <FlexBetween>
-//       <FormControl variant="standard">
-//         <Select
-//           label="Select"
-//           value={i18n.language}
-//           onChange={handleLanguageChange}
-//           sx={{
-//             backgroundColor: theme.palette.background.default,
-//             width: "120px",
-//             borderRadius: "0.25rem",
-//             p: "0.25rem 1rem",
-//             "& .MuiSvgIcon-root": {
-//               pr: "0.25rem",
-//               width: "3rem",
-//             },
-//             "& .MuiSelect-select:focus": {
-//               backgroundColor: theme.palette.background.alt,
-//             },
-//           }}
-//           input={<InputBase />}
-//         >
-//           <MenuItem value="en">
-//             <Typography>English</Typography>
-//           </MenuItem>
-//           <MenuItem value="ko">
-//             <Typography>한국인</Typography>
-//           </MenuItem>
-//           <MenuItem value="lo">
-//             <Typography>ພາສາລາວ</Typography>
-//           </MenuItem>
-//         </Select>
-//       </FormControl>
-//     </FlexBetween>
-//   );
-// };
 
 export default LanguageSwitcher;
