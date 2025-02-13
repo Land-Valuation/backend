@@ -1,6 +1,8 @@
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+    const { t } = useTranslation();
   return (
     <Box
       sx={{
@@ -23,7 +25,7 @@ const Footer = () => {
           color: "#000000A6",
         }}
       >
-        Land Price Information System
+        {t("Land Price Information System")}
       </Typography>
       <Typography
         sx={{
@@ -37,7 +39,7 @@ const Footer = () => {
           lineHeight: "20px",
         }}
       >
-        In Lao PDR
+        {t("in Lao PDR")}
       </Typography>
     </Box>
   );

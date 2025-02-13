@@ -146,21 +146,21 @@ const Middle = () => {
             fontWeight: "500",
             position: "relative",
             paddingBottom: "15px",
-            "::after": {
-              content: '"in Lao PDR"',
-              position: "absolute",
-              right: 200,
-              bottom: -16,
-              backgroundColor: "#BAE0FF",
-              color: "#1677FF",
-              fontSize: "12px",
-              fontFamily: "Poppins",
-              padding: "2px 4px",
-              borderRadius: "4px",
-            },
           }}
         >
           {t("Land Price Information System")}
+        </Typography>
+        <Typography
+          sx={{
+            backgroundColor: "#BAE0FF",
+            color: "#1677FF",
+            fontSize: "12px",
+            fontFamily: "Poppins",
+            padding: "2px 4px",
+            borderRadius: "4px",
+          }}
+        >
+          {t("in Lao PDR")}
         </Typography>
       </Box>
       <NotificationBox />
@@ -268,7 +268,9 @@ const HomePage = () => {
                   color: "#000000E0",
                 }}
               >
-                {t('Please login to continue using our services or register if you do not have an account yet.')}
+                {t(
+                  "Please login to continue using our services or register if you do not have an account yet."
+                )}
               </Typography>
             </Box>
 
@@ -295,7 +297,7 @@ const HomePage = () => {
                 variant="outlined"
                 startIcon={<LoginIcon />}
               >
-                {t('Login')}
+                {t("Login")}
               </Button>
               <Button
                 sx={{
@@ -311,7 +313,7 @@ const HomePage = () => {
                 variant="contained"
                 startIcon={<SignupIcon />}
               >
-                                {t('Register')}
+                {t("Register")}
               </Button>
             </Box>
           </Box>
@@ -343,7 +345,7 @@ const HomePage = () => {
             <Typography
               sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
             >
-              {t('Land Price Explorer')}
+              {t("Land Price Explorer")}
             </Typography>
             <Typography
               sx={{
@@ -362,7 +364,7 @@ const HomePage = () => {
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
-            {t('See now')}
+            {t("See now")}
           </Link>
         </Box>
         <Box className="menu-chooser">
@@ -380,7 +382,7 @@ const HomePage = () => {
             <Typography
               sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
             >
-              {t('Land Valuation')}
+              {t("Land Valuation")}
             </Typography>
             <Typography
               sx={{
@@ -399,7 +401,7 @@ const HomePage = () => {
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
-            {t('See now')}
+            {t("See now")}
           </Link>
         </Box>
         <Box className="menu-chooser">
@@ -417,7 +419,7 @@ const HomePage = () => {
             <Typography
               sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
             >
-              {t('Model-based land Valuation')}
+              {t("Model-based land Valuation")}
             </Typography>
             <Typography
               sx={{
@@ -436,7 +438,7 @@ const HomePage = () => {
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
-            {t('See now')}
+            {t("See now")}
           </Link>
         </Box>
         <Box className="menu-chooser">
@@ -454,7 +456,7 @@ const HomePage = () => {
             <Typography
               sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
             >
-              {t('Parcel Survey Management')}
+              {t("Parcel Survey Management")}
             </Typography>
             <Typography
               sx={{
@@ -473,7 +475,7 @@ const HomePage = () => {
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
-            {t('See now')}
+            {t("See now")}
           </Link>
         </Box>
         <Box className="menu-chooser">
@@ -491,7 +493,7 @@ const HomePage = () => {
             <Typography
               sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
             >
-              {t('Admin')}
+              {t("Admin")}
             </Typography>
             <Typography
               sx={{
@@ -510,7 +512,7 @@ const HomePage = () => {
             underline="hover"
           >
             <img src="/arrow.svg" alt="arrow" />
-            {t('See now')}
+            {t("See now")}
           </Link>
         </Box>
       </Box>
