@@ -174,7 +174,7 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
                 </Typography>
                 <TextField
                   fullWidth
-                  id="username"
+                  id="username1"
                   name="username"
                   value={formik.values.username}
                   onChange={formik.handleChange}
@@ -226,7 +226,7 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
                   </Typography>
                     <TextField
                     fullWidth
-                    id="password"
+                    id="password1"
                     name="password"
                     value={formik.values.password}
                     onChange={formik.handleChange}

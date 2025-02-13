@@ -196,7 +196,10 @@ const StyledTableCell = styled(TableCell)({
 const Valuation = () => {
   // const theme = useTheme();
   const { t } = useTranslation();
-  const [isDataReceivedLocalGovernmentOpen, setIsDataReceivedLocalGovernmentOpen] = useState(false)
+  const [
+    isDataReceivedLocalGovernmentOpen,
+    setIsDataReceivedLocalGovernmentOpen,
+  ] = useState(false);
 
   const handleOpenDataReceivedLocalGovernmentModal = () => {
     setIsDataReceivedLocalGovernmentOpen(true);
@@ -205,7 +208,7 @@ const Valuation = () => {
   const handleCloseDataReceivedLocalGovernmentModal = () => {
     setIsDataReceivedLocalGovernmentOpen(false);
   };
-  
+
   const userRole = UserService.getTokenParsed().realm_access.roles;
   console.log(userRole, " role");
   const hasCentralRole = userRole.some((role) => role.includes("CENTRAL"));
@@ -278,7 +281,7 @@ const Valuation = () => {
       "09-11-2014"
     ),
   ];
-  
+
   const rows2 = [
     createData2(
       "2024",
@@ -366,27 +369,27 @@ const Valuation = () => {
                 subtitle="Find your land valuation materials."
               />
               <Box sx={{ display: "flex", flexDirection: "row", gap: "12px" }}>
-              <Link
-                            to={`/land-valuation/detail`}
-                            style={{ textDecoration: "none" }}
-                          >
-                <Button
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                  sx={{
-                    backgroundColor: "#1677FF",
-                    color: "#fff",
-                    textTransform: "none",
-                    borderRadius: "6px",
-                    fontFamily: "Poppins",
-                    fontSize: "14px",
-                    fontWeight: 400,
-                    lineHeight: "20px",
-                    textWrap: "nowrap",
-                  }}
+                <Link
+                  to={`/land-valuation/detail`}
+                  style={{ textDecoration: "none" }}
                 >
-                  {t('New Valuation')}
-                </Button>
+                  <Button
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    sx={{
+                      backgroundColor: "#1677FF",
+                      color: "#fff",
+                      textTransform: "none",
+                      borderRadius: "6px",
+                      fontFamily: "Poppins",
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      lineHeight: "20px",
+                      textWrap: "nowrap",
+                    }}
+                  >
+                    {t("New Valuation")}
+                  </Button>
                 </Link>
                 <Button
                   sx={{
@@ -474,7 +477,12 @@ const Valuation = () => {
                             inputProps={{ "aria-label": "ant design" }}
                           />
                         </TableCell>
-                        <TableCell onClick={handleOpenDataReceivedLocalGovernmentModal}>{row.area}</TableCell>
+                        <TableCell
+                          onClick={handleOpenDataReceivedLocalGovernmentModal}
+                          sx={{ cursor: "pointer" }}
+                        >
+                          {row.area}
+                        </TableCell>
                         <TableCell sx={{ textWrap: "nowrap" }}>
                           {row.title}
                         </TableCell>
@@ -647,7 +655,10 @@ const Valuation = () => {
         <Divider />
         <Footer />
       </Box>
-      <DataReceivedLocalGovernmentModal open={isDataReceivedLocalGovernmentOpen} onClose={handleCloseDataReceivedLocalGovernmentModal} />
+      <DataReceivedLocalGovernmentModal
+        open={isDataReceivedLocalGovernmentOpen}
+        onClose={handleCloseDataReceivedLocalGovernmentModal}
+      />
     </>
   );
 };

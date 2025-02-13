@@ -17,7 +17,11 @@ const LanguageSwitcher = ({
   const openLanguage = Boolean(languageAnchorEl);
 
   const handleLanguageClick = (event) => {
-    setLanguageAnchorEl(event.currentTarget);
+    if (openLanguage) {
+      handleLanguageClose();
+    } else {
+      setLanguageAnchorEl(event.currentTarget);
+    }
   };
 
   const handleLanguageClose = () => {
@@ -69,19 +73,34 @@ const LanguageSwitcher = ({
           },
         }}
       >
-        <MenuItem onClick={() => changeLanguage("en")}>
+        <MenuItem
+          onClick={() => {
+            changeLanguage("en");
+            handleLanguageClose();
+          }}
+        >
           <ListItemIcon>
             <EnglishIcon />
           </ListItemIcon>
           <ListItemText>English</ListItemText>
         </MenuItem>
-        <MenuItem onClick={() => changeLanguage("lo")}>
+        <MenuItem
+          onClick={() => {
+            changeLanguage("lo");
+            handleLanguageClose();
+          }}
+        >
           <ListItemIcon>
             <LaoIcon />
           </ListItemIcon>
           <ListItemText>ພາສາລາວ</ListItemText>
         </MenuItem>
-        <MenuItem onClick={() => changeLanguage("ko")}>
+        <MenuItem
+          onClick={() => {
+            changeLanguage("ko");
+            handleLanguageClose();
+          }}
+        >
           <ListItemIcon>
             <KoreanIcon />
           </ListItemIcon>
