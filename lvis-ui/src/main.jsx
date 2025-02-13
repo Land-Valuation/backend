@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
@@ -25,6 +24,8 @@ import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
 import { localSurveyInformationApi } from "./state/localSurveyInformationApi";
 import { provinceApi } from "./state/provinceApi";
+import { landValueZoneApi } from "./state/landValueZoneApi";
+import { parcelApi } from "./state/parcelApi";
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, globalReducer);
@@ -36,6 +37,8 @@ const store = configureStore({
     [egisApi.reducerPath]: egisApi.reducer,
     [localSurveyInformationApi.reducerPath]: localSurveyInformationApi.reducer,
     [provinceApi.reducerPath]: provinceApi.reducer,
+    [landValueZoneApi.reducerPath]: landValueZoneApi.reducer,
+    [parcelApi.reducerPath]: parcelApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -47,6 +50,8 @@ const store = configureStore({
     .concat(egisApi.middleware)
     .concat(localSurveyInformationApi.middleware)
     .concat(provinceApi.middleware)
+    .concat(landValueZoneApi.middleware)
+    .concat(parcelApi.middleware)
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

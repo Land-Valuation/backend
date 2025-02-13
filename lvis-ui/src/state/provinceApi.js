@@ -1,11 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-const BASE_URL = import.meta.env.VITE_DATA_MODEL_API_BASE_URL;
+import { BASE_URL } from "../utils/env";
 
 export const provinceApi = createApi({
   reducerPath: "provinceApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL,
+    baseUrl: BASE_URL.DATA_MODEL_API,
     // You can add prepareHeaders here if you have authentication
     // prepareHeaders: (headers, { getState }) => {
     //   const token = getState().auth.token; // Example: Get token from Redux state
