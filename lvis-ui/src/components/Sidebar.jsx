@@ -31,19 +31,19 @@ function Sidebar() {
   const open = Boolean(anchorEl);
   const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
 
-  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState("");
 
   useEffect(() => {
-    if (localStorage.getItem('language')) {
-      setSelectedLanguage(localStorage.getItem('language'));
+    if (localStorage.getItem("language")) {
+      setSelectedLanguage(localStorage.getItem("language"));
     } else {
       setSelectedLanguage(LANGUAGE.LO);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    localStorage.setItem('language', selectedLanguage);
-  }, [selectedLanguage])
+    localStorage.setItem("language", selectedLanguage);
+  }, [selectedLanguage]);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -53,7 +53,7 @@ function Sidebar() {
   const handleLanguageClose = () => {
     setLanguageAnchorEl(null);
   };
-  
+
   const handleMenuOpen = (event) => {
     setAnchorEl(open ? null : event.currentTarget);
   };
@@ -72,7 +72,11 @@ function Sidebar() {
 
   const menuItems = [
     { src: "/home ico.svg", alt: t("home"), path: "/home" },
-    { src: "/land-price.svg", alt: t("Land Price Explorer"), path: "/montoring" },
+    {
+      src: "/land-price.svg",
+      alt: t("Land Price Explorer"),
+      path: "/montoring",
+    },
     {
       src: "/land-valuation.svg",
       alt: t("Land Valuation"),
@@ -201,7 +205,13 @@ function Sidebar() {
         }}
       >
         <Divider variant="middle" sx={{ width: "31px" }} />
-       <LanguageSwitcher height="18px" left="55px" top="-38px" selectedLanguage={selectedLanguage} changeLanguage={changeLanguage} />
+        <LanguageSwitcher
+          height="18px"
+          left="55px"
+          top="-38px"
+          selectedLanguage={selectedLanguage}
+          changeLanguage={changeLanguage}
+        />
         <img width="20px" height="20px" alt="noti bell" src="../bell ico.svg" />
         <IconButton onClick={handleMenuOpen} sx={{ cursor: "pointer" }}>
           <img
