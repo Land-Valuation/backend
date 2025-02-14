@@ -20,7 +20,7 @@ export const landValueZoneApi = createApi({
 
     //  Infinite Scrolling: listLandValueZones
     getListLandValueZones: builder.query({
-      query: ({ page, size }) => `/land-value-zones/list?page=${page}&size=${size}`,
+      query: ({ page, size }) => `/land-value-zones/list?page=${page}&rpp=${size}`,
       providesTags: (result) => {
         // Tag each item in the list for re-fetching on updates
         return result?.data?.items
@@ -35,8 +35,8 @@ export const landValueZoneApi = createApi({
         // Assuming your API returns a structure like:
         // { data: { content: [], totalElements: number, ... } }
         return {
-          data: response.data.items,
-          totalElements: response.data.records,
+          data: response.data?.items ?? [],
+          totalElements: response.data?.records ?? 0,
         };
       },
       // Optional: Keep previous data while fetching the next page
@@ -55,10 +55,41 @@ export const landValueZoneApi = createApi({
       query: (id) => `/land-value-zones/${id}`,
       providesTags: (result, error, id) => [{ type: 'LandValueZone', id }],
     }),
+
+    getListLandValueZonesByDistrict: builder.query({ // Added district code query
+      query: ({ distCode, page, size }) => `/land-value-zones/by-district?distCode=${distCode}&page=${page}&rpp=${size}`,
+      providesTags: (result) => {
+        // Tag each item in the list for re-fetching on updates
+        return result?.data?.items
+          ? [
+              ...result.data.items.map(({ id }) => ({ type: 'LandValueZone', id })),
+              'LandValueZone', // Tag the entire list
+            ]
+          : ['LandValueZone'];
+      },
+      // Optional:  Transform the response to extract data and pagination info
+      transformResponse: (response) => {
+        // Assuming your API returns a structure like:
+        // { data: { content: [], totalElements: number, ... } }
+        return {
+          data: response.data?.items ?? [],
+          totalElements: response.data?.records ?? 0,
+        };
+      },
+      // Optional: Keep previous data while fetching the next page
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        // Include distCode in serialization key. Crucial for caching per district
+        return `${endpointName}-${queryArgs.distCode}`;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg
+      },
+    }),
   }),
 });
 
 export const {
   useGetListLandValueZonesQuery,
   useGetLandValueZoneByIdQuery,
+  useGetListLandValueZonesByDistrictQuery,
 } = landValueZoneApi;

@@ -48,7 +48,7 @@ export const parcelApi = createApi({
     }),
     // Infinite Scrolling: getParcelDTOsByZoneId
     getParcelDTOsByZoneId: builder.query({
-      query: ({ zoneId, page, size }) => `/parcels/dto/by-zone?zoneId=${zoneId}&page=${page}&size=${size}`,
+      query: ({ zoneId, page, size }) => `/parcels/dto/by-zone?zoneId=${zoneId}&page=${page}&rpp=${size}`,
       providesTags: (result) => {
         // Tag each item in the list for re-fetching on updates
         return result?.data?.items
@@ -60,8 +60,8 @@ export const parcelApi = createApi({
       },
       transformResponse: (response) => {
         return {
-          data: response.data.items,
-          totalElements: response.data.records,
+          data: response?.data?.items ?? [],
+          totalElements: response?.data?.records ?? 0,
         };
       },
       // Optional: Keep previous data while fetching the next page

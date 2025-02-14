@@ -26,9 +26,8 @@ import EditIcon from "../../../assets/icons/parcel-survey/EditIcon";
 import FileViewer from "../../../components/FileViewer";
 import { useTranslation } from "react-i18next";
 
-const SurveyInformation = ({ open, onClose, createHandle, isHasData }) => {
+const SurveyInformation = ({ open, onClose, createHandle, isHasData, generalInfo }) => {
   const [selectDate, setSelectDate] = useState(null);
-  // const [isHasData] = useState(false)
   const [surveyDate, setSurveyDate] = useState("");
   const { t } = useTranslation();
 
@@ -162,7 +161,7 @@ const SurveyInformation = ({ open, onClose, createHandle, isHasData }) => {
                       mb: "8px",
                     }}
                   >
-                    {t("Vientiane")}
+                    {generalInfo?.provinceName ?? ''}
                   </Typography>
                 </Box>
               </Box>
@@ -183,7 +182,7 @@ const SurveyInformation = ({ open, onClose, createHandle, isHasData }) => {
                       mb: "8px",
                     }}
                   >
-                    {t("province")}
+                    {t("district")}
                   </Typography>
                   <Typography
                     sx={{
@@ -195,7 +194,7 @@ const SurveyInformation = ({ open, onClose, createHandle, isHasData }) => {
                       mb: "8px",
                     }}
                   >
-                    {t("Vientiane")}
+                    {generalInfo?.districtName ?? ''}
                   </Typography>
                 </Box>
               </Box>
@@ -216,7 +215,7 @@ const SurveyInformation = ({ open, onClose, createHandle, isHasData }) => {
                       mb: "8px",
                     }}
                   >
-                    {t("province")}
+                    {t("Parcel No")}
                   </Typography>
                   <Typography
                     sx={{
@@ -228,7 +227,7 @@ const SurveyInformation = ({ open, onClose, createHandle, isHasData }) => {
                       mb: "8px",
                     }}
                   >
-                    {t("Vientiane")}
+                    {generalInfo?.parcelNo ?? ''}
                   </Typography>
                 </Box>
               </Box>
@@ -244,7 +243,7 @@ const SurveyInformation = ({ open, onClose, createHandle, isHasData }) => {
                       mb: "8px",
                     }}
                   >
-                    {t("province")}
+                    {t("MapSheet ID")}
                   </Typography>
                   <Typography
                     sx={{
@@ -256,7 +255,7 @@ const SurveyInformation = ({ open, onClose, createHandle, isHasData }) => {
                       mb: "8px",
                     }}
                   >
-                    {t("Vientiane")}
+                    {generalInfo?.mapNo ?? ''}
                   </Typography>
                 </Box>
               </Box>
@@ -368,7 +367,7 @@ const SurveyInformation = ({ open, onClose, createHandle, isHasData }) => {
                         mb: "8px",
                       }}
                     >
-                      <Typography component="span" sx={{ color: "red" }}>
+                      <Typography component="span" sx={{ color: "red", mr: "4px" }}>
                         *
                       </Typography>
                       {t("Survey Date")}
@@ -1209,6 +1208,7 @@ SurveyInformation.propTypes = {
   isHasData: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   createHandle: PropTypes.func,
+  generalInfo: PropTypes.object,
 };
 
 export default SurveyInformation;
