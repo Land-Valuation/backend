@@ -29,6 +29,8 @@ import ModelBase from "./scenes/model-base";
 import CreateNewModel from "./scenes/model-base/create-model";
 import RequestForInvesgationDetail from "./scenes/model-base/request-for-invesgation/detail/RequestForInvesgationDetail";
 import ParcelSurveyManagement from "./scenes/parcel-survey-management";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const resources = {
   en: {
@@ -64,6 +66,19 @@ function App() {
 
   return (
     <div className="app">
+      <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+      />
+
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />

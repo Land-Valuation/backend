@@ -128,21 +128,6 @@ const TopBox = () => {
                     >
                       {t('Register')}
                     </Button>
-                    <Button
-                        sx={{
-                          backgroundColor: "#1677FF",
-                          color: "#fff",
-                          textTransform: "none",
-                          borderRadius: "6px",
-                          fontFamily: "Poppins",
-                          fontSize: "14px",
-                          fontWeight: 400,
-                        }}
-                        variant="contained"
-                        onClick={handleRequireLogin}
-                    >
-                      {t('Require')}
-                    </Button>
                   </>
               )
           }

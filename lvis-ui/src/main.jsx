@@ -23,6 +23,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, globalReducer);
@@ -54,12 +55,16 @@ const store = configureStore({
     .concat(egisApi.middleware),
 });
 
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const renderApp = () => root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistStore(store)}>
       <I18nextProvider i18n={i18next}>
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </I18nextProvider>
     </PersistGate>
   </Provider>

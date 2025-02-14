@@ -10,6 +10,9 @@ import {Visibility, VisibilityOff} from '@mui/icons-material';
 import {useDispatch} from 'react-redux';
 import {loginUser} from '@/state/authService.js';
 import {initialLoginAuth} from '@/state';
+import { useMutation } from "@tanstack/react-query";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast } from "react-toastify";
 
 const validationSchema = Yup.object({
   username: Yup.string().required('username is required'),
@@ -32,12 +35,23 @@ const LoginModal = ({open, onClose, onRegister}) => {
   const formik = useFormik({
     initialValues: {
       username: '', password: '',
-    }, validationSchema: validationSchema, onSubmit: async (values) => {
+    }, validationSchema: validationSchema, onSubmit: (values) => {
+      loginMutation.mutate(values);
+    },
+  });
+
+  const loginMutation = useMutation({
+    mutationFn: async (values) => {
       const response = await dispatch(loginUser(values));
 
-      if(response) {
-        onClose();
-      }
+      return response;
+    },
+    onSuccess: () => {
+      formik.resetForm();
+      onClose();
+    },
+    onError: (error) => {
+      toast.error(error?.response.data.error_description)
     },
   });
 
@@ -273,9 +287,10 @@ const LoginModal = ({open, onClose, onRegister}) => {
                     height: '40px',
                   }}
                   variant="contained"
-                  onClick={formik.handleSubmit}
+                  onClick={() => formik.handleSubmit()}
+                  disabled={loginMutation.isPending}
               >
-                Login
+                {loginMutation.isPending ? <CircularProgress size={24} color="inherit" /> : "Login"}
               </Button>
             </Box>
             <Box sx={{

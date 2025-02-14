@@ -5,10 +5,16 @@ import { useState } from "react";
 import { Box, Button, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CloseIcon from '@mui/icons-material/Close';
+import { registerUser } from '@/state/authService';
+import { useMutation } from "@tanstack/react-query";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast } from "react-toastify";
+import _ from "lodash";
 
 const validationSchema = Yup.object({
   username: Yup.string().required('username is required'),
-  fullname: Yup.string().required('fullname is required'),
+  firstname: Yup.string().required('firstname is required'),
+  lastname: Yup.string().required('lastname is required'),
   email: Yup.string().required('email is required'),
   password: Yup.string().required('password is required'),
   confirmPassword: Yup.string().required('re-enter password is required'),
@@ -28,17 +34,35 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
   const formik = useFormik({
     initialValues: {
       username: '',
-      fullname: '',
+      firstname: '',
+      lastname: '',
       email: '',
       password: '',
       confirmPassword: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      registerMutation.mutate(values);
     },
   });
-  
+
+  const registerMutation = useMutation({
+    mutationFn: async (values) => {
+      return await registerUser(_.omit(values, ["confirmPassword"]));
+    },
+    onSuccess: (response) => {
+      const {data} = response;
+
+      toast.success(data.message)
+
+      formik.resetForm();
+      onClose();
+    },
+    onError: (error) => {
+      toast.error(error?.response.data.message)
+    },
+  });
+
   return (
     <Box sx={{
       display: open ? 'block' : 'none',
@@ -185,20 +209,44 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
                 />
               </Box>
               <Box>
-                <Typography component="label" htmlFor="fullname" sx={{ display: 'block', mb: 0.5 }}>
+                <Typography component="label" htmlFor="firstName" sx={{ display: 'block', mb: 0.5 }}>
                   <Typography component="span" sx={{ color: 'red' }}>*</Typography> Full Name
                 </Typography>
-                <TextField
-                  fullWidth
-                  id="fullname"
-                  name="fullname"
-                  value={formik.values.fullname}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.fullname && Boolean(formik.errors.fullname)}
-                  helperText={formik.touched.fullname && formik.errors.fullname}
-                  sx={{ '&:hover fieldset': { borderColor: formik.touched.fullname && formik.errors.fullname ? 'red' : 'rgba(0, 0, 0, 0.23) !important' }}}
-                />
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                  <TextField
+                      fullWidth
+                      id="firstNameRegister"
+                      name="firstname"
+                      placeholder="First Name"
+                      value={formik.values.firstname}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.firstname && Boolean(formik.errors.firstname)}
+                      helperText={formik.touched.firstname && formik.errors.firstname}
+                      sx={{
+                        '&:hover fieldset': {
+                          borderColor: formik.touched.firstname && formik.errors.firstname ? 'red' : 'rgba(0, 0, 0, 0.23) !important',
+                        },
+                      }}
+                  />
+
+                  <TextField
+                      fullWidth
+                      id="lastNameRegister"
+                      name="lastname"
+                      placeholder="Last Name"
+                      value={formik.values.lastname}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.lastname && Boolean(formik.errors.lastname)}
+                      helperText={formik.touched.lastname && formik.errors.lastname}
+                      sx={{
+                        '&:hover fieldset': {
+                          borderColor: formik.touched.lastname && formik.errors.lastname ? 'red' : 'rgba(0, 0, 0, 0.23) !important',
+                        },
+                      }}
+                  />
+                </Box>
               </Box>
               <Box>
                 <Typography component="label" htmlFor="email" sx={{ display: 'block', mb: 0.5 }}>
