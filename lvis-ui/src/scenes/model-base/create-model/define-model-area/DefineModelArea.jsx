@@ -37,13 +37,13 @@ const DefineModelArea = () => {
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
         <StyledButtonGroup variant="outlined" size="medium" aria-label="contained button group">
           <StyledButton
-            active={activeButton === 'village'}
+            active={activeButton === 'village' ? "true" : "false"}
             onClick={() => handleButtonClick('village')}
           >
             {t('byVillageBoundary')}
           </StyledButton>
           <StyledButton
-            active={activeButton === 'assessment'}
+            active={activeButton === 'assessment' ? "true" : "false"}
             onClick={() => handleButtonClick('assessment')}
           >
             {t('byAssessmentArea')}
@@ -118,10 +118,10 @@ const DefineModelArea = () => {
         </Box>
         <Box>
           <Grid2 container alignItems="center" spacing={1}>
-            <Grid2 item>
+            <Grid2 item="true">
               {t('selectFrom')}
             </Grid2>
-            <Grid2 item>
+            <Grid2 item="true">
               <StyledTabs
                 value={tab}
                 onChange={handleTabChange}
