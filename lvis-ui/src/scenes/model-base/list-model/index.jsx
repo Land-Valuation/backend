@@ -13,7 +13,7 @@ const ListModel = () => {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 7 }, (_, i) => currentYear - i);
   const [yearSelected, setYearSelected] = useState(currentYear);
-  // const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
   const [isAppliedAreasModalOpen, setIsAppliedAreasModalOpen] = useState(false);
   const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
 
@@ -32,113 +32,113 @@ const ListModel = () => {
   const handleCloseFeatureModal = () => {
     setIsFeatureModalOpen(false);
   };
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         "http://localhost:8088/datamodel-api/models",
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok " + response.statusText);
-  //       }
-  //       const result = await response.json();
-  //       console.log(result);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8088/datamodel-api/models",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText);
+        }
+        const result = await response.json();
+        console.log(result);
         
-  //       let formattedData = result.data.items.map((item)=>{
-  //         return {
-  //           status: item.status,
-  //           // issuedToLocal: item.issuedToLocal,
-  //           // appliedArea: item.appliedArea,
-  //           title: item.name,
-  //           features: item.features,
-  //           // adjRSquare: item.adjRSquare,
-  //           // fStatistics: item.fStatistics,
-  //           // region: item.region,
-  //           updated: item.created_at,
-  //         }
-  //       })
+        let formattedData = result.data.items.map((item)=>{
+          return {
+            status: item.status,
+            // issuedToLocal: item.issuedToLocal,
+            // appliedArea: item.appliedArea,
+            title: item.name,
+            features: item.features,
+            // adjRSquare: item.adjRSquare,
+            // fStatistics: item.fStatistics,
+            // region: item.region,
+            updated: item.created_at,
+          }
+        })
         
-  //       setData(formattedData);
-  //     } catch (error) {
-  //       console.error("There was a problem with the fetch operation:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-  const data = [
-    {
-      status: t('draft'),
-      issuedToLocal: false,
-      appliedArea: t('notApplicable'),
-      title: 'Model A',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-    {
-      status: t('confirmed'),
-      issuedToLocal: true,
-      appliedArea: '5/5',
-      title: 'Model B',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-    {
-      status: t('confirmed'),
-      issuedToLocal: false,
-      appliedArea: '3/6',
-      title: 'Model C',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-    {
-      status: t('draft'),
-      issuedToLocal: false,
-      appliedArea: t('notApplicable'),
-      title: 'Model D',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-    {
-      status: t('draft'),
-      issuedToLocal: false,
-      appliedArea: t('notApplicable'),
-      title: 'Model E',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-    {
-      status: t('draft'),
-      issuedToLocal: false,
-      appliedArea: t('notApplicable'),
-      title: 'Model F',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-  ];
+        setData(formattedData);
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    };
+    fetchData();
+  }, []);
+  // const data = [
+  //   {
+  //     status: t('draft'),
+  //     issuedToLocal: false,
+  //     appliedArea: t('notApplicable'),
+  //     title: 'Model A',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  //   {
+  //     status: t('confirmed'),
+  //     issuedToLocal: true,
+  //     appliedArea: '5/5',
+  //     title: 'Model B',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  //   {
+  //     status: t('confirmed'),
+  //     issuedToLocal: false,
+  //     appliedArea: '3/6',
+  //     title: 'Model C',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  //   {
+  //     status: t('draft'),
+  //     issuedToLocal: false,
+  //     appliedArea: t('notApplicable'),
+  //     title: 'Model D',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  //   {
+  //     status: t('draft'),
+  //     issuedToLocal: false,
+  //     appliedArea: t('notApplicable'),
+  //     title: 'Model E',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  //   {
+  //     status: t('draft'),
+  //     issuedToLocal: false,
+  //     appliedArea: t('notApplicable'),
+  //     title: 'Model F',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  // ];
 
   const columns = [
     {
