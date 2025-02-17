@@ -1,4 +1,4 @@
-import { Box, Button, Divider } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import LayoutPageCommon from "../../components/LayoutPageCommon";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import UserService from "../../state/UserService";
 import { MODEL_BASE_MODE, USER_ROLES } from "../../utils/constant";
 import { useTranslation } from "react-i18next";
-import Footer from "../../components/Footer";
 
 const ModelBase = () => {
   const navigate = useNavigate();
@@ -130,10 +129,6 @@ const ModelBase = () => {
           </Box>
         )}
       </LayoutPageCommon>
-      <Box>
-        <Divider />
-        <Footer />
-      </Box>
     </>
   );
 };

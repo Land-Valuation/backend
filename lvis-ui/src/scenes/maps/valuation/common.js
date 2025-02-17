@@ -130,3 +130,5 @@ export const position3= [17.9758, 102.6325]
 export const position4= [17.9770, 102.6345]
 export const position5= [17.9740, 102.6315]
 export const position6= [17.9735, 102.6338]
+
+export const BOUNDS_STYLE = { weight: 1 };

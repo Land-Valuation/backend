@@ -9,7 +9,7 @@ import Dashboard from "./scenes/dashboard";
 import Customers from "./scenes/customers";
 import Transactions from "./scenes/transactions";
 import Valuation from "./scenes/maps/valuation";
-import LandValuationDetail from "./scenes/maps/valuation/detail";
+import LandValuationDetail from "./scenes/maps/valuation/detail/detail";
 import Utilities from "./scenes/utilities";
 import HomePage from "./scenes/home";
 import PageNotFound from "./scenes/pagenotfound"

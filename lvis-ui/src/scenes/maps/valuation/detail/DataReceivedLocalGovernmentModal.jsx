@@ -20,22 +20,16 @@ import {
   TileLayer,
   Marker,
   Popup,
-  ZoomControl,
   GeoJSON,
-  useMap,
-  useMapEvent,
-  Rectangle
 } from "react-leaflet";
-import DownloadIcon from '../../../assets/icons/land-valuation/DownloadIcon';
-import { useCallback, useMemo, useState } from 'react';
-import { useEventHandlers } from '@react-leaflet/core';
-import { POSITION_CLASSES } from '../../../utils/constant';
+import DownloadIcon from '../../../../assets/icons/land-valuation/DownloadIcon';
+import { useState } from 'react';
 import DistrictList from './DistrictList';
 import ParcelList from './ParcelList';
-import { attachments, customIcon, customIcon1, customIcon2, CustomTab, FileCard, FileIcon, fileIcons, geoData, geoJsonStyle, getFileExtension, position } from './common';
+import { attachments, customIcon, customIcon1, customIcon2, CustomTab, FileCard, FileIcon, fileIcons, geoData, geoJsonStyle, getFileExtension, position } from '../common';
 import ParcelList2 from './ParcelList2';
-
-const BOUNDS_STYLE = { weight: 1 };
+import MinimapControl from './MinimapControl';
+import ZoomControl from './ZoomControl';
 
 const columns = [
   { field: "id", headerName: "ID", flex: 1, hide: true },
@@ -140,68 +134,6 @@ const DataReceivedLocalGovernmentModal = ({ open, onClose }) => {
   const handleChange1 = (event, newValue) => {
     setValue1(newValue);
   };
-
-  function MinimapBounds({ parentMap, zoom }) {
-    const minimap = useMap();
-  
-    const onClick = useCallback(
-      (e) => {
-        parentMap.setView(e.latlng, parentMap.getZoom());
-      },
-      [parentMap]
-    );
-    useMapEvent("click", onClick);
-  
-    const [bounds, setBounds] = useState(parentMap.getBounds());
-    const onChange = useCallback(() => {
-      setBounds(parentMap.getBounds());
-      minimap.setView(parentMap.getCenter(), zoom);
-    }, [minimap, parentMap, zoom]);
-  
-    const handlers = useMemo(() => ({ move: onChange, zoom: onChange }), []);
-    useEventHandlers({ instance: parentMap }, handlers);
-  
-    return <Rectangle bounds={bounds} pathOptions={BOUNDS_STYLE} />;
-  }
-  
-  function MinimapControl({ position, zoom }) {
-    const parentMap = useMap();
-    const mapZoom = zoom || 0;
-  
-    const minimap = useMemo(
-      () => (
-        <MapContainer
-          style={{
-            height: 32,
-            width: 32,
-            borderRadius: "8px",
-            border: "2px solid #FFFFFF",
-            boxShadow: "0px 2px 4px 0px #0000002E",
-          }}
-          center={parentMap.getCenter()}
-          zoom={mapZoom}
-          dragging={false}
-          doubleClickZoom={false}
-          scrollWheelZoom={false}
-          attributionControl={false}
-          zoomControl={false}
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          <MinimapBounds parentMap={parentMap} zoom={mapZoom} />
-        </MapContainer>
-      ),
-      []
-    );
-  
-    const positionClass = (position && POSITION_CLASSES[position]) || POSITION_CLASSES.topright;
-    return (
-      <div className={positionClass}>
-        <div className="leaflet-control leaflet-bar">{minimap}</div>
-      </div>
-    );
-  }
-
-  
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="lg">

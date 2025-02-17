@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import DoneIcon from "../../../assets/icons/land-valuation/DoneIcon";
-import PendingIcon from "../../../assets/icons/land-valuation/PendingIcon";
+import DoneIcon from "../../../../assets/icons/land-valuation/DoneIcon";
+import PendingIcon from "../../../../assets/icons/land-valuation/PendingIcon";
 
 const DistrictList = () => {
   const districts = [

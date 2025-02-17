@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Header from "../../../components/Header";
-import BaseInside from "../base/BaseInside";
 import {
   Box,
   Button,
-  useTheme,
   Table,
   TableBody,
   TableCell,
@@ -18,22 +16,17 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
-  borderColor,
-  borderRadius,
-  display,
   styled,
-  textTransform,
 } from "@mui/system";
 import Footer from "../../../components/Footer";
-import SvgIcon from "@mui/material/SvgIcon";
 import { Link } from "react-router-dom";
 import UserService from "../../../state/UserService";
 import { useTranslation } from "react-i18next";
-import DataReceivedLocalGovernmentModal from "./DataReceivedLocalGovernmentModal";
 import DraftIcon from "../../../assets/icons/land-valuation/DraftIcon";
 import ProgressIcon from "../../../assets/icons/land-valuation/ProgressIcon";
 import ApproveIcon from "../../../assets/icons/land-valuation/ApproveIcon";
 import RejectIcon from "../../../assets/icons/land-valuation/RejectIcon";
+import DataReceivedLocalGovernmentModal from "./detail/DataReceivedLocalGovernmentModal";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
