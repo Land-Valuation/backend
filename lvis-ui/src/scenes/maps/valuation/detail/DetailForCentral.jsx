@@ -8,7 +8,6 @@ import { attachments, customIcon, customIcon1, customIcon2, CustomTab, FileCard,
 import DeleteIcon from "../../../../assets/icons/land-valuation/DeleteIcon";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import CustomDateDivider from "../../../../assets/icons/land-valuation/CustomDateDivider";
-import CustomDataGrid from "../../../../components/customMUI/CustomDataGrid";
 import UploadIcon from "../../../../assets/icons/land-valuation/UploadIcon";
 import CustomUploadFile from "../../../../components/customMUI/CustomUploadFile";
 import DistrictList from "./DistrictList";
@@ -25,8 +24,10 @@ import * as Yup from 'yup';
 import { useGetAllProvincesQuery } from "../../../../state/provinceApi";
 import { useGetAllCommitteeStatusTypesQuery } from "../../../../state/committeeStatusTypeApi";
 import { useGetAllValuationStatusTypesQuery } from "../../../../state/valuationStatusTypeApi";
+import CommitteeTable from "./CommitteeTable";
+import PropTypes from "prop-types";
 
-const DetailForCentral = () => {
+const DetailForCentral = ({ formikRef }) => {
   const { t } = useTranslation();
 
   const now = new Date();
@@ -36,13 +37,13 @@ const DetailForCentral = () => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploadedFiles2, setUploadedFiles2] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
-  const [dateRange, setDateRange] = useState([null, null]);
   const [value, setValue] = useState(0);
   const [value1, setValue1] = useState(0);
   const [provinces, setProvinces] = useState([])
   const [firstProvinceCode, setFirstProvinceCode] = useState('');
   const [committeeStatusList, setCommitteeStatusList] = useState([])
   const [landValuationStatusList, setLandValuationStatusList] = useState([])
+  const [committeeData, setCommitteeData] = useState([]);
 
   const { data: allProvinceData } = useGetAllProvincesQuery();
   const { data: allCommitteeStatusTypes } = useGetAllCommitteeStatusTypesQuery();
@@ -167,7 +168,6 @@ const DetailForCentral = () => {
   };
 
   const handleRangeDateChange = (newDateRange) => {
-    setDateRange(newDateRange);
     formik.setFieldValue('dateRange', newDateRange); 
     formik.setFieldTouched('dateRange', true);
   };
@@ -206,11 +206,15 @@ const DetailForCentral = () => {
     descriptionCommittee: Yup.string().required(t('Description is Required')),
     dateRange: Yup.array()
       .of(Yup.date().nullable())
+      .nullable()
       .test(
         'is-valid-range',
         'Ngày bắt đầu và ngày kết thúc là bắt buộc',
         (value) => {
-          if (!value || value.length !== 2) {
+          if (!value) {
+            return true;
+          }
+          if (value.length !== 2) {
             return false;
           }
           return value[0] !== null && value[1] !== null;
@@ -220,21 +224,32 @@ const DetailForCentral = () => {
 
   const formik = useFormik({
     initialValues: {
-      baseYear: '',
+      baseYear: selectedYear,
       title: '',
       note: '',
       province: firstProvinceCode ?? '',
       committeeStatus: '',
       landValuationStatus: '',
       descriptionCommittee: '',
-      dateRange: [null, null]
+      dateRange: [null, null],
     },
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      console.log('values :>> ', values);
+      console.log('committeeData :>> ', committeeData);
     },
   });
+
+  const handleCommitteeDataChange = (data) => {
+    setCommitteeData(data);
+  };
+
+  useEffect(() => {
+    if (formikRef) {
+      formikRef.current = formik;
+    }
+  }, [formikRef, formik]);
 
   return (
     <Box sx={{ padding: '24px 0'}}>
@@ -501,7 +516,7 @@ const DetailForCentral = () => {
                         displayEmpty
                         sx={{
                           height: '40px',
-                          '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'}
+                          '& fieldset': { borderColor: formik.touched.committeeStatus && Boolean(formik.errors.committeeStatus) ? 'red' : 'rgba(0, 0, 0, 0.23) !important'}
                         }}
                       >
                         <MenuItem sx={{ display: 'none' }} disabled value="">
@@ -554,7 +569,7 @@ const DetailForCentral = () => {
                         displayEmpty
                         sx={{
                           height: '40px',
-                          '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'}
+                          '& fieldset': { borderColor: formik.touched.landValuationStatus && Boolean(formik.errors.landValuationStatus) ? 'red' : 'rgba(0, 0, 0, 0.23) !important'}
                         }}
                       >
                         <MenuItem sx={{ display: 'none' }} disabled value="">
@@ -664,10 +679,13 @@ const DetailForCentral = () => {
           </Typography>
           <Box
             sx={{
-              height: "452px",
               border: "1px solid #D9D9D9",
               borderRadius: "12px",
               position: "relative",
+              padding: '24px',
+              display: "flex",
+              flexDirection: "column",
+              gap: "24px",
             }}
           >
             <Typography
@@ -688,7 +706,6 @@ const DetailForCentral = () => {
             </Typography>
             <Box
               sx={{
-                padding: "16px 24px",
                 display: "flex",
                 flexDirection: "row",
                 gap: "24px",
@@ -766,9 +783,12 @@ const DetailForCentral = () => {
                 </Typography>
                 <FormControl fullWidth error={formik.touched.dateRange && Boolean(formik.errors.dateRange)}>
                   <DateRangePicker
+                    id="dateRange"
+                    name="dateRange"
                     clearIcon={null}
                     onChange={handleRangeDateChange}
-                    value={dateRange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.dateRange}
                     calendarIcon={<CalendarIcon />}
                     rangeDivider={<CustomDateDivider />}
                   />
@@ -790,9 +810,9 @@ const DetailForCentral = () => {
               </Box>
             </Box>
             <Box
-              sx={{ height: "320px", margin: "24px", paddingBottom: "12px" }}
+              sx={{ height: "320px" }}
             >
-              <CustomDataGrid />
+              <CommitteeTable onDataChange={handleCommitteeDataChange} />
             </Box>
           </Box>
           <Box
@@ -1454,5 +1474,13 @@ const DetailForCentral = () => {
     </Box>
   )
 }
+
+DetailForCentral.propTypes = {
+  formikRef: PropTypes.shape({
+    current: PropTypes.shape({
+      handleSubmit: PropTypes.func,
+    }),
+  }),
+};
 
 export default DetailForCentral

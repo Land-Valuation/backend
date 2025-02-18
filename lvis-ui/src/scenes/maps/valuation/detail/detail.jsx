@@ -14,9 +14,12 @@ import { useTranslation } from "react-i18next";
 import DetailForLocal from "./DetailForLocal";
 
 import DetailForCentral from "./DetailForCentral";
+import { useRef } from "react";
 
 const LandValuationDetail = () => {
   const { t } = useTranslation();
+
+  const formikRef = useRef(null);
 
   const userRole = UserService.getTokenParsed().realm_access.roles;
   const hasCentralRole = userRole.some((role) => role.includes("CENTRAL"));
@@ -25,6 +28,14 @@ const LandValuationDetail = () => {
     { name: t("home"), href: "/" },
     { name: t("Land Valuation"), href: "/land-valuation" },
   ];
+
+  const handleSave = () => {
+    if (formikRef.current && formikRef.current.handleSubmit) {
+      formikRef.current.handleSubmit();
+    } else {
+      console.warn("handleSubmit not available in DetailForCentral");
+    }
+  };
 
   return (
     <>
@@ -66,6 +77,7 @@ const LandValuationDetail = () => {
               }}
               variant="contained"
               startIcon={<SaveIcon />}
+              onClick={handleSave}
             >
               {t("save")}
             </Button>
@@ -73,7 +85,7 @@ const LandValuationDetail = () => {
         }
       >
         {hasCentralRole ? (
-          <DetailForCentral />
+          <DetailForCentral formikRef={formikRef} />
         ) : (
           <DetailForLocal />
         )}

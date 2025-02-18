@@ -28,6 +28,7 @@ import { landValueZoneApi } from "./state/landValueZoneApi";
 import { parcelApi } from "./state/parcelApi";
 import { committeeStatusTypeApi } from "./state/committeeStatusTypeApi";
 import { valuationStatusTypeApi } from "./state/valuationStatusTypeApi";
+import { memberTypeApi } from "./state/memberTypeApi";
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, globalReducer);
@@ -43,6 +44,7 @@ const store = configureStore({
     [parcelApi.reducerPath]: parcelApi.reducer,
     [committeeStatusTypeApi.reducerPath]: committeeStatusTypeApi.reducer,
     [valuationStatusTypeApi.reducerPath]: valuationStatusTypeApi.reducer,
+    [memberTypeApi.reducerPath]: memberTypeApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -58,6 +60,7 @@ const store = configureStore({
     .concat(parcelApi.middleware)
     .concat(committeeStatusTypeApi.middleware)
     .concat(valuationStatusTypeApi.middleware)
+    .concat(memberTypeApi.middleware)
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
