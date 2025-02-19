@@ -9,23 +9,25 @@ import {
   Box,
   ListItemIcon,
   ListItemText,
-} from "@mui/material";
+} from '@mui/material';
 
-import { Menu as MenuIcon } from "@mui/icons-material";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import FlexBetween from "./FlexBetween";
-import LanguageSwitcher from "./LanguageSwitcher";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import UserService from "../state/UserService";
-import { useTranslation } from "react-i18next";
-import LoginModal from "../scenes/auth/modal/LoginModal";
-import RegisterModal from "../scenes/auth/modal/RegisterModal";
-import RequireLogin from "../scenes/auth/modal/RequireLogin";
-import LoginIcon from "../assets/icons/auth/LoginIcon";
-import SignupIcon from "../assets/icons/auth/SignupIcon";
-import { LANGUAGE } from "../utils/constant";
+import {Menu as MenuIcon} from '@mui/icons-material';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import FlexBetween from './FlexBetween';
+import LanguageSwitcher from './LanguageSwitcher';
+import {useState, useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+import UserService from '../state/UserService';
+import {useTranslation} from 'react-i18next';
+import LoginModal from '../scenes/auth/modal/LoginModal';
+import RegisterModal from '../scenes/auth/modal/RegisterModal';
+import RequireLogin from '../scenes/auth/modal/RequireLogin';
+import LoginIcon from '../assets/icons/auth/LoginIcon';
+import SignupIcon from '../assets/icons/auth/SignupIcon';
+import {LANGUAGE} from '../utils/constant';
+import {logoutUser} from '@/state/authService.js';
+import {useIsAuthenticated} from '@/hooks/useAuth';
 
 const TopBox = () => {
   const theme = useTheme();
@@ -35,26 +37,27 @@ const TopBox = () => {
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  const { i18n, t } = useTranslation();
+  const {i18n, t} = useTranslation();
 
   const [isLogin, setIsLogin] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [isRequireLogin, setIsRequireLogin] = useState(false);
   const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
 
-  const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const isAuthenticated = useIsAuthenticated();
 
-useEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem('language')) {
       setSelectedLanguage(localStorage.getItem('language'));
     } else {
       setSelectedLanguage(LANGUAGE.LO);
     }
-  }, [])
+  }, []);
 
-useEffect(() => {
+  useEffect(() => {
     localStorage.setItem('language', selectedLanguage);
-  }, [selectedLanguage])
+  }, [selectedLanguage]);
 
   const handleLanguageClose = () => {
     setLanguageAnchorEl(null);
@@ -96,19 +99,16 @@ useEffect(() => {
     setIsRequireLogin(false);
   };
 
-  return (
-    <AppBar
-      sx={{
-        position: "static",
-        background: "none",
-        boxShadow: "none",
-      }}
-    >
-      <Toolbar
-        sx={{ justifyContent: "flex-end", gap: "24px", alignItems: "center" }}
+  return (<AppBar
+          sx={{
+            position: 'static', background: 'none', boxShadow: 'none',
+          }}
       >
-        {/* LEFT SIDE */}
-        {/* <FlexBetween>
+        <Toolbar
+            sx={{justifyContent: 'flex-end', gap: '24px', alignItems: 'center'}}
+        >
+          {/* LEFT SIDE */}
+          {/* <FlexBetween>
           <Box
             aria-label="select language"
             aria-controls="language-menu"
@@ -158,60 +158,63 @@ useEffect(() => {
             </MenuItem>
           </Menu>
         </FlexBetween> */}
-        <LanguageSwitcher height="34px" top="10px" selectedLanguage={selectedLanguage} changeLanguage={changeLanguage}/>
-        {/* RIGHT SIDE */}
-        <FlexBetween sx={{ gap: "12px" }}>
-          <Button
-            sx={{
-              backgroundColor: "#FFFFFF",
-              color: "#1677FF",
-              textTransform: "none",
-              border: "1px solid #1677FF",
-              borderRadius: "6px",
-              fontFamily: "Poppins",
-              fontSize: "14px",
-              fontWeight: 400,
-            }}
-            variant="outlined"
-            startIcon={<LoginIcon />}
-            onClick={handleLogin}
-          >
-            {t("Login")}
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: "#1677FF",
-              color: "#fff",
-              textTransform: "none",
-              borderRadius: "6px",
-              fontFamily: "Poppins",
-              fontSize: "14px",
-              fontWeight: 400,
-            }}
-            variant="contained"
-            startIcon={<SignupIcon />}
-            onClick={handleRegister}
-          >
-            {t("Register")}
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: "#1677FF",
-              color: "#fff",
-              textTransform: "none",
-              borderRadius: "6px",
-              fontFamily: "Poppins",
-              fontSize: "14px",
-              fontWeight: 400,
-            }}
-            variant="contained"
-            onClick={handleRequireLogin}
-          >
-            {t("Require")}
-          </Button>
+          {!isAuthenticated && (<>
+                <LanguageSwitcher height="34px" top="10px"
+                                  selectedLanguage={selectedLanguage}
+                                  changeLanguage={changeLanguage}/>
+                {/* RIGHT SIDE */}
+                <FlexBetween sx={{gap: '12px'}}>
+                  <Button
+                      sx={{
+                        backgroundColor: '#FFFFFF',
+                        color: '#1677FF',
+                        textTransform: 'none',
+                        border: '1px solid #1677FF',
+                        borderRadius: '6px',
+                        fontFamily: 'Poppins',
+                        fontSize: '14px',
+                        fontWeight: 400,
+                      }}
+                      variant="outlined"
+                      startIcon={<LoginIcon/>}
+                      onClick={handleLogin}
+                  >
+                    {t('Login')}
+                  </Button>
+                  <Button
+                      sx={{
+                        backgroundColor: '#1677FF',
+                        color: '#fff',
+                        textTransform: 'none',
+                        borderRadius: '6px',
+                        fontFamily: 'Poppins',
+                        fontSize: '14px',
+                        fontWeight: 400,
+                      }}
+                      variant="contained"
+                      startIcon={<SignupIcon/>}
+                      onClick={handleRegister}
+                  >
+                    {t('Register')}
+                  </Button>
+                  <Button
+                      sx={{
+                        backgroundColor: '#1677FF',
+                        color: '#fff',
+                        textTransform: 'none',
+                        borderRadius: '6px',
+                        fontFamily: 'Poppins',
+                        fontSize: '14px',
+                        fontWeight: 400,
+                      }}
+                      variant="contained"
+                      onClick={handleRequireLogin}
+                  >
+                    {t('Require')}
+                  </Button>
 
-          {/* <LanguageSwitcher /> */}
-          {/* <Button
+                  {/* <LanguageSwitcher /> */}
+                  {/* <Button
               onClick={handleClick}
               sx={{
                 display: "flex",
@@ -224,7 +227,7 @@ useEffect(() => {
           >
             <MenuIcon />
           </Button>     */}
-          {/* <Menu
+                  {/* <Menu
             anchorEl={anchorEl}
             open={isOpen}
             onClose={handleClose}
@@ -240,29 +243,32 @@ useEffect(() => {
                   "&:hover": {
                     color: theme.palette.secondary[200],
                   },
-                }}            
+                }}
               >
                 <LogoutOutlinedIcon/>
-                <Typography>                  
+                <Typography>
                   {t("Sign Out")}
-                </Typography>            
+                </Typography>
               </FlexBetween>
             </MenuItem>
           </Menu> */}
-          <LoginModal
-            open={isLogin}
-            onClose={handleLoginClose}
-            onRegister={() => {}}
-          />
-          <RegisterModal open={isRegister} onClose={handleRegisterClose} onLogin={()=>{}}/>
-          <RequireLogin
-            open={isRequireLogin}
-            onClose={handleRequireLoginClose}
-          />
-        </FlexBetween>
-      </Toolbar>
-    </AppBar>
-  );
+                  <LoginModal
+                      open={isLogin}
+                      onClose={handleLoginClose}
+                      onRegister={() => {
+                      }}
+                  />
+                  <RegisterModal open={isRegister} onClose={handleRegisterClose}
+                                 onLogin={() => {
+                                 }}/>
+                  <RequireLogin
+                      open={isRequireLogin}
+                      onClose={handleRequireLoginClose}
+                  />
+                </FlexBetween>
+              </>)}
+        </Toolbar>
+      </AppBar>);
 };
 
 export default TopBox;
