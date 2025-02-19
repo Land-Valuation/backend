@@ -38,9 +38,10 @@ export const registerUser = async (params) => {
     }
 }
 
-export const logoutUser = () => {
+export const logoutUser = (navigate) => {
     return (dispatch) => {
         dispatch(logout());
+        navigate("/home");
     };
 };
 

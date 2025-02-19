@@ -304,7 +304,7 @@ function Sidebar() {
             <Typography>Change password</Typography>
           </MenuItem>
           <MenuItem
-              onClick={() => dispatch(logoutUser())}
+              onClick={() => dispatch(logoutUser(navigate))}
               style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
               }}
