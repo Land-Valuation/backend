@@ -1,5 +1,5 @@
 import UserService from "./state/UserService";
 
-const RenderOnAuthenticated = ({ children }) => (UserService.isLoggedIn()) ? children : null;
+const RenderOnAuthenticated = ({ children }) => children;
 
 export default RenderOnAuthenticated

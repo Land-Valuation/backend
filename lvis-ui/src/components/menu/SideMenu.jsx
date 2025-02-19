@@ -7,11 +7,15 @@ import UserService from "../../state/UserService";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import {logoutUser} from '@/state/authService.js';
+import { useDispatch } from "react-redux";
 
 const drawerWidth = 64;
 
 function SideMenu() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const menuItems = [
     { src: "/home ico.svg", alt: "Home", path: "/home" },
     { src: "/land-price.svg", alt: "Land Price Explorer", path: "/montoring" },
@@ -274,7 +278,7 @@ function SideMenu() {
                 gap: "8px",
                 cursor: "pointer",
               }}
-              onClick={() => UserService.doLogout()}
+              onClick={() => dispatch(logoutUser())}
             >
               <img src="/logout ico.svg" alt="" />
               <Typography>Log out</Typography>

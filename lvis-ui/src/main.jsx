@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 
 import App from "./App";
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import globalReducer from "./state";
 import { Provider } from "react-redux";
 import { prototypeApi } from "./state/prototypeApi";
@@ -29,23 +29,35 @@ import { parcelApi } from "./state/parcelApi";
 import { committeeStatusTypeApi } from "./state/committeeStatusTypeApi";
 import { valuationStatusTypeApi } from "./state/valuationStatusTypeApi";
 import { memberTypeApi } from "./state/memberTypeApi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, globalReducer);
 
+const appReducer = combineReducers( {
+  global: persistedReducer,
+  [prototypeApi.reducerPath]: prototypeApi.reducer,
+  [egisApi.reducerPath]: egisApi.reducer,
+  [localSurveyInformationApi.reducerPath]: localSurveyInformationApi.reducer,
+  [provinceApi.reducerPath]: provinceApi.reducer,
+  [landValueZoneApi.reducerPath]: landValueZoneApi.reducer,
+  [parcelApi.reducerPath]: parcelApi.reducer,
+  [committeeStatusTypeApi.reducerPath]: committeeStatusTypeApi.reducer,
+  [valuationStatusTypeApi.reducerPath]: valuationStatusTypeApi.reducer,
+  [memberTypeApi.reducerPath]: memberTypeApi.reducer
+});
+
+const rootReducer = (state, action) => {
+  if (action.type === 'global/logout') {
+    storage.removeItem('persist:root');
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
 const store = configureStore({
-  reducer: {
-    global: persistedReducer,
-    [prototypeApi.reducerPath]: prototypeApi.reducer,
-    [egisApi.reducerPath]: egisApi.reducer,
-    [localSurveyInformationApi.reducerPath]: localSurveyInformationApi.reducer,
-    [provinceApi.reducerPath]: provinceApi.reducer,
-    [landValueZoneApi.reducerPath]: landValueZoneApi.reducer,
-    [parcelApi.reducerPath]: parcelApi.reducer,
-    [committeeStatusTypeApi.reducerPath]: committeeStatusTypeApi.reducer,
-    [valuationStatusTypeApi.reducerPath]: valuationStatusTypeApi.reducer,
-    [memberTypeApi.reducerPath]: memberTypeApi.reducer,
-  },
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -63,15 +75,19 @@ const store = configureStore({
     .concat(memberTypeApi.middleware)
 });
 
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const renderApp = () => root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistStore(store)}>
       <I18nextProvider i18n={i18next}>
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </I18nextProvider>
     </PersistGate>
   </Provider>
 );
 
-UserService.initKeycloak(renderApp);
+renderApp();

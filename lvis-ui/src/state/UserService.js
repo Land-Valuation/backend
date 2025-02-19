@@ -1,4 +1,6 @@
 import Keycloak from "keycloak-js";
+import { selectIsAuthenticated, selectUser, selectToken } from "@/state";
+import { useSelector } from "react-redux";
 
 const _kc = new Keycloak({
   url: import.meta.env.VITE_REACT_APP_KEYCLOAK_URL,
@@ -32,18 +34,19 @@ const doLogin = _kc.login;
 
 const doLogout = _kc.logout;
 
-const getToken = () => _kc.token;
+const getToken = () => useSelector(selectToken);
 
-const getTokenParsed = () => _kc.tokenParsed;
+const getTokenParsed = () => useSelector(selectUser);
 
-const isLoggedIn = () => !!_kc.token;
+const isLoggedIn = () => useSelector(selectIsAuthenticated);
 
 const updateToken = (successCallback) =>
   _kc.updateToken(5)
     .then(successCallback)
     .catch(doLogin);
 
-const getUsername = () => _kc.tokenParsed?.preferred_username;
+const getUsername = () => useSelector(selectUser)?.preferred_username;
+const getEmail = () => useSelector(selectUser)?.email;
 
 const hasRole = (roles) => roles.some((role) => _kc.hasRealmRole(role));
 
@@ -56,6 +59,7 @@ const UserService = {
   getTokenParsed,
   updateToken,
   getUsername,
+  getEmail,
   hasRole,
 };
 

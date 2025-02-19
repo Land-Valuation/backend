@@ -29,6 +29,8 @@ import ModelBase from "./scenes/model-base";
 import CreateNewModel from "./scenes/model-base/create-model";
 import RequestForInvesgationDetail from "./scenes/model-base/request-for-invesgation/detail/RequestForInvesgationDetail";
 import ParcelSurveyManagement from "./scenes/parcel-survey-management";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const resources = {
   en: {
@@ -56,6 +58,7 @@ function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const dispatch = useDispatch();
+
   useEffect(() => {
     // Dispatch the action once when the component mounts
     dispatch(initializeAuth());
@@ -78,12 +81,22 @@ function App() {
 
   return (
     <div className="app">
+      <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+      />
+
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <RenderOnAnonymous>
-            <Welcome />
-          </RenderOnAnonymous>
           <RenderOnAuthenticated>
             <Routes>
               <Route path="/" element={<Navigate to="/home" />} />

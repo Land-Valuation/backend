@@ -18,14 +18,18 @@ import UserService from "../state/UserService";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { LANGUAGE } from "../utils/constant";
+import {logoutUser} from '@/state/authService';
+import {useDispatch} from 'react-redux';
 
 const drawerWidth = 64;
 
 function Sidebar() {
+  const dispatch = useDispatch();
   const username = UserService.getUsername();
+  const email = UserService.getUsername();
   const navigate = useNavigate();
   const location = useLocation();
-  const { i18n, t } = useTranslation();
+  const {i18n, t} = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -62,9 +66,8 @@ function Sidebar() {
   };
 
   useEffect(() => {
-    const currentIndex = menuItems.findIndex((item) =>
-      location.pathname.includes(item.path.toLowerCase())
-    );
+    const currentIndex = menuItems.findIndex(
+        (item) => location.pathname.includes(item.path.toLowerCase()));
     if (currentIndex !== -1) {
       setActiveIndex(currentIndex);
     }
@@ -95,113 +98,105 @@ function Sidebar() {
     { src: "/admin.svg", alt: t("Admin"), path: "/customers" },
   ];
 
-  const LightTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
+  const LightTooltip = styled(({className, ...props}) => (
+      <Tooltip {...props} classes={{popper: className}}/>))(({theme}) => ({
     [`& .${tooltipClasses.arrow}`]: {
       color: theme.palette.common.white,
-      position: "relative",
-      filter: "drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1))",
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
+      position: 'relative',
+      filter: 'drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1))',
+    }, [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: theme.palette.common.white,
-      color: "rgba(0, 0, 0, 0.87)",
-      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+      color: 'rgba(0, 0, 0, 0.87)',
+      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
       fontSize: 14,
     },
   }));
 
-  return (
-    <Drawer
+  return (<Drawer
       variant="permanent"
       sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
+        width: drawerWidth, flexShrink: 0, '& .MuiDrawer-paper': {
           width: drawerWidth,
-          boxSizing: "border-box",
-          justifyContent: "space-between",
+          boxSizing: 'border-box',
+          justifyContent: 'space-between',
         },
       }}
-    >
-      <div>
-        <Box
+  >
+    <div>
+      <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: "16px 0",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '16px 0',
           }}
-        >
-          <img
+      >
+        <img
             src="/Logo.svg"
             alt="Logo"
-            style={{ width: "40px", height: "40px", objectFit: "cover" }}
-          />
-        </Box>
-        <Divider variant="middle" />
-        <List
+            style={{width: '40px', height: '40px', objectFit: 'cover'}}
+        />
+      </Box>
+      <Divider variant="middle"/>
+      <List
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "12px",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '12px',
           }}
+      >
+        {menuItems.map((item, index) => (<LightTooltip
+            title={item.alt}
+            arrow
+            key={item.alt}
+            placement="right"
         >
-          {menuItems.map((item, index) => (
-            <LightTooltip
-              title={item.alt}
-              arrow
+          <ListItem
+              sx={{
+                width: '40px',
+                height: '40px',
+                padding: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                background: activeIndex === index ? '#E6F4FF' : '#F4F4F4',
+                opacity: activeIndex === index ? 1 : 0.7,
+                boxShadow: activeIndex === index ?
+                    '0px 6px 16px 0px #00000029' :
+                    'none',
+                '&:hover': {
+                  background: '#E6F4FF',
+                  opacity: 1,
+                  boxShadow: '0px 6px 16px 0px #00000029',
+                },
+              }}
+              button="true"
               key={item.alt}
-              placement="right"
-            >
-              <ListItem
-                sx={{
-                  width: "40px",
-                  height: "40px",
-                  padding: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  background: activeIndex === index ? "#E6F4FF" : "#F4F4F4",
-                  opacity: activeIndex === index ? 1 : 0.7,
-                  boxShadow:
-                    activeIndex === index
-                      ? "0px 6px 16px 0px #00000029"
-                      : "none",
-                  "&:hover": {
-                    background: "#E6F4FF",
-                    opacity: 1,
-                    boxShadow: "0px 6px 16px 0px #00000029",
-                  },
-                }}
-                button="true"
-                key={item.alt}
-                onClick={() => {
-                  // setActiveIndex(index);
-                  navigate(item.path);
-                }}
-              >
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  style={{ width: "20px", height: "20px" }}
-                />
-              </ListItem>
-            </LightTooltip>
-          ))}
-        </List>
-      </div>
-      <div
+              onClick={() => {
+                // setActiveIndex(index);
+                navigate(item.path);
+              }}
+          >
+            <img
+                src={item.src}
+                alt={item.alt}
+                style={{width: '20px', height: '20px'}}
+            />
+          </ListItem>
+        </LightTooltip>))}
+      </List>
+    </div>
+    <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "16px",
-          marginBottom: "20px",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '16px',
+          marginBottom: '20px',
         }}
       >
         <Divider variant="middle" sx={{ width: "31px" }} />
@@ -219,9 +214,9 @@ function Sidebar() {
             height="32px"
             alt="flag"
             src="../sample avatar.svg"
-          />
-        </IconButton>
-        <Menu
+        />
+      </IconButton>
+      <Menu
           anchorEl={anchorEl}
           open={open}
           onClose={handleMenuClose}
@@ -238,82 +233,93 @@ function Sidebar() {
               borderRadius: "8px",
               "&::before": {
                 content: '""',
-                display: "block",
-                position: "absolute",
+                display: 'block',
+                position: 'absolute',
                 bottom: 10,
                 left: -5,
                 width: 10,
                 height: 10,
-                bgcolor: "background.paper",
-                transform: "rotate(45deg)",
+                bgcolor: 'background.paper',
+                transform: 'rotate(45deg)',
                 zIndex: 0,
               },
             },
           }}
-        >
-          <div>
-            <div
+      >
+        <div>
+          <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 marginBottom: "12px",
                 marginLeft: "12px",
               }}
-            >
-              <img
+          >
+            <img
                 width="32px"
                 height="32px"
                 alt="flag"
                 src="../sample avatar.svg"
-              />
-              <div style={{ marginLeft: "8px" }}>
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    lineHeight: "20px",
-                    color: "#333333",
-                    marginBottom: "2px",
-                  }}
-                >
-                  {username}
-                </Typography>
-                <Typography sx={{ fontWeight: 400, color: "#00000073" }}>
-                  user@mail.com
-                </Typography>
-              </div>
-            </div>
-            <MenuItem
-              onClick={handleMenuClose}
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-            >
-              <img src="/personal info.svg" alt="" />
-              <Typography>Personal Information</Typography>
-            </MenuItem>
-            <MenuItem
-              onClick={handleMenuClose}
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-            >
-              <img src="/change pw.svg" alt="" />
-              <Typography>Change password</Typography>
-            </MenuItem>
-            <MenuItem
-              onClick={handleMenuClose}
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-            >
-              <img src="/logout ico.svg" alt="" />
+            />
+            <div style={{marginLeft: '8px'}}>
               <Typography
-                onClick={() => UserService.doLogout()}
-                style={{ cursor: "pointer" }}
+                  sx={{
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    lineHeight: '20px',
+                    color: '#333333',
+                    marginBottom: '2px',
+                  }}
               >
-                Log out
+                {username}
               </Typography>
-            </MenuItem>
+              <Typography
+                  sx={{
+                    fontWeight: 400,
+                    color: '#00000073',
+                    wordWrap: 'break-word',
+                    whiteSpace: 'normal',
+                    wordBreak: 'break-word',
+                  }}>
+                {email}
+              </Typography>
+            </div>
           </div>
-        </Menu>
-      </div>
-    </Drawer>
-  );
+          <MenuItem
+              onClick={handleMenuClose}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+              }}
+          >
+            <img src="/personal info.svg" alt=""/>
+            <Typography>Personal Information</Typography>
+          </MenuItem>
+          <MenuItem
+              onClick={handleMenuClose}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+              }}
+          >
+            <img src="/change pw.svg" alt=""/>
+            <Typography>Change password</Typography>
+          </MenuItem>
+          <MenuItem
+              onClick={() => dispatch(logoutUser())}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+              }}
+          >
+            <img src="/logout ico.svg" alt=""/>
+            <Typography
+                style={{cursor: 'pointer'}}
+            >
+              Log out
+            </Typography>
+          </MenuItem>
+        </div>
+      </Menu>
+    </div>
+  </Drawer>);
 }
 
 export default Sidebar;
