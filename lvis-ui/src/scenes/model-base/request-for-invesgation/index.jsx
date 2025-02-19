@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 const RequestForInvesgation = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
+  const [data, setData] = useState([])
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 7 }, (_, i) => {
     return {
@@ -94,74 +94,112 @@ const RequestForInvesgation = () => {
     return null;
   };
 
-  const data = [
-    {
-      status: t('requested'),
-      issuedToLocal: false,
-      appliedArea: t('notApplicable'),
-      title: 'Model A',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-    {
-      status: t('confirmed'),
-      issuedToLocal: true,
-      appliedArea: '5/5',
-      title: 'Model B',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-    {
-      status: t('inprogress'),
-      issuedToLocal: false,
-      appliedArea: '3/6',
-      title: 'Model C',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-    {
-      status: t('confirmed'),
-      issuedToLocal: false,
-      appliedArea: t('notApplicable'),
-      title: 'Model D',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-    {
-      status: t('confirmed'),
-      issuedToLocal: false,
-      appliedArea: t('notApplicable'),
-      title: 'Model E',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-    {
-      status: t('requested'),
-      issuedToLocal: false,
-      appliedArea: t('notApplicable'),
-      title: 'Model F',
-      features: '000,000,000,000,000,000,000,000,000,...',
-      adjRSquare: 0.001,
-      fStatistics: 0.001,
-      region: t('rowData'),
-      updated: '09-11-2024',
-    },
-  ];
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:8088/datamodel-api/parcels/zone?page=1&rpp=10`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              
+            }
+          );
+          if (!response.ok) {
+            throw new Error("Network response was not ok " + response.statusText);
+          }
+          const result = await response.json();
+          console.log(result);
+          
+          let formattedData = result.data.items.map((item)=>{
+            return {
+              id: item.zoneId,
+              zoneCode: item.zoneCode,
+              parcelCount: item.parcelCount,
+              status: item.parcelCount > 0 ? t('confirmed') : t('requested'),
+              
+            }
+          })
+          console.log(formattedData);
+          
+          setData(formattedData);
+        } catch (error) {
+          console.error("There was a problem with the fetch operation:", error);
+        }
+      };
+      fetchData();
+    }, []);
+
+  // const data = [
+  //   {
+  //     status: t('requested'),
+  //     issuedToLocal: false,
+  //     appliedArea: t('notApplicable'),
+  //     title: 'Model A',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  //   {
+  //     status: t('confirmed'),
+  //     issuedToLocal: true,
+  //     appliedArea: '5/5',
+  //     title: 'Model B',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  //   {
+  //     status: t('inprogress'),
+  //     issuedToLocal: false,
+  //     appliedArea: '3/6',
+  //     title: 'Model C',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  //   {
+  //     status: t('confirmed'),
+  //     issuedToLocal: false,
+  //     appliedArea: t('notApplicable'),
+  //     title: 'Model D',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  //   {
+  //     status: t('confirmed'),
+  //     issuedToLocal: false,
+  //     appliedArea: t('notApplicable'),
+  //     title: 'Model E',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  //   {
+  //     status: t('requested'),
+  //     issuedToLocal: false,
+  //     appliedArea: t('notApplicable'),
+  //     title: 'Model F',
+  //     features: '000,000,000,000,000,000,000,000,000,...',
+  //     adjRSquare: 0.001,
+  //     fStatistics: 0.001,
+  //     region: t('rowData'),
+  //     updated: '09-11-2024',
+  //   },
+  // ];
 
   const columns = [
     {
@@ -181,7 +219,7 @@ const RequestForInvesgation = () => {
     },
     {
       title: "Area Name",
-      dataIndex: 'appliedArea',
+      dataIndex: 'zoneCode',
       key: 'appliedArea',
       render: (appliedArea) => (
         <Box onClick={handleOpenAppliedAreasModal} style={{ cursor: 'pointer' }}>
@@ -191,7 +229,7 @@ const RequestForInvesgation = () => {
     },
     {
       title: "Number of Parcels",
-      dataIndex: 'title',
+      dataIndex: 'parcelCount',
       key: 'title',
     },
     {
