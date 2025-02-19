@@ -2,35 +2,122 @@ import { Box, Button, MenuItem, Select, Typography } from "@mui/material"
 import LayoutPageCommon from "../../components/LayoutPageCommon"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ValuationMap from "../../components/map/ValuationMap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PLaceIcon from "../../assets/icons/model-base/PLaceIcon";
 import DetailIcon from "../../assets/icons/model-base/DetailIcon";
 import SurveyInformation from "./modal/SurveyInformation";
 import RegisterSurveyInformationModal from "./modal/RegisterSurveyInformationModal";
+import { useGetAllProvincesQuery } from "../../state/provinceApi";
+import { useTranslation } from "react-i18next";
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useGetListLandValueZonesByDistrictQuery } from "../../state/landValueZoneApi";
+import { useGetParcelDTOsByZoneIdQuery } from "../../state/parcelApi";
 
 const ParcelSurveyManagement = () => {
+  const {t} = useTranslation()
+
   const [district, setDistrict] = useState('');
   const [province, setProvince] = useState('');
-  const [itemActive, setItemActive] = useState('A1');
+  const [itemActive, setItemActive] = useState('');
   const [isOpenSurveyInformationDialog, setIsOpenSurveyInformationDialog] = useState(false);
   const [isRegisterSurveyInformationModal, setIsRegisterSurveyInformationModal] = useState(false);
   const [isHasData, setIsHasData] = useState(false);
+  const [provinces, setProvinces] = useState([])
+  const [districts, setDistricts] = useState([])
+  const [zonePage] = useState(1);
+  const [parcelPage] = useState(1);
+  const [zoneHasMore, setZoneHasMore] = useState(true);
+  const [parcelHasMore, setParcelHasMore] = useState(true);
+  const [zonePageSize, setZonePageSize] = useState(10)
+  const [parcelPageSize, setParcelPageSize] = useState(10)
+  const [landValueZones, setLandValueZones] = useState([])
+  const [parcels, setParcels] = useState([])
+  const [zoneId, setZoneId] = useState('');
+  const [generalInfo, setGeneralInfo] = useState(null)
+
+  const { data: allProvinceData } = useGetAllProvincesQuery();
+  const { data: listLandValueZonesByDistrictData } = useGetListLandValueZonesByDistrictQuery({ distCode: district, page: zonePage, size: zonePageSize }, { skip: !district });
+  const { data: listParcelByZoneIdData } = useGetParcelDTOsByZoneIdQuery({ zoneId: zoneId, page: parcelPage, size: parcelPageSize }, { skip: !zoneId });
+
+  useEffect(() => {
+    setProvinces(allProvinceData || []);
+    setDistricts(allProvinceData?.[0]?.districts || []);
+    setProvince(allProvinceData?.[0]?.provinceCode || '');
+    setDistrict(allProvinceData?.[0]?.districts?.[0]?.districtcode || '');
+  }, [allProvinceData])
+
+  useEffect(() => {
+    if (listLandValueZonesByDistrictData && listLandValueZonesByDistrictData?.data.length > 0 && listLandValueZonesByDistrictData?.data.length < listLandValueZonesByDistrictData?.totalElements ) {
+      setZoneHasMore(true)
+    } else {
+      setZoneHasMore(false)
+    }
+    setLandValueZones(listLandValueZonesByDistrictData?.data ?? [])
+    if (!itemActive) {
+      setItemActive(listLandValueZonesByDistrictData?.data[0]?.id);
+      setZoneId(listLandValueZonesByDistrictData?.data[0]?.id);
+    }
+  }, [listLandValueZonesByDistrictData]);
+
+  useEffect(() => {
+    if (listParcelByZoneIdData && listParcelByZoneIdData?.data.length > 0 && listParcelByZoneIdData?.data.length < listParcelByZoneIdData?.totalElements ) {
+      setParcelHasMore(true)
+    } else {
+      setParcelHasMore(false)
+    }
+    setParcels(listParcelByZoneIdData?.data ?? [])
+  }, [listParcelByZoneIdData]);
+
+  const fetchZoneData = () => {
+    setZonePageSize(zonePageSize + 20);
+  };
+
+  const fetchParcelData = () => {
+    setParcelPageSize(parcelPageSize + 20);
+  };
 
   const handleDistrictChange = (event) => {
     setDistrict(event.target.value);
+    setZonePageSize(20);
+    setZoneHasMore(true);
+    setParcelPageSize(20);
+    setParcelHasMore(true);
+    setItemActive('');
+    setZoneId('');
   };
 
   const handleProvinceChange = (event) => {
     setProvince(event.target.value);
+    setDistricts(provinces.find(item => item.provinceCode === event.target.value)?.districts || []);
+    setDistrict(provinces.find(item => item.provinceCode === event.target.value)?.districts[0]?.districtcode || '');
+    setZonePageSize(20);
+    setZoneHasMore(true);
+    setParcelPageSize(20);
+    setParcelHasMore(true);
+    setItemActive('');
+    setZoneId('');
   };
 
   const handleItemClick = (item) => {
-    setItemActive(item.label);
+    setZoneId(item.id);
+    setItemActive(item.id);
+    setParcelPageSize(20);
+    setParcelHasMore(true);
   };
 
-  const handleOpenSurveyInformationDialog = (isHasData) => {
-    setIsHasData(isHasData);
+  const handleOpenSurveyInformationDialog = (item) => {
+    setIsHasData(false);
     setIsOpenSurveyInformationDialog(true);
+    const generalInfo = {
+      mapNo: item.mapNo,
+      parcelNo: item.parcelNo,
+      provinceCode: item.province ?? province,
+      districtCode: item.district ?? district,
+      zoneCode: item.zoneCode,
+      provinceName: provinces.find(el => el.provinceCode === province)?.provinceEnglish ?? '',
+      districtName: districts.find(el => el.districtcode === district)?.districtEnglish ?? '',
+    }
+    setGeneralInfo(generalInfo)
   };
 
   const handleCloseSurveyInformationDialog = () => {
@@ -45,46 +132,14 @@ const ParcelSurveyManagement = () => {
     setIsRegisterSurveyInformationModal(false);
   };
 
-  const handleCreateRegisterSurveyInformationModal = (event) => {
-    console.log(event);
+  const handleCreateRegisterSurveyInformationModal = () => {
     setIsOpenSurveyInformationDialog(false);
     handleOpenRegisterSurveyInformationModal();
   };
 
-  const itemsData = [
-    { label: 'A1', date: '04-12-2020' },
-    { label: 'A2', date: '04-12-2020' },
-    { label: 'A3', date: '04-12-2020' },
-    { label: 'A4', date: '04-12-2020' },
-    { label: 'A5', date: '04-12-2020' },
-    { label: 'A6', date: '04-12-2020' },
-    { label: 'B1', date: '04-12-2020' },
-    { label: 'B2', date: '04-12-2020' },
-    { label: 'B3', date: '04-12-2020' },
-  ];
-
-  const itemDataActive = [
-    {
-      label: "A1-1",
-      icon_info: true
-    },
-    {
-      label: "A1-8",
-      icon_info: false
-    },
-    {
-      label: "A1-12",
-      icon_info: true
-    },
-    {
-      label: "A1-24",
-      icon_info: false
-    }
-  ]
-
   return (
     <LayoutPageCommon
-      title="Parcel Survey Management"
+      title={t("Parcel Survey Management")}
       actions={ 
         <>
           <Button
@@ -120,6 +175,7 @@ const ParcelSurveyManagement = () => {
         overflow: 'hidden',
         border: '1px solid #F0F0F0',
         margin: '32px 0',
+        minHeight: 'calc(100vh - 250px)',
       }}>
         <Box sx={{
           width: '300px',
@@ -143,11 +199,13 @@ const ParcelSurveyManagement = () => {
               sx={{ minWidth: '128px', borderRadius: '6px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
             >
               <MenuItem sx={{ display: 'none' }} disabled value="">
-                <Box>Province</Box>
+                <Box>{t("province")}</Box>
               </MenuItem>
-              <MenuItem value={10}>Province A</MenuItem>
-              <MenuItem value={20}>Province B</MenuItem>
-              <MenuItem value={30}>Province C</MenuItem>
+              {(provinces ?? []).map((item) => (
+                <MenuItem key={item.provinceCode} value={item.provinceCode}>
+                  {item.provinceEnglish}
+                </MenuItem>
+              ))}
             </Select>
             <Select
               labelId="district-label"
@@ -159,113 +217,159 @@ const ParcelSurveyManagement = () => {
               sx={{ minWidth: '128px', borderRadius: '6px', '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.23) !important'} }}
             >
               <MenuItem sx={{ display: 'none' }} disabled value="">
-                <Box>District</Box>
+                <Box>{t("district")}</Box>
               </MenuItem>
-              <MenuItem value={10}>District A</MenuItem>
-              <MenuItem value={20}>District B</MenuItem>
-              <MenuItem value={30}>District C</MenuItem>
+              {(districts ?? []).map((item) => (
+                <MenuItem key={item.districtcode} value={item.districtcode}>
+                  {item.districtEnglish}
+                </MenuItem>
+              ))}
             </Select>
           </Box>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
+          <div id="landvaluezone" className="landvaluezone" style={{
+            maxHeight: 'calc(100vh - 250px)',
+            overflowY: 'scroll'
           }}>
-            {itemsData.map((item, index) => (
-              <Box
-                key={index}
-                sx={{
-                  backgroundColor: itemActive === item.label ? '#E6F4FF' : '#F5F5F5',
-                  border: itemActive === item.label ? '1px solid #91CAFF' : '1px solid #F5F5F5',
-                  borderRadius: '8px',
-                  padding: '8px 12px',
-                  cursor: 'pointer',
-                }}
-                onClick={() => handleItemClick(item)}
-              >
-                <Box sx={{
+            {
+              landValueZones?.length > 0 ? 
+              <Box sx={{
+                '& .infinite-scroll-component': {
                   display: 'flex',
-                  alignItems: 'center',
+                  flexDirection: 'column',
                   gap: '8px',
-                  justifyContent: 'space-between',
-                }}>
-                  <Typography
-                    sx={{
-                      color: '#000000E0',
-                      fontFamily: 'Poppins',
-                      fontSize: '14px',
-                      fontWeight: 500,
-                      lineHeight: '22px',
-                    }}
-                  >
-                    {item.label}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: '#909399',
-                      fontFamily: 'Poppins',
-                      fontSize: '14px',
-                      fontWeight: 400,
-                      lineHeight: '20px',
-                    }}
-                  >
-                    {item.date}
-                  </Typography>
-                </Box>
-
-                {
-                  itemActive === item.label && (
-                    <Box sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '8px',
-                      mt: '12px'
-                    }}>
+                }
+              }}>
+                <InfiniteScroll
+                  dataLength={landValueZones?.length || 0}
+                  next={fetchZoneData}
+                  hasMore={zoneHasMore}
+                  loader={<h4>Loading...</h4>}
+                  scrollThreshold={0.4}
+                  scrollableTarget="landvaluezone"
+                  // endMessage={
+                  //   <p style={{ textAlign: 'center' }}>
+                  //     <b>Yay! You have seen it all</b>
+                  //   </p>
+                  // }
+                >
+                  {landValueZones?.map((item, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        backgroundColor: itemActive === item.id ? '#E6F4FF' : '#F5F5F5',
+                        border: itemActive === item.id ? '1px solid #91CAFF' : '1px solid #F5F5F5',
+                        borderRadius: '8px',
+                        padding: '8px 12px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => handleItemClick(item)}
+                    >
+                      <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        justifyContent: 'space-between',
+                      }}>
+                        <Typography
+                          sx={{
+                            color: '#000000E0',
+                            fontFamily: 'Poppins',
+                            fontSize: '14px',
+                            fontWeight: 500,
+                            lineHeight: '22px',
+                          }}
+                        >
+                          {item.zcode}-{item.number}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: '#909399',
+                            fontFamily: 'Poppins',
+                            fontSize: '14px',
+                            fontWeight: 400,
+                            lineHeight: '20px',
+                          }}
+                        >
+                          {item.date}
+                        </Typography>
+                      </Box>
                       {
-                        itemDataActive.map((element, index) => (
-                          <Box 
-                            key={index}
-                            sx={{
-                              width: '100%',
-                              backgroundColor: '#FFFFFF',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              gap: '16px',
-                              padding: '12px',
-                              borderRadius: '8px',
-                              cursor: 'pointer',
-                            }}
-                            onClick={() => handleOpenSurveyInformationDialog(element.icon_info)}
-                          >
+                        itemActive === item.id && parcels?.length > 0 && (
+                          <div id="parcel" className="parcel" style={{
+                            maxHeight: '300px',
+                            overflowY: 'scroll'
+                          }}>
                             <Box sx={{
                               display: 'flex',
-                              alignItems: 'center',
+                              flexDirection: 'column',
                               gap: '8px',
+                              mt: '12px'
                             }}>
-                              <PLaceIcon />
-                              <Typography
-                                sx={{
-                                  color: '#000000E0',
-                                  fontFamily: 'Poppins',
-                                  fontSize: '14px',
-                                  fontWeight: 400,
-                                  lineHeight: '22px',
-                                }}
+                              <InfiniteScroll
+                                dataLength={parcels?.length || 0}
+                                next={fetchParcelData}
+                                hasMore={parcelHasMore}
+                                loader={<h4>Loading...</h4>}
+                                scrollThreshold={0.4}
+                                scrollableTarget="parcel"
+                                // endMessage={
+                                //   <p style={{ textAlign: 'center' }}>
+                                //     <b>Yay! You have seen it all</b>
+                                //   </p>
+                                // }
                               >
-                                {element.label}
-                              </Typography>
+                                {
+                                  parcels.map((element, index) => (
+                                    <Box 
+                                      key={index}
+                                      sx={{
+                                        width: '100%',
+                                        backgroundColor: '#FFFFFF',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        gap: '16px',
+                                        padding: '12px',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                      }}
+                                    >
+                                      <Box sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                      }}>
+                                        <PLaceIcon />
+                                        <Typography
+                                          sx={{
+                                            color: '#000000E0',
+                                            fontFamily: 'Poppins',
+                                            fontSize: '14px',
+                                            fontWeight: 400,
+                                            lineHeight: '22px',
+                                          }}
+                                        >
+                                          {element.mapNo} 
+                                        </Typography>
+                                      </Box>
+                                      <Box onClick={() => handleOpenSurveyInformationDialog(element)}>
+                                        <DetailIcon />
+                                        {/* <DetailIcon color={element.icon_info ? '#000000E0' : '#00000073' } /> */}
+                                      </Box>
+                                    </Box>
+                                  ))
+                                }
+                              </InfiniteScroll>
                             </Box>
-                            <Box><DetailIcon color={element.icon_info ? '#000000E0' : '#00000073' } /></Box>
-                          </Box>
-                        ))
+                          </div>
+                        )
                       }
                     </Box>
-                  )
-                }
-              </Box>
-            ))}
-          </Box>
+                  ))}
+                </InfiniteScroll>
+              </Box> : <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }}>{t("noData")}</Box>
+            }
+          </div>
         </Box>
         <Box
           sx={{
@@ -279,8 +383,8 @@ const ParcelSurveyManagement = () => {
           <ValuationMap />
         </Box>
       </Box>
-      <SurveyInformation open={isOpenSurveyInformationDialog} onClose={handleCloseSurveyInformationDialog} createHandle={handleCreateRegisterSurveyInformationModal} isHasData={isHasData} />
-      <RegisterSurveyInformationModal open={isRegisterSurveyInformationModal} onClose={handleCloseRegisterSurveyInformationModal} />
+      <SurveyInformation open={isOpenSurveyInformationDialog} onClose={handleCloseSurveyInformationDialog} createHandle={handleCreateRegisterSurveyInformationModal} isHasData={isHasData} generalInfo={generalInfo} />
+      <RegisterSurveyInformationModal open={isRegisterSurveyInformationModal} onClose={handleCloseRegisterSurveyInformationModal} generalInfo={generalInfo} />
     </LayoutPageCommon>
   )
 }

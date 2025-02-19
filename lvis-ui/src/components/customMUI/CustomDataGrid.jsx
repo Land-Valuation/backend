@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IconButton, Button, SvgIcon } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { useTranslation } from "react-i18next";
 
 function AddNewRowIcon(props) {
   return (
@@ -24,6 +25,8 @@ function RemoveRowIcon(props) {
 }
 
 const CustomDataGrid = () => {
+  const { i18n, t } = useTranslation();
+
   const columns = [
     {
       field: "action",
@@ -45,37 +48,37 @@ const CustomDataGrid = () => {
     { field: "id", headerName: "ID", flex: 1, hide: true },
     {
       field: "memberType",
-      headerName: "Member Type",
+      headerName: t("Member Type"),
       editable: true,
       flex: 1,
     },
     {
       field: "organization",
-      headerName: "Organization",
+      headerName: t("Organization"),
       editable: true,
       flex: 1,
     },
     {
       field: "name",
-      headerName: "Name",
+      headerName: t("Name"),
       editable: true,
       flex: 1,
     },
     {
       field: "position",
-      headerName: "Position",
+      headerName: t("Position"),
       editable: true,
       flex: 1,
     },
     {
       field: "phone",
-      headerName: "Phone Number",
+      headerName: t("Phone Number"),
       editable: true,
       flex: 1,
     },
     {
       field: "email",
-      headerName: "Email",
+      headerName: t("Email"),
       editable: true,
       flex: 1,
     },
@@ -84,7 +87,7 @@ const CustomDataGrid = () => {
   const initialRows = [
     {
       id: 1,
-      memberType: "Member",
+      memberType: t("Member"),
       organization: "000 Association",
       name: "Somchai Vongxay",
       position: "Professors",
@@ -93,7 +96,7 @@ const CustomDataGrid = () => {
     },
     {
       id: 2,
-      memberType: "Chairperson",
+      memberType: t("Chairperson"),
       organization: "000 Association",
       name: "Chanthavy Inthavong",
       position: "Ph.D., Master",
@@ -102,7 +105,7 @@ const CustomDataGrid = () => {
     },
     {
       id: 3,
-      memberType: "Member",
+      memberType: t("Member"),
       organization: "000 Association",
       name: "Soudalay Phommasone",
       position: "Professors",
@@ -111,7 +114,7 @@ const CustomDataGrid = () => {
     },
     {
       id: 4,
-      memberType: "Member",
+      memberType: t("Member"),
       organization: "000 Association",
       name: "Khamla Phanthavong",
       position: "Ph.D., Master",
@@ -120,7 +123,7 @@ const CustomDataGrid = () => {
     },
     {
       id: 5,
-      memberType: "Member",
+      memberType: t("Member"),
       organization: "000 Association",
       name: "Keo Sihalath",
       position: "Ph.D., Master",

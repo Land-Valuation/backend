@@ -9,7 +9,7 @@ import Dashboard from "./scenes/dashboard";
 import Customers from "./scenes/customers";
 import Transactions from "./scenes/transactions";
 import Valuation from "./scenes/maps/valuation";
-import LandValuationDetail from "./scenes/maps/valuation/detail";
+import LandValuationDetail from "./scenes/maps/valuation/detail/detail";
 import Utilities from "./scenes/utilities";
 import HomePage from "./scenes/home";
 import PageNotFound from "./scenes/pagenotfound"
@@ -63,6 +63,21 @@ function App() {
     // Dispatch the action once when the component mounts
     dispatch(initializeAuth());
   }, [dispatch]);
+
+  const storedLanguage = localStorage.getItem("language");
+  useEffect(() => {
+    // Initialize i18n
+    const initialLanguage = storedLanguage || "en";
+
+    i18n.use(initReactI18next).init({
+      resources,
+      lng: initialLanguage,
+      fallbackLng: "en",
+      interpolation: {
+        escapeValue: false,
+      },
+    });
+  }, [storedLanguage]);
 
   return (
     <div className="app">

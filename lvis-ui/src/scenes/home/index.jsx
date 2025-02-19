@@ -133,30 +133,30 @@ const Middle = () => {
       <Typography
           sx={{
             color: theme.palette.neutral.medium,
-            fontFamily: 'Poppins',
-            fontSize: '30px',
-            fontWeight: '500',
-            position: 'relative',
-            paddingBottom: '15px',
-            '::after': {
-              content: '"in Lao PDR"',
-              position: 'absolute',
-              right: 200,
-              bottom: -16,
-              backgroundColor: '#BAE0FF',
-              color: '#1677FF',
-              fontSize: '12px',
-              fontFamily: 'Poppins',
-              padding: '2px 4px',
-              borderRadius: '4px',
-            },
+            fontFamily: "Poppins",
+            fontSize: "30px",
+            fontWeight: "500",
+            position: "relative",
+            paddingBottom: "15px",
           }}
-      >
-        {t('Land Price Information System')}
-      </Typography>
-    </Box>
-    <NotificationBox/>
-    {/* <Box
+        >
+          {t("Land Price Information System")}
+        </Typography>
+        <Typography
+          sx={{
+            backgroundColor: "#BAE0FF",
+            color: "#1677FF",
+            fontSize: "12px",
+            fontFamily: "Poppins",
+            padding: "2px 4px",
+            borderRadius: "4px",
+          }}
+        >
+          {t("in Lao PDR")}
+        </Typography>
+      </Box>
+      <NotificationBox />
+      {/* <Box
         sx={{
           width: "100%",
           height: "21px",
@@ -188,121 +188,130 @@ const HomePage = () => {
         width: '100%',
         position: 'relative',
       }}
-  >
-    {isAuthenticated ? <Sidebar/> : <TopBox/>}
-    <Middle/>
-    {isBoxVisible && (<Box
-        sx={{
-          width: '400px',
-          height: '420px',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          backgroundColor: '#FFFFFF',
-          borderRadius: '16px',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 100,
-          display: 'none',
-        }}
     >
-      <Box
-          sx={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '32px',
-            borderWidth: '1px',
-            backgroundColor: 'white',
-            boxShadow: '0px 9px 28px 8px #0000000D',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            top: '-20px',
-            right: '50%',
-            marginRight: '-20px',
-            cursor: 'pointer',
-          }}
-          onClick={handleClose}
-      >
-        <img src="/x.svg" alt=""/>
-      </Box>
-      <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '24px',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '24px',
-            marginTop: '24px',
-          }}
-      >
-        <img src="./login req.svg" alt=""/>
-        <Box sx={{textAlign: 'center', width: '352px'}}>
-          <Typography
-              sx={{
-                fontWeight: 600,
-                fontFamily: 'Poppins',
-                fontSize: '16px',
-                marginBottom: '8px',
-              }}
-          >
-            "Login is required to use this function!"
-          </Typography>
-          <Typography
-              sx={{
-                // fontWeight: 400,
-                // fontFamily: "Poppins",
-                fontSize: '14px', color: '#000000E0',
-              }}
-          >
-            {t('Please login to continue using our services or register if you do not have an account yet.')}
-          </Typography>
-        </Box>
-
+      <Sidebar />
+      <TopBox />
+      <Middle />
+      {isBoxVisible && (
         <Box
-            sx={{
-              display: 'flex', flexDirection: 'row', gap: '8px', width: '100%',
-            }}
+          sx={{
+            width: "400px",
+            height: "420px",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            backgroundColor: "#FFFFFF",
+            borderRadius: "16px",
+            transform: "translate(-50%, -50%)",
+            zIndex: 100,
+            display: "none",
+          }}
         >
-          <Button
-              sx={{
-                backgroundColor: '#FFFFFF',
-                color: '#1677FF',
-                textTransform: 'none',
-                border: '1px solid #1677FF',
-                borderRadius: '6px',
-                fontFamily: 'Poppins',
-                fontSize: '14px',
-                fontWeight: 400,
-                width: '100%',
-              }}
-              variant="outlined"
-              startIcon={<LoginIcon/>}
+          <Box
+            sx={{
+              width: "40px",
+              height: "40px",
+              borderRadius: "32px",
+              borderWidth: "1px",
+              backgroundColor: "white",
+              boxShadow: "0px 9px 28px 8px #0000000D",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              top: "-20px",
+              right: "50%",
+              marginRight: "-20px",
+              cursor: "pointer",
+            }}
+            onClick={handleClose}
           >
-            {t('Login')}
-          </Button>
-          <Button
-              sx={{
-                backgroundColor: '#1677FF',
-                color: '#fff',
-                textTransform: 'none',
-                borderRadius: '6px',
-                fontFamily: 'Poppins',
-                fontSize: '14px',
-                fontWeight: 400,
-                width: '100%',
-              }}
-              variant="contained"
-              startIcon={<SignupIcon/>}
+            <img src="/x.svg" alt="" />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              padding: "24px",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "24px",
+              marginTop: "24px",
+            }}
           >
-            {t('Register')}
-          </Button>
+            <img src="./login req.svg" alt="" />
+            <Box sx={{ textAlign: "center", width: "352px" }}>
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontFamily: "Poppins",
+                  fontSize: "16px",
+                  marginBottom: "8px",
+                }}
+              >
+                "Login is required to use this function!"
+              </Typography>
+              <Typography
+                sx={{
+                  // fontWeight: 400,
+                  // fontFamily: "Poppins",
+                  fontSize: "14px",
+                  color: "#000000E0",
+                }}
+              >
+                {t(
+                  "Please login to continue using our services or register if you do not have an account yet."
+                )}
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "8px",
+                width: "100%",
+              }}
+            >
+              <Button
+                sx={{
+                  backgroundColor: "#FFFFFF",
+                  color: "#1677FF",
+                  textTransform: "none",
+                  border: "1px solid #1677FF",
+                  borderRadius: "6px",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  width: "100%",
+                }}
+                variant="outlined"
+                startIcon={<LoginIcon />}
+              >
+                {t("Login")}
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "#1677FF",
+                  color: "#fff",
+                  textTransform: "none",
+                  borderRadius: "6px",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  width: "100%",
+                }}
+                variant="contained"
+                startIcon={<SignupIcon />}
+              >
+                {t("Register")}
+              </Button>
+            </Box>
+          </Box>
         </Box>
-      </Box>
-    </Box>)}
-    {/* MENU CHOOSER */}
-    <Box
+      )}
+      {/* MENU CHOOSER */}
+      <Box
         width="100%"
         // padding="1rem 6%"
         display="flex"
@@ -322,13 +331,13 @@ const HomePage = () => {
               style={{
                 width: '44px', height: '44px',
               }}
-          />
-          <Typography
-              sx={{fontFamily: 'Poppins', fontWeight: 500, fontSize: 18}}
-          >
-            {t('Land Price Explorer')}
-          </Typography>
-          <Typography
+            />
+            <Typography
+              sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
+            >
+              {t("Land Price Explorer")}
+            </Typography>
+            <Typography
               sx={{
                 fontFamily: 'Poppins',
                 fontWeight: 400,
@@ -343,28 +352,28 @@ const HomePage = () => {
             sx={{color: '#1677FF', display: 'flex', gap: '8px'}}
             href="/montoring"
             underline="hover"
-        >
-          <img src="/arrow.svg" alt="arrow"/>
-          {t('See now')}
-        </Link>
-      </Box>
-      <Box className="menu-chooser">
-        <div
-            style={{display: 'flex', flexDirection: 'column', gap: '16px'}}
-        >
-          <img
+          >
+            <img src="/arrow.svg" alt="arrow" />
+            {t("See now")}
+          </Link>
+        </Box>
+        <Box className="menu-chooser">
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
+            <img
               src="/land-valuation.svg"
               alt="menu2"
               style={{
                 width: '44px', height: '44px',
               }}
-          />
-          <Typography
-              sx={{fontFamily: 'Poppins', fontWeight: 500, fontSize: 18}}
-          >
-            {t('Land Valuation')}
-          </Typography>
-          <Typography
+            />
+            <Typography
+              sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
+            >
+              {t("Land Valuation")}
+            </Typography>
+            <Typography
               sx={{
                 fontFamily: 'Poppins',
                 fontWeight: 400,
@@ -379,28 +388,28 @@ const HomePage = () => {
             sx={{color: '#1677FF', display: 'flex', gap: '8px'}}
             href="/land-valuation"
             underline="hover"
-        >
-          <img src="/arrow.svg" alt="arrow"/>
-          {t('See now')}
-        </Link>
-      </Box>
-      <Box className="menu-chooser">
-        <div
-            style={{display: 'flex', flexDirection: 'column', gap: '16px'}}
-        >
-          <img
+          >
+            <img src="/arrow.svg" alt="arrow" />
+            {t("See now")}
+          </Link>
+        </Box>
+        <Box className="menu-chooser">
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
+            <img
               src="/model-based.svg"
               alt="menu3"
               style={{
                 width: '44px', height: '44px',
               }}
-          />
-          <Typography
-              sx={{fontFamily: 'Poppins', fontWeight: 500, fontSize: 18}}
-          >
-            {t('Model-based land Valuation')}
-          </Typography>
-          <Typography
+            />
+            <Typography
+              sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
+            >
+              {t("Model-based land Valuation")}
+            </Typography>
+            <Typography
               sx={{
                 fontFamily: 'Poppins',
                 fontWeight: 400,
@@ -415,28 +424,28 @@ const HomePage = () => {
             sx={{color: '#1677FF', display: 'flex', gap: '8px'}}
             href="/model-base"
             underline="hover"
-        >
-          <img src="/arrow.svg" alt="arrow"/>
-          {t('See now')}
-        </Link>
-      </Box>
-      <Box className="menu-chooser">
-        <div
-            style={{display: 'flex', flexDirection: 'column', gap: '16px'}}
-        >
-          <img
+          >
+            <img src="/arrow.svg" alt="arrow" />
+            {t("See now")}
+          </Link>
+        </Box>
+        <Box className="menu-chooser">
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
+            <img
               src="/parcel-survey.svg"
               alt="menu4"
               style={{
                 width: '44px', height: '44px',
               }}
-          />
-          <Typography
-              sx={{fontFamily: 'Poppins', fontWeight: 500, fontSize: 18}}
-          >
-            {t('Parcel Survey Management')}
-          </Typography>
-          <Typography
+            />
+            <Typography
+              sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
+            >
+              {t("Parcel Survey Management")}
+            </Typography>
+            <Typography
               sx={{
                 fontFamily: 'Poppins',
                 fontWeight: 400,
@@ -451,28 +460,28 @@ const HomePage = () => {
             sx={{color: '#1677FF', display: 'flex', gap: '8px'}}
             href="/dashboard"
             underline="hover"
-        >
-          <img src="/arrow.svg" alt="arrow"/>
-          {t('See now')}
-        </Link>
-      </Box>
-      <Box className="menu-chooser">
-        <div
-            style={{display: 'flex', flexDirection: 'column', gap: '16px'}}
-        >
-          <img
+          >
+            <img src="/arrow.svg" alt="arrow" />
+            {t("See now")}
+          </Link>
+        </Box>
+        <Box className="menu-chooser">
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
+            <img
               src="/admin.svg"
               alt="menu5"
               style={{
                 width: '44px', height: '44px',
               }}
-          />
-          <Typography
-              sx={{fontFamily: 'Poppins', fontWeight: 500, fontSize: 18}}
-          >
-            {t('Admin')}
-          </Typography>
-          <Typography
+            />
+            <Typography
+              sx={{ fontFamily: "Poppins", fontWeight: 500, fontSize: 18 }}
+            >
+              {t("Admin")}
+            </Typography>
+            <Typography
               sx={{
                 fontFamily: 'Poppins',
                 fontWeight: 400,
@@ -487,10 +496,11 @@ const HomePage = () => {
             sx={{color: '#1677FF', display: 'flex', gap: '8px'}}
             href="/customers"
             underline="hover"
-        >
-          <img src="/arrow.svg" alt="arrow"/>
-          {t('See now')}
-        </Link>
+          >
+            <img src="/arrow.svg" alt="arrow" />
+            {t("See now")}
+          </Link>
+        </Box>
       </Box>
     </Box>
   </Box>);

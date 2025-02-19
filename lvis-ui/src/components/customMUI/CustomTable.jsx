@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useState, useMemo } from 'react';
 
-const CustomTable = ({ dataSource, columns, rowStyle, cellStyle, onSort, hasCellBorders }) => {
+const CustomTable = ({ dataSource, columns, rowStyle, cellStyle, onSort = undefined, hasCellBorders = false, }) => {
   const [sortConfig, setSortConfig] = useState(null);
   const memoizedDataSource = useMemo(() => dataSource, [dataSource]);
 
@@ -175,9 +175,9 @@ CustomTable.propTypes = {
   hasCellBorders: PropTypes.bool, // New prop for controlling cell borders
 };
 
-CustomTable.defaultProps = {
-  onSort: undefined,
-  hasCellBorders: false, // Default to no borders
-};
+// CustomTable.defaultProps = {
+//   onSort: undefined,
+//   hasCellBorders: false, // Default to no borders
+// };
 
 export default CustomTable;
