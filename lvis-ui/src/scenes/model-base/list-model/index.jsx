@@ -52,11 +52,11 @@ const ListModel = () => {
         
         let formattedData = result.data.items.map((item)=>{
           return {
-            status: item.status,
+            status: item.modelStatusType,
             // issuedToLocal: item.issuedToLocal,
             // appliedArea: item.appliedArea,
             title: item.name,
-            features: item.features,
+            // features: item.features,
             // adjRSquare: item.adjRSquare,
             // fStatistics: item.fStatistics,
             // region: item.region,
@@ -71,6 +71,7 @@ const ListModel = () => {
     };
     fetchData();
   }, []);
+  
   // const data = [
   //   {
   //     status: t('draft'),
@@ -148,10 +149,10 @@ const ListModel = () => {
       render: (status) => (
         <Box
           sx={{
-            backgroundColor: status === t("confirmed") ? "#F6FFED" : "#FFFBE6",
-            color: status === t("confirmed") ? "#52C41A" : "#FAAD14",
+            backgroundColor: status === t("approved") ? "#F6FFED" : "#FFFBE6",
+            color: status === t("approved") ? "#52C41A" : "#FAAD14",
             border:
-              status === t("confirmed")
+              status === t("approved")
                 ? "1px solid #B7EB8F"
                 : "1px solid #FFE58F",
             display: "inline-flex",
@@ -164,14 +165,14 @@ const ListModel = () => {
             fontFamily: "Poppins",
           }}
         >
-          {status === t("confirmed") ? (
+          {status === t("approved") ? (
             <CheckCircleOutlineIcon
               style={{ color: "#52C41A", fontSize: "14px" }}
             />
           ) : (
             <ErrorOutlineIcon style={{ color: "#FAAD14", fontSize: "14px" }} />
-          )}{" "}
-          {status}
+          )}
+          {status === t("approved") ? t("confirmed") : t("draft")}
         </Box>
       ),
     },
