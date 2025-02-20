@@ -37,7 +37,7 @@ const ListModel = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${apiUrl}/datamodel-api/models?id=empty&name=empty&page=1&rpp=10`,
+          `${apiUrl}/models?id=empty&name=empty&page=1&rpp=10`,
           {
             method: "GET",
             headers: {
