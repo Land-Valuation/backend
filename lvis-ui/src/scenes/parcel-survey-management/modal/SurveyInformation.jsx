@@ -255,7 +255,7 @@ const SurveyInformation = ({ open, onClose, createHandle, isHasData, generalInfo
                       mb: "8px",
                     }}
                   >
-                    {`${generalInfo?.mapNo} - ${generalInfo?.parcelNo}`}
+                    {generalInfo?.mapNo ?? ''}
                   </Typography>
                 </Box>
               </Box>

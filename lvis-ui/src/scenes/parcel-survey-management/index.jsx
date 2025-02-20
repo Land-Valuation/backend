@@ -349,7 +349,7 @@ const ParcelSurveyManagement = () => {
                                             lineHeight: '22px',
                                           }}
                                         >
-                                          {element.mapNo} 
+                                          {element.mapNo} - {element.parcelNo} 
                                         </Typography>
                                       </Box>
                                       <Box onClick={() => handleOpenSurveyInformationDialog(element)}>

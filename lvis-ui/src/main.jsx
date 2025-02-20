@@ -9,7 +9,6 @@ import { prototypeApi } from "./state/prototypeApi";
 import { egisApi } from "./state/egisApi";
 import { I18nextProvider } from "react-i18next";
 import i18next from "i18next";
-import UserService from "./state/UserService";
 import {
   persistStore,
   persistReducer,
@@ -30,6 +29,7 @@ import { committeeStatusTypeApi } from "./state/committeeStatusTypeApi";
 import { valuationStatusTypeApi } from "./state/valuationStatusTypeApi";
 import { memberTypeApi } from "./state/memberTypeApi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { valuationMasterApi } from "./state/valuationMasterApi";
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, globalReducer);
@@ -44,7 +44,8 @@ const appReducer = combineReducers( {
   [parcelApi.reducerPath]: parcelApi.reducer,
   [committeeStatusTypeApi.reducerPath]: committeeStatusTypeApi.reducer,
   [valuationStatusTypeApi.reducerPath]: valuationStatusTypeApi.reducer,
-  [memberTypeApi.reducerPath]: memberTypeApi.reducer
+  [memberTypeApi.reducerPath]: memberTypeApi.reducer,
+  [valuationMasterApi.reducerPath]: valuationMasterApi.reducer,
 });
 
 const rootReducer = (state, action) => {
@@ -73,6 +74,7 @@ const store = configureStore({
     .concat(committeeStatusTypeApi.middleware)
     .concat(valuationStatusTypeApi.middleware)
     .concat(memberTypeApi.middleware)
+    .concat(valuationMasterApi.middleware)
 });
 
 const queryClient = new QueryClient();

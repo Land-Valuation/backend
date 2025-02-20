@@ -26,6 +26,7 @@ import { useGetAllCommitteeStatusTypesQuery } from "../../../../state/committeeS
 import { useGetAllValuationStatusTypesQuery } from "../../../../state/valuationStatusTypeApi";
 import CommitteeTable from "./CommitteeTable";
 import PropTypes from "prop-types";
+import { useCreateValuationMasterMutation } from "../../../../state/valuationMasterApi";
 
 const DetailForCentral = ({ formikRef }) => {
   const { t } = useTranslation();
@@ -48,6 +49,7 @@ const DetailForCentral = ({ formikRef }) => {
   const { data: allProvinceData } = useGetAllProvincesQuery();
   const { data: allCommitteeStatusTypes } = useGetAllCommitteeStatusTypesQuery();
   const { data: valuationStatusTypes } = useGetAllValuationStatusTypesQuery();
+  const [createValuationMaster] = useCreateValuationMasterMutation();
 
   useEffect(() => {
     if (allProvinceData && allProvinceData.length > 0) {
@@ -236,10 +238,31 @@ const DetailForCentral = ({ formikRef }) => {
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log('values :>> ', values);
-      console.log('committeeData :>> ', committeeData);
+      const newData = {
+        title: values.title,
+        description: values.note,
+        provice_code: values.province,
+        base_year: values.baseYear.getFullYear(),
+        commmittee_status_code: values.committeeStatus,
+        valuation_status_code: values.landValuationStatus,
+        committee: {
+          title: values.descriptionCommittee,
+          committe_sdate: values.dateRange[0],
+          committe_edate: values.dateRange[1],
+        },
+        committeeMembers: committeeData
+      }
+      saveData(newData)
     },
   });
+
+  const saveData = async (data) => {
+    try {
+      await createValuationMaster(data).unwrap();
+    } catch (error) {
+      console.log('error :>> ', error);
+    }
+  }
 
   const handleCommitteeDataChange = (data) => {
     setCommitteeData(data);
