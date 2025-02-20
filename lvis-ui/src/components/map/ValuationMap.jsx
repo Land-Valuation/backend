@@ -58,6 +58,8 @@ const ValuationMap = () => {
     { name: 'Village', visible: true },
     { name: 'Road', visible: false },
     { name: 'Parcel', visible: false },
+    { name: 'Parcel Land Reg', visible: false },
+    { name: 'Parcel LX', visible: false },
   ]);
   const handleBaseLayerChange = (layerName) => {
     setBaseLayers((prev) =>
@@ -161,6 +163,28 @@ const ValuationMap = () => {
               zIndex={6}
             />
           )}
+          {overlays[5].visible && (
+            <WMSTileLayer
+              layers={"lvis:parcels_laolandreg"}
+              url={import.meta.env.VITE_GEOMAP_WMS_URL_BK}
+              maxZoom={20}
+              transparent={true}
+              format="image/png"
+              opacity={0.6}
+              zIndex={6}
+            />
+          )}
+          {overlays[6].visible && (
+            <WMSTileLayer
+              layers={"lvis:parcels_model3_lx"}
+              url={import.meta.env.VITE_GEOMAP_WMS_URL_BK}
+              maxZoom={20}
+              transparent={true}
+              format="image/png"
+              opacity={0.6}
+              zIndex={6}
+            />
+          )}                    
         </LayerGroup>
         <Toolbar
           baseLayers={baseLayers}
