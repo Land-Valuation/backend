@@ -16,6 +16,7 @@ const ListModel = () => {
   const [data, setData] = useState([]);
   const [isAppliedAreasModalOpen, setIsAppliedAreasModalOpen] = useState(false);
   const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
+  const apiUrl = import.meta.env.VITE_DATA_MODEL_API_BASE_URL;
 
   const handleOpenAppliedAreasModal = () => {
     setIsAppliedAreasModalOpen(true);
@@ -36,7 +37,7 @@ const ListModel = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8088/datamodel-api/models",
+          `${apiUrl}/datamodel-api/models?id=empty&name=empty&page=1&rpp=10`,
           {
             method: "GET",
             headers: {
