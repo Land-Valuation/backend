@@ -56,6 +56,7 @@ const ValuationMap = () => {
     { name: 'Province', visible: true },
     { name: 'District', visible: true },
     { name: 'Village', visible: true },
+    { name: 'Zone', visible: false },    
     { name: 'Road', visible: false },
     { name: 'Parcel', visible: false },
     { name: 'Parcel Land Reg', visible: false },
@@ -141,6 +142,17 @@ const ValuationMap = () => {
           )}
           {overlays[3].visible && (
             <WMSTileLayer
+              layers={"lvis:lvzone"}
+              url={import.meta.env.VITE_GEOMAP_WMS_URL_BK}
+              maxZoom={20}
+              transparent={true}
+              format="image/png"
+              opacity={0.6}
+              zIndex={5}
+            />
+          )}            
+          {overlays[4].visible && (
+            <WMSTileLayer
               layers={"lvis:road"}
               url={import.meta.env.VITE_GEOMAP_WMS_URL_BK}
               maxZoom={20}
@@ -149,10 +161,10 @@ const ValuationMap = () => {
               format="image/png"
               opacity={1}
               layerName="Road"
-              zIndex={5}
+              zIndex={6}
             />
           )}
-          {overlays[4].visible && (
+          {overlays[5].visible && (
             <WMSTileLayer
               layers={"lvis:parcel_re"}
               url={import.meta.env.VITE_GEOMAP_WMS_URL_BK}
@@ -160,10 +172,10 @@ const ValuationMap = () => {
               transparent={true}
               format="image/png"
               opacity={0.6}
-              zIndex={6}
+              zIndex={7}
             />
-          )}
-          {overlays[5].visible && (
+          )}        
+          {overlays[6].visible && (
             <WMSTileLayer
               layers={"lvis:parcels_laolandreg"}
               url={import.meta.env.VITE_GEOMAP_WMS_URL_BK}
@@ -171,10 +183,10 @@ const ValuationMap = () => {
               transparent={true}
               format="image/png"
               opacity={0.6}
-              zIndex={6}
+              zIndex={8}
             />
           )}
-          {overlays[6].visible && (
+          {overlays[7].visible && (
             <WMSTileLayer
               layers={"lvis:parcels_model3_lx"}
               url={import.meta.env.VITE_GEOMAP_WMS_URL_BK}
@@ -182,7 +194,7 @@ const ValuationMap = () => {
               transparent={true}
               format="image/png"
               opacity={0.6}
-              zIndex={6}
+              zIndex={9}
             />
           )}                    
         </LayerGroup>
