@@ -197,7 +197,7 @@ const TopBox = () => {
                   >
                     {t('Register')}
                   </Button>
-                  <Button
+                  {/* <Button
                       sx={{
                         backgroundColor: '#1677FF',
                         color: '#fff',
@@ -211,7 +211,7 @@ const TopBox = () => {
                       onClick={handleRequireLogin}
                   >
                     {t('Require')}
-                  </Button>
+                  </Button> */}
 
                   {/* <LanguageSwitcher /> */}
                   {/* <Button
