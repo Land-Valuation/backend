@@ -41,7 +41,7 @@ function Sidebar() {
     if (localStorage.getItem("language")) {
       setSelectedLanguage(localStorage.getItem("language"));
     } else {
-      setSelectedLanguage(LANGUAGE.LO);
+      setSelectedLanguage(LANGUAGE.EN);
     }
   }, []);
 
