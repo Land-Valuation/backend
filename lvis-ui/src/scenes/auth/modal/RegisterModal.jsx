@@ -7,7 +7,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CloseIcon from '@mui/icons-material/Close';
 import { registerUser } from '@/state/authService';
 import { useMutation } from "@tanstack/react-query";
-import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import _ from "lodash";
 

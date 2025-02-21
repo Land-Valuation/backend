@@ -6,15 +6,12 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "./theme";
 import Layout from "./scenes/layout";
 import Dashboard from "./scenes/dashboard";
-import Customers from "./scenes/customers";
 import Transactions from "./scenes/transactions";
 import Valuation from "./scenes/maps/valuation";
 import LandValuationDetail from "./scenes/maps/valuation/detail/detail";
 import Utilities from "./scenes/utilities";
 import HomePage from "./scenes/home";
 import PageNotFound from "./scenes/pagenotfound"
-import Welcome from "./Welcome";
-import RenderOnAnonymous from "./RenderOnAnonymous";
 import RenderOnAuthenticated from "./RenderOnAuthenticated";
 import NotRenderOnRole from "./NotRenderOnRole";
 import { initializeAuth } from "./state"
@@ -31,6 +28,7 @@ import RequestForInvesgationDetail from "./scenes/model-base/request-for-invesga
 import ParcelSurveyManagement from "./scenes/parcel-survey-management";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Admin from '@/scenes/admin/index.jsx';
 
 const resources = {
   en: {
@@ -57,12 +55,6 @@ i18n.use(initReactI18next).init({
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    // Dispatch the action once when the component mounts
-    dispatch(initializeAuth());
-  }, [dispatch]);
 
   const storedLanguage = localStorage.getItem("language");
   useEffect(() => {
@@ -117,7 +109,7 @@ function App() {
                 <Route path="/parcel-survey-management" element={<ParcelSurveyManagement />} />
                 <Route path="/customers" element={
                   <NotRenderOnRole roles={[]} showNotAllowed>
-                    <Customers />
+                    <Admin />
                   </NotRenderOnRole>
                 } />
                 <Route path="/tasks" element={<Utilities />} />

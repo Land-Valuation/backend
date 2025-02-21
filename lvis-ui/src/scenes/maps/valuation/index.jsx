@@ -203,7 +203,6 @@ const Valuation = () => {
   };
 
   const userRole = UserService.getTokenParsed().realm_access.roles;
-  console.log(userRole, " role");
   const hasCentralRole = userRole.some((role) => role.includes("CENTRAL"));
   // const hasLocalRole = userRole.some(role => role.includes("LOCAL"));
   const rows = [

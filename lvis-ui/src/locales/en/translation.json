@@ -312,5 +312,46 @@
   "Survey Information": "Survey Information",
   "Add new": "Add new",
   "Create survey":"Create survey",
-  "in Lao PDR":"in Lao PDR"
+  "in Lao PDR":"in Lao PDR",
+  "AdminTab" : {
+    "User": {
+      "Title" : "User",
+      "Search" : "Search ...",
+      "Create" : "Create User",
+      "Form" : {
+        "Button": {
+          "Cancel" : "Cancel",
+          "Delete" : "Delete"
+        },
+        "Label": {
+          "Create": "Create User",
+          "Update": "Update User",
+          "Username": "Username",
+          "Fullname": "Full name",
+          "Firstname": "First name",
+          "Lastname": "Last name",
+          "Email": "Email",
+          "Password": "Password",
+          "Repassword": "Re-enter Password",
+          "Joingroup": "Join Group",
+          "Choosegroup": "CHOOSE GROUP",
+          "Groupname": "Group name"
+        },
+        "Validate" : {
+          "required": "is required",
+          "email": "is not valid email",
+          "passwordMissMatch": "not match with password"
+        }
+      },
+      "Message": {
+        "Delete Confirm" : "Are you sure delete it ?"
+      }
+    },
+    "Role": {
+      "Title": "Roles"
+    },
+    "Group" : {
+      "Title": "Groups"
+    }
+  }
 }

@@ -1,0 +1,5 @@
+import apiClient from '@/utils/axiosUserService';
+
+export const listGroup = async () => {
+  return await apiClient.get(`/user-api/groups`);
+};

@@ -1,4 +1,4 @@
-import {Box, Typography, useTheme, SvgIcon} from '@mui/material';
+import {Box, Typography, useTheme} from '@mui/material';
 import TopBox from '../../components/TopBox';
 import Sidebar from '../../components/Sidebar';
 import {useTranslation} from 'react-i18next';

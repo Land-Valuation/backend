@@ -9,7 +9,6 @@ import {useState} from 'react';
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import {useDispatch} from 'react-redux';
 import {loginUser} from '@/state/authService.js';
-import {initialLoginAuth} from '@/state';
 import { useMutation } from "@tanstack/react-query";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";

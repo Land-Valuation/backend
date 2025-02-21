@@ -26,7 +26,7 @@ const drawerWidth = 64;
 function Sidebar() {
   const dispatch = useDispatch();
   const username = UserService.getUsername();
-  const email = UserService.getUsername();
+  const email = UserService.getEmail();
   const navigate = useNavigate();
   const location = useLocation();
   const {i18n, t} = useTranslation();
