@@ -466,7 +466,7 @@ const Valuation = () => {
                         <TableCell>{t(row.province)}</TableCell>
                         <TableCell>
                           <AntSwitch
-                            checked={row.issue}
+                            // checked={row.issue}
                             inputProps={{ "aria-label": "ant design" }}
                           />
                         </TableCell>
@@ -520,7 +520,7 @@ const Valuation = () => {
               }}
             >
               <Header
-                title="Land Valuation"
+                title={t("Land Valuation")}
                 subtitle="Find your land valuation materials."
               />
               <Box>
@@ -555,16 +555,16 @@ const Valuation = () => {
               >
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell>Base Year</StyledTableCell>
-                    <StyledTableCell>Status</StyledTableCell>
-                    <StyledTableCell>Submit to Central</StyledTableCell>
+                    <StyledTableCell>{t("baseYear")}</StyledTableCell>
+                    <StyledTableCell>{t("status")}</StyledTableCell>
+                    <StyledTableCell>{t("submitToCentral")}</StyledTableCell>
                     <StyledTableCell>
-                      Number of Evaluation Areas
+                      {t("Number of Evaluation Areas")}
                     </StyledTableCell>
-                    <StyledTableCell>Title</StyledTableCell>
-                    <StyledTableCell>Evaluation Member</StyledTableCell>
-                    <StyledTableCell>Committee Duration</StyledTableCell>
-                    <StyledTableCell>Decision Date</StyledTableCell>
+                    <StyledTableCell>{t("title")}</StyledTableCell>
+                    <StyledTableCell>{t("Evaluation Member")}</StyledTableCell>
+                    <StyledTableCell>{t("Committee Duration")}</StyledTableCell>
+                    <StyledTableCell>{t("Decision Date")}</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -615,13 +615,13 @@ const Valuation = () => {
                                 fontWeight: 400,
                               }}
                             >
-                              {icon} {row.status}
+                              {icon} {t(row.status)}
                             </Box>
                           </Link>
                         </TableCell>
                         <TableCell>
                           <AntSwitch
-                            checked={row.submit}
+                            // checked={row.submit}
                             // disabled
                             inputProps={{ "aria-label": "ant design" }}
                           />

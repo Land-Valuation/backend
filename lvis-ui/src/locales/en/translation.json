@@ -311,6 +311,20 @@
   "View more": "View more",
   "Survey Information": "Survey Information",
   "Add new": "Add new",
-  "Create survey":"Create survey",
-  "in Lao PDR":"in Lao PDR"
+  "Create survey": "Create survey",
+  "in Lao PDR": "in Lao PDR",
+  "Zone name or Village name": "Zone name or Village name",
+  "Number of Parcels": "Number of Parcels",
+  "Parcels with Land Value": "Parcels with Land Value",
+  "Parcel ID": "Parcel ID",
+  "Surveyed": "Surveyed",
+  "Reference Parcel": "Reference Parcel",
+  "Evaluation Zone": "Evaluation Zone",
+  "Number of Evaluation Areas": "Number of Evaluation Areas",
+  "Completed": "Completed",
+  "Land Valuation Information": "Land Valuation Information",
+  "Duration": "Duration",
+  "Land type": "Land type",
+  "Area Name": "Area Name",
+  "Completion Date": "Completion Date"
 }

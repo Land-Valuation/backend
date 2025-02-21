@@ -18,6 +18,7 @@ import { DataGrid } from "@mui/x-data-grid"
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import ZoomControl from "./ZoomControl"
 import MinimapControl from "./MinimapControl"
+import { useTranslation } from 'react-i18next';
 
 const theme = createTheme({
   components: {
@@ -114,6 +115,7 @@ const DetailForLocal = () => {
   const [showBox2, setShowBox2] = useState(true);
   const [showMarker, setShowMarker] = useState(false);
   const [uploadedFiles3, setUploadedFiles3] = useState([]);
+  const { t } = useTranslation();
 
   const handleChange2 = (event, newValue) => {
     setValue2(newValue);
@@ -341,32 +343,32 @@ const DetailForLocal = () => {
     { field: "id", headerName: "ID", flex: 1, hide: true },
     {
       field: "zone",
-      headerName: "Zone",
+      headerName: t("Zone"),
       editable: true,
       // flex: 1,
       width: 60,
     },
     {
       field: "mainStreet",
-      headerName: "Main Street",
+      headerName: t("Main Street"),
       editable: true,
       flex: 1,
     },
     {
       field: "connectingRoad",
-      headerName: "Connecting Road",
+      headerName: t("Connecting Roads"),
       editable: true,
       flex: 1,
     },
     {
       field: "junctionStreet",
-      headerName: "Junction Street",
+      headerName: t("Junction Street"),
       editable: true,
       flex: 1,
     },
     {
       field: "streetAsTheyUsedToBe",
-      headerName: "Street As They Used To Be",
+      headerName: t("Streets as they used to be"),
       editable: true,
       // flex: 1,
       width: 220,
@@ -376,44 +378,44 @@ const DetailForLocal = () => {
     { field: "id", headerName: "ID", flex: 1, hide: true },
     {
       field: "mapSheet",
-      headerName: "Map Sheet",
+      headerName: t("Map Sheet"),
       editable: true,
       flex: 1,
     },
     {
       field: "parcelNo",
-      headerName: "Parcel No",
+      headerName: t("Parcel Number"),
       editable: true,
       flex: 1,
     },
     {
       field: "surveyedPrice",
-      headerName: "Surveyed Price",
+      headerName: t("Surveyed Price"),
       editable: true,
       width: 150,
       // flex: 1,
     },
     {
       field: "roadType",
-      headerName: "Road Type",
+      headerName: t("Road type"),
       editable: true,
       flex: 1,
     },
     {
       field: "building",
-      headerName: "Building",
+      headerName: t("Building"),
       editable: true,
       flex: 1,
     },
     {
       field: "landType",
-      headerName: "Land Type",
+      headerName: t("Land type"),
       editable: true,
       flex: 1,
     },
     {
       field: "landUse",
-      headerName: "Land Use",
+      headerName: t("landUse"),
       editable: true,
       flex: 1,
     },
@@ -444,7 +446,7 @@ const DetailForLocal = () => {
             id="panel1a-header"
           >
             <ExpandIcon style={{ marginRight: "8px", width: "16px" }} />
-            <Typography variant="h6">Overview</Typography>
+            <Typography variant="h6">{t("Overview")}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Box>
@@ -460,7 +462,7 @@ const DetailForLocal = () => {
                           ...backgroundGreyCellStyle,
                         }}
                       >
-                        Status
+                        {t("status")}
                       </TableCell>
                       <TableCell sx={{ ...defaultCellStyle }}>
                         {renderStatus("Requested")}
@@ -471,7 +473,7 @@ const DetailForLocal = () => {
                           ...backgroundGreyCellStyle,
                         }}
                       >
-                        Decision Date
+                        {t("Decision Date")}
                       </TableCell>
                       <TableCell sx={{ ...defaultCellStyle }}>
                         N/A
@@ -482,7 +484,7 @@ const DetailForLocal = () => {
                           ...backgroundGreyCellStyle,
                         }}
                       >
-                        Base Year
+                        {t("baseYear")}
                       </TableCell>
                       <TableCell sx={{ ...defaultCellStyle }}>
                         2024
@@ -493,10 +495,10 @@ const DetailForLocal = () => {
                           ...backgroundGreyCellStyle,
                         }}
                       >
-                        Province
+                        {t("province")}
                       </TableCell>
                       <TableCell sx={{ ...defaultCellStyle }}>
-                        Vientiane
+                        {t("Vientiane")}
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -506,7 +508,7 @@ const DetailForLocal = () => {
                           ...backgroundGreyCellStyle,
                         }}
                       >
-                        Evaluation Member
+                        {t("Evaluation Member")}
                       </TableCell>
                       <TableCell colSpan={3} sx={{ ...defaultCellStyle }}>
                         000,000,000,0000,000,000,000,0000
@@ -517,7 +519,7 @@ const DetailForLocal = () => {
                           ...backgroundGreyCellStyle,
                         }}
                       >
-                        Committee Duration
+                        {t("Committee Duration")}
                       </TableCell>
                       <TableCell colSpan={3} sx={{ ...defaultCellStyle }}>
                         01-09-2024 to 09-11-2024
@@ -530,7 +532,7 @@ const DetailForLocal = () => {
                           ...backgroundGreyCellStyle,
                         }}
                       >
-                        Title
+                        {t("title")}
                       </TableCell>
                       <TableCell colSpan={7} sx={{ ...defaultCellStyle }}>
                         <Box
@@ -562,7 +564,7 @@ const DetailForLocal = () => {
                           ...backgroundGreyCellStyle,
                         }}
                       >
-                        Note
+                        {t("note")}
                       </TableCell>
                       <TableCell colSpan={7} sx={{ ...defaultCellStyle }}>
                         <Box
@@ -592,7 +594,7 @@ const DetailForLocal = () => {
                           ...backgroundGreyCellStyle,
                         }}
                       >
-                        Attach
+                        {t("Attach")}
                       </TableCell>
                       <TableCell
                         colSpan={7}
@@ -687,7 +689,7 @@ const DetailForLocal = () => {
             id="panel1a-header1"
           >
             <ExpandIcon style={{ marginRight: "8px", width: "16px" }} />
-            <Typography variant="h6">Committee Information</Typography>
+            <Typography variant="h6">{t("Committee Information")}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Box
@@ -706,7 +708,7 @@ const DetailForLocal = () => {
                 }}
               >
                 <label>
-                  <span style={{ color: "red" }}>*</span> Description
+                  <span style={{ color: "red" }}>*</span> {t("Description")}
                 </label>
                 <TextField
                   sx={{
@@ -725,8 +727,7 @@ const DetailForLocal = () => {
                 }}
               >
                 <label>
-                  <span style={{ color: "red" }}>*</span> Committee
-                  Duration
+                  <span style={{ color: "red" }}>*</span> {t("Committee Duration")}
                 </label>
                 <DateRangePicker
                   clearIcon={null}
@@ -765,7 +766,7 @@ const DetailForLocal = () => {
             color: "#000000E0",
           }}
         >
-          Land Valuation Information
+          {t("Land Valuation Information")}
         </Typography>
         <Box
           sx={{
@@ -808,8 +809,7 @@ const DetailForLocal = () => {
                     marginTop: "8px",
                   }}
                 >
-                  To register an evaluation area you can either upload a
-                  new GIS file or clone a previous land valuation area.
+                  {t("To register an evaluation area you can either upload a new GIS file or clone a previous land valuation area.")}"
                 </Typography>
                 <Button
                   sx={{
@@ -824,7 +824,7 @@ const DetailForLocal = () => {
                   startIcon={<UploadIcon sx={{ fill: "#fff" }} />}
                   onClick={handleUploadClick}
                 >
-                  Upload a new GIS file
+                  {t("Upload a new GIS file")}
                 </Button>
                 <Button
                   sx={{
@@ -838,7 +838,7 @@ const DetailForLocal = () => {
                   startIcon={<CopyIcon />}
                   onClick={handleUploadClick}
                 >
-                  Copy from the previous time
+                  {t("Copy from the previous time")}
                 </Button>
               </Box>
             ) : (
@@ -952,11 +952,7 @@ const DetailForLocal = () => {
                               marginTop: "8px",
                             }}
                           >
-                            No surveyed parcel information is currently
-                            registered.
-                            <br />
-                            Please import parcels from the Parcel Survey
-                            Managemaent System.
+                            {t("No surveyed parcel information is currently registered. Please import parcels from the Parcel Survey Management System.")}
                           </Typography>
                           <Box
                             sx={{
@@ -974,7 +970,7 @@ const DetailForLocal = () => {
                               }}
                             >
                               <span style={{ color: "red" }}>*</span>{" "}
-                              Duration
+                              {t("Duration")}
                             </label>
                             <DateRangePicker
                               clearIcon={null}
@@ -1001,8 +997,7 @@ const DetailForLocal = () => {
                             }
                             onClick={handleCloneButton}
                           >
-                            Clone Parcels Surveyed During the Specified
-                            Period
+                            {t("Clone Parcels Surveyed During the Specified Period")}
                           </Button>
                           <Button
                             sx={{
@@ -1018,7 +1013,7 @@ const DetailForLocal = () => {
                             }}
                             variant="text"
                           >
-                            Go to Parcel Survey Management System
+                            {t("Go to Parcel Survey Management System")}
                           </Button>
                         </Box>
                       ) : (
@@ -1075,7 +1070,7 @@ const DetailForLocal = () => {
                 >
                   <img src="/clear.svg" alt="clear" />
                   <Typography sx={{ color: "#FAAD14" }}>
-                    Clear all data
+                    {t("Clear all data")}
                   </Typography>
                 </Box>
               </Box>
@@ -1100,11 +1095,11 @@ const DetailForLocal = () => {
                   <Box sx={{ display: "flex", gap: "24px" }}>
                     <Box sx={{ display: "flex", gap: "8px" }}>
                       <img src="/red pin.svg" alt="surveyed" />
-                      <Typography>Surveyed Parcel</Typography>
+                      <Typography>{t("Surveyed Parcel")}</Typography>
                     </Box>
                     <Box sx={{ display: "flex", gap: "8px" }}>
                       <img src="/gray pin.svg" alt="surveyed" />
-                      <Typography>Not surveyed</Typography>
+                      <Typography>{t("Not surveyed")}</Typography>
                     </Box>
                   </Box>
                   <Box>
@@ -1116,7 +1111,7 @@ const DetailForLocal = () => {
                         },
                       }}
                     />
-                    Label
+                    {t("Label")}
                   </Box>
                 </Box>
               )}
@@ -1157,8 +1152,8 @@ const DetailForLocal = () => {
                               color: "#00000073",
                             }}
                           >
-                            Vientiane / Phonhong
-                          </Typography>
+                                    {t("Vientiane")} / {t("Phonhong")}
+                                    </Typography>
                         </Box>
                         <Box sx={{ textAlign: "left" }}>
                           <span style={{ fontWeight: 600 }}>A1</span>
@@ -1187,7 +1182,7 @@ const DetailForLocal = () => {
                                 margin: "0 !important",
                               }}
                             >
-                              Main Street:
+                              {t("Main Street")}:
                             </Typography>
                             <Typography
                               sx={{
@@ -1329,7 +1324,7 @@ const DetailForLocal = () => {
             color: "#000000E0",
           }}
         >
-          Attachments
+          {t("Attachments")}
         </Typography>
         <Button
           component="label"
@@ -1345,7 +1340,7 @@ const DetailForLocal = () => {
             color: "#1677FF",
           }}
         >
-          Upload
+          {t("Upload")}
           <VisuallyHiddenInput
             type="file"
             onChange={handleFileUpload3}

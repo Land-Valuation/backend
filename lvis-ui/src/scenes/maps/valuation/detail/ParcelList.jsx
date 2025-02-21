@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 const parcels = [
   {
@@ -64,6 +65,8 @@ const parcels = [
 ];
 
 const ParcelList = () => {
+  const { t } = useTranslation();
+
   return (
     <Box>
       {parcels.map((parcel) => (
@@ -128,7 +131,7 @@ const ParcelList = () => {
                   color: "#000000A6",
                 }}
               >
-                Main Street:
+                {t("Main Street")}:
               </Typography>
               <Typography
                 sx={{
@@ -156,7 +159,7 @@ const ParcelList = () => {
                   color: "#000000A6",
                 }}
               >
-                Connecting Roads:
+                {t("Connecting Roads")}:
               </Typography>
               <Typography
                 sx={{
@@ -184,7 +187,7 @@ const ParcelList = () => {
                   color: "#000000A6",
                 }}
               >
-                Junction Street:
+                {t("Junction Street")}:
               </Typography>
               <Typography
                 sx={{
@@ -213,7 +216,7 @@ const ParcelList = () => {
                   maxWidth: "120px",
                 }}
               >
-                Streets as they used to be:
+                {t("Streets as they used to be")}:
               </Typography>
               <Typography
                 sx={{
