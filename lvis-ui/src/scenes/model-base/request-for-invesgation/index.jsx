@@ -211,14 +211,14 @@ const RequestForInvesgation = () => {
       }
     },
     {
-      title: t('Submit To Central'),
+      title: t('submitToCentral'),
       dataIndex: 'issuedToLocal',
       key: 'issuedToLocal',
       render: (issuedToLocal) => (<IOSSwitch checked={issuedToLocal} />),
       align: 'center',
     },
     {
-      title: "Area Name",
+      title: t("Area Name"),
       dataIndex: 'zoneCode',
       key: 'appliedArea',
       render: (appliedArea) => (
@@ -228,12 +228,12 @@ const RequestForInvesgation = () => {
       ),
     },
     {
-      title: "Number of Parcels",
+      title: t("Number of Parcels"),
       dataIndex: 'parcelCount',
       key: 'title',
     },
     {
-      title: "Land Characteristics",
+      title: t("landCharacteristics"),
       dataIndex: 'features',
       key: 'features',
       render: (features) => (
@@ -243,20 +243,20 @@ const RequestForInvesgation = () => {
       ),
     },
     {
-      title: "Model",
+      title: t("model"),
       dataIndex: 'adjRSquare',
       key: 'adjRSquare',
       align: 'right',
       sortable: true,
     },
     {
-      title: "Request Date",
+      title: t("requestDate"),
       dataIndex: 'fStatistics',
       key: 'fStatistics',
       align: 'right',
     },
     {
-      title: "Completion Date",
+      title: t("Completion Date"),
       dataIndex: 'region',
       key: 'region',
     },

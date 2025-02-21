@@ -21,6 +21,7 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import { countryData } from "../../data/mockData";
+import { useTranslation } from 'react-i18next';
 
 function generateRandomId(length = 24) {
   const characters =
@@ -35,6 +36,7 @@ function generateRandomId(length = 24) {
 }
 
 const Customers = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const [sort, setSort] = useState({});
   const [search, setSearch] = useState("");
@@ -263,7 +265,7 @@ const Customers = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="ADMINISTRATION" subtitle="List of Users" />
+      <Header title={t("System Administration")} subtitle="List of Users" />
       <Box
         mt="20px"
         height="75vh"

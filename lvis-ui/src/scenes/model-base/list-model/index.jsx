@@ -55,9 +55,9 @@ const ListModel = () => {
           return {
             status: item.modelStatusType,
             // issuedToLocal: item.issuedToLocal,
-            // appliedArea: item.appliedArea,
+            appliedArea: "5/5",
             title: item.name,
-            // features: item.features,
+            features: "000,000,000,0000,000,000,000,0000",
             // adjRSquare: item.adjRSquare,
             // fStatistics: item.fStatistics,
             // region: item.region,

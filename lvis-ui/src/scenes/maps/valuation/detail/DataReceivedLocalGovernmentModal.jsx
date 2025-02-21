@@ -582,7 +582,7 @@ const DataReceivedLocalGovernmentModal = ({ open, onClose }) => {
                                       color: "#00000073",
                                     }}
                                   >
-                                    Vientiane / Phonhong
+                                    {t("Vientiane")} / {t("Phonhong")}
                                   </Typography>
                                 </Box>
                                 <Box sx={{ textAlign: "left" }}>
@@ -612,7 +612,7 @@ const DataReceivedLocalGovernmentModal = ({ open, onClose }) => {
                                         margin: "0 !important",
                                       }}
                                     >
-                                      Main Street:
+                                      {t("Main Street")}:
                                     </Typography>
                                     <Typography
                                       sx={{

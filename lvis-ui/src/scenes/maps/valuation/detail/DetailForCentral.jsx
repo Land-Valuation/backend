@@ -1298,8 +1298,8 @@ const DetailForCentral = ({ formikRef }) => {
                                     color: "#00000073",
                                   }}
                                 >
-                                  Vientiane / Phonhong
-                                </Typography>
+                                    {t("Vientiane")} / {t("Phonhong")}
+                                    </Typography>
                               </Box>
                               <Box sx={{ textAlign: "left" }}>
                                 <span style={{ fontWeight: 600 }}>A1</span>

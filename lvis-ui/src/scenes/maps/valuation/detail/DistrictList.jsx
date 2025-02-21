@@ -1,8 +1,10 @@
 import { Box, Typography } from "@mui/material";
 import DoneIcon from "../../../../assets/icons/land-valuation/DoneIcon";
 import PendingIcon from "../../../../assets/icons/land-valuation/PendingIcon";
+import { useTranslation } from "react-i18next";
 
 const DistrictList = () => {
+  const { t } = useTranslation();
   const districts = [
     { name: "Phonhong", status: true },
     { name: "Viengkham", status: false },
@@ -60,7 +62,7 @@ const DistrictList = () => {
             ) : (
               <PendingIcon sx={{ marginRight: "4px", width: "12px" }} />
             )}
-            {district.status ? "Done" : "Pending"}
+            {district.status ? t("Done") : t("Pending")}
           </Box>
         </Box>
       ))}
