@@ -4,9 +4,10 @@ import {IconButton, Popover, TextField, Typography} from '@mui/material';
 import Button from '@mui/material/Button';
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import CreateUserModal from '@/scenes/admin/user/modal/create.jsx';
+import UserModal from '@/scenes/admin/user/modal';
 import {getListUser, deleteUser} from '@/service/user';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function UseTabCustom() {
   const [searchText, setSearchText] = useState('');
@@ -15,6 +16,7 @@ export default function UseTabCustom() {
   const [rows, setRows] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [editUserId, setEditUserId] = useState(null);
 
   const handleSearchChange = (event) => {
     setSearchText(event.target.value);
@@ -36,6 +38,11 @@ export default function UseTabCustom() {
   const handleCloseConfirm = () => {
     setAnchorEl(null);
     setSelectedUserId(null);
+  };
+
+  const handleEditUser = (userId) => {
+    setEditUserId(userId);
+    setIsOpenCustomer(true);
   };
 
   const handleDeleteUser = async () => {
@@ -92,6 +99,9 @@ export default function UseTabCustom() {
         width: '100%',
         height: '100%',
       }}>
+        <IconButton sx={{color: 'blue'}} onClick={() => handleEditUser(params.row.id)}>
+          <EditIcon />
+        </IconButton>
         <IconButton color="error"
                     onClick={(event) => handleOpenConfirm(event,
                         params.row.id)}>
@@ -198,9 +208,27 @@ export default function UseTabCustom() {
           }, '& .MuiCheckbox-root.Mui-checked': {
             backgroundColor: '#fdfdfd !important',
           },
+            width: "100%",
+            "& .MuiDataGrid-columnHeaders": {
+                color: "#000000E0",
+            },
+            "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeader":
+                {
+                    background: "#FAFAFA",
+                },
+            "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeaderTitle":
+                {
+                    fontFamily: "Poppins",
+                    fontSize: "14px",
+                    fontWeight: 500,
+                },
         }}
     />
 
-    <CreateUserModal open={isOpenCustomer} title={t("AdminTab.User.Form.Label.Create")} onClose={handleCloseCreateCustomer}/>
+    <UserModal open={isOpenCustomer}
+               title={t("AdminTab.User.Form.Label.Create")}
+               onClose={handleCloseCreateCustomer}
+               userId={editUserId}
+    />
   </Box>);
 }

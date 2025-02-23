@@ -1,5 +1,5 @@
 import {listGroup} from '@/api/group';
-import {HTTP_CODE} from '@//utils/constant';
+import {HTTP_CODE} from '@/utils/constant';
 
 export async function getListGroup() {
   const response = await listGroup();

@@ -321,7 +321,8 @@
       "Form" : {
         "Button": {
           "Cancel" : "Cancel",
-          "Delete" : "Delete"
+          "Delete" : "Delete",
+          "Assign" : "Assign"
         },
         "Label": {
           "Create": "Create User",
@@ -335,7 +336,10 @@
           "Repassword": "Re-enter Password",
           "Joingroup": "Join Group",
           "Choosegroup": "CHOOSE GROUP",
-          "Groupname": "Group name"
+          "Groupname": "Group name",
+          "Rolename": "Role name",
+          "JoinRole": "Assign Role",
+          "ChooseRole": "CHOOSE ROLE"
         },
         "Validate" : {
           "required": "is required",

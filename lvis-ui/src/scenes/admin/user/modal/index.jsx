@@ -8,16 +8,20 @@ import {
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import _ from 'lodash';
-import {registerUser} from '@/state/authService';
 import {useMutation} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
 import {useTranslation} from 'react-i18next';
-import JoinGroupModal from '@/scenes/admin/user/modal/group';
+import MainModal from "@/scenes/admin/user/modal/mainModal";
+import {MODAL_TYPE} from "@/utils/enums/admin.js";
+import {createUser, updateUser} from "@/api/user.js";
+import {get} from "@/service/user.js";
 
-const CreateUserModal = ({open, onClose, title}) => {
+const UserModal = ({open, onClose, title, userId}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isOpenJoinGroup, setIsOpenJoinGroup] = useState(false);
+  const [isOpenRole, setIsOpenRole] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState([]);
+  const [selectedRoleId, setSelectedRoleId] = useState([]);
 
   const {t} = useTranslation();
 
@@ -31,12 +35,20 @@ const CreateUserModal = ({open, onClose, title}) => {
     email: Yup.string().
         email(`Email ${t('AdminTab.User.Form.Validate.email')}`).
         required(`Email ${t('AdminTab.User.Form.Validate.required')}`),
-    password: Yup.string().
-        required(`Password ${t('AdminTab.User.Form.Validate.required')}`),
+    ...(userId ? {} : {
+     password: Yup.string().required(
+      `Password ${t('AdminTab.User.Form.Validate.required')}`
+     ),
+    }),
   });
 
   useEffect(() => {
     formik.resetForm();
+
+    if (open && userId !== null) {
+        fetchUserData().then()
+    }
+
   }, [open]);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -53,17 +65,52 @@ const CreateUserModal = ({open, onClose, title}) => {
     setIsOpenJoinGroup(false);
   };
 
+  const handleCloseRole = () => {
+      setIsOpenRole(false);
+  }
+
   const formik = useFormik({
     initialValues: {
       username: '', firstname: '', lastname: '', email: '', password: '',
     }, validationSchema: validationSchema, onSubmit: async (values) => {
-      registerMutation.mutate(values);
+      const payload = {
+          ...values,
+          groupIds: selectedGroupId.map(group => group.id),
+          roleIds: selectedRoleId.map(role => ({ id: role.id, name: role.name })),
+      }
+
+      if (userId) {
+          updateUserMutation.mutate({ userId, ...payload });
+      } else {
+          registerMutation.mutate(payload);
+      }
     },
   });
 
+    const fetchUserData = async () => {
+        try {
+            const {data} = await get(userId);
+
+            await formik.setValues({
+                username: data?.username || "",
+                firstname: data?.firstName || "",
+                lastname: data?.lastName || "",
+                email: data?.email || "",
+                password: "",
+            });
+
+            setSelectedGroupId(data?.groupIds.map((groupId) => {
+                return { id: groupId }
+            }));
+            setSelectedRoleId(data?.roleIds || []);
+        } catch (error) {
+            console.error("Failed to fetch user data:", error);
+        }
+    };
+
   const registerMutation = useMutation({
     mutationFn: async (values) => {
-      return await registerUser(_.omit(values, ['confirmPassword']));
+      return await createUser(_.omit(values, ['confirmPassword']));
     }, onSuccess: (response) => {
       const {data} = response;
 
@@ -73,8 +120,23 @@ const CreateUserModal = ({open, onClose, title}) => {
       onClose();
     }, onError: (error) => {
       toast.error(error?.response.data.message);
-    },
+    }
   });
+
+  const updateUserMutation = useMutation({
+      mutationFn: async (values) => {
+          return await updateUser(values);
+      }, onSuccess: (response) => {
+          const {data} = response;
+
+          toast.success(data.message);
+
+          formik.resetForm();
+          onClose();
+      }, onError: (error) => {
+          toast.error(error?.response.data.message);
+      }
+  })
 
   return (<Box sx={{
         display: open ? 'block' : 'none',
@@ -287,55 +349,58 @@ const CreateUserModal = ({open, onClose, title}) => {
                       }}
                   />
                 </Box>
+                  {!userId && (
+                      <Box>
+                          <Typography component="label" htmlFor="password"
+                                      sx={{display: 'block', mb: 0.5}}>
+                              <Typography component="span"
+                                          sx={{color: 'red'}}>*</Typography> {t(
+                              'AdminTab.User.Form.Label.Password')}
+                          </Typography>
+                          <TextField
+                              fullWidth
+                              id="passwordRegister"
+                              name="password"
+                              value={formik.values.password}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              error={formik.touched.password &&
+                                  Boolean(formik.errors.password)}
+                              helperText={formik.touched.password &&
+                                  formik.errors.password}
+                              sx={{
+                                  '&:hover fieldset': formik.touched.password &&
+                                  formik.errors.password ?
+                                      'red' :
+                                      {borderColor: 'rgba(0, 0, 0, 0.23) !important'},
+                              }}
+                              slotProps={{
+                                  input: {
+                                      endAdornment: <InputAdornment position="end">
+                                          <IconButton
+                                              aria-label={showPassword ?
+                                                  'hide the password' :
+                                                  'display the password'}
+                                              onClick={handleClickShowPassword}
+                                              onMouseDown={handleMouseDownPassword}
+                                              onMouseUp={handleMouseUpPassword}
+                                              edge="end"
+                                          >
+                                              {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                          </IconButton>
+                                      </InputAdornment>,
+                                  },
+                              }}
+                              type={showPassword ? 'text' : 'password'}
+                          />
+                      </Box>
+                  )}
+
                 <Box>
-                  <Typography component="label" htmlFor="password"
+                  <Typography component="label"
                               sx={{display: 'block', mb: 0.5}}>
                     <Typography component="span"
-                                sx={{color: 'red'}}>*</Typography> {t(
-                      'AdminTab.User.Form.Label.Password')}
-                  </Typography>
-                  <TextField
-                      fullWidth
-                      id="passwordRegister"
-                      name="password"
-                      value={formik.values.password}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={formik.touched.password &&
-                          Boolean(formik.errors.password)}
-                      helperText={formik.touched.password &&
-                          formik.errors.password}
-                      sx={{
-                        '&:hover fieldset': formik.touched.password &&
-                        formik.errors.password ?
-                            'red' :
-                            {borderColor: 'rgba(0, 0, 0, 0.23) !important'},
-                      }}
-                      slotProps={{
-                        input: {
-                          endAdornment: <InputAdornment position="end">
-                            <IconButton
-                                aria-label={showPassword ?
-                                    'hide the password' :
-                                    'display the password'}
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                onMouseUp={handleMouseUpPassword}
-                                edge="end"
-                            >
-                              {showPassword ? <VisibilityOff/> : <Visibility/>}
-                            </IconButton>
-                          </InputAdornment>,
-                        },
-                      }}
-                      type={showPassword ? 'text' : 'password'}
-                  />
-                </Box>
-                <Box>
-                  <Typography component="label" htmlFor="email"
-                              sx={{display: 'block', mb: 0.5}}>
-                    <Typography component="span"
-                                sx={{color: 'red'}}>*</Typography> {t(
+                                sx={{color: 'red'}}></Typography> {t(
                       'AdminTab.User.Form.Label.Joingroup')}
                   </Typography>
                   <Box>
@@ -350,6 +415,25 @@ const CreateUserModal = ({open, onClose, title}) => {
                     </Button>
                   </Box>
                 </Box>
+                  <Box>
+                      <Typography component="label"
+                                  sx={{display: 'block', mb: 0.5}}>
+                          <Typography component="span"
+                                      sx={{color: 'red'}}></Typography> {t(
+                          'AdminTab.User.Form.Label.JoinRole')}
+                      </Typography>
+                      <Box>
+                          <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => {
+                                  setIsOpenRole(true);
+                              }}
+                          >
+                              {t('AdminTab.User.Form.Label.ChooseRole')}
+                          </Button>
+                      </Box>
+                  </Box>
               </Box>
 
             </form>
@@ -378,17 +462,29 @@ const CreateUserModal = ({open, onClose, title}) => {
         </Box>
 
 
-        <JoinGroupModal title={'Join Groups'}
-                        setSelectedGroupId={setSelectedGroupId}
+        <MainModal title={t('AdminTab.User.Form.Label.Joingroup')}
+                        setSelectedId={setSelectedGroupId}
                         open={isOpenJoinGroup}
+                        selectedId={selectedGroupId}
+                        type={MODAL_TYPE.GROUP_TYPE}
+                        headerName={t('AdminTab.User.Form.Label.Groupname')}
                         onClose={handleCloseJoinGroup}/>
+
+        <MainModal title={t('AdminTab.User.Form.Label.JoinRole')}
+                 setSelectedId={setSelectedRoleId}
+                 selectedId={selectedRoleId}
+                 open={isOpenRole}
+                 headerName={t('AdminTab.User.Form.Label.Rolename')}
+                 type={MODAL_TYPE.ROLE_TYPE}
+                 onClose={handleCloseRole}/>
       </Box>);
 };
 
-CreateUserModal.propTypes = {
+UserModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  userId: PropTypes.string,
 };
 
-export default CreateUserModal;
+export default UserModal;

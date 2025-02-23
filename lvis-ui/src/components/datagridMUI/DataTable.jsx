@@ -1,7 +1,7 @@
 import {memo} from 'react'
 import {DataGrid} from '@mui/x-data-grid';
 
-const DataTable= ({rows, columns}) => {
+const DataTable= ({rows, columns, checkboxSelection, onRowSelectionModelChange, selectionModel}) => {
   return (
       <>
         <DataGrid
@@ -9,9 +9,16 @@ const DataTable= ({rows, columns}) => {
             columns={columns}
             disableColumnMenu
             localeText={{noRowsLabel: ''}}
-            checkboxSelection
+            checkboxSelection={checkboxSelection}
             disableRowSelectionOnClick
             disableSelectionOnClick
+            onRowSelectionModelChange={(selection) => {
+                if (selection.length > 0) {
+                    const lastSelected = [selection[selection.length - 1]];
+                    onRowSelectionModelChange(lastSelected);
+                }
+            }}
+            selectionModel={selectionModel}
             sx={{
               '& .MuiDataGrid-footerContainer': {
                 backgroundColor: '#fff',

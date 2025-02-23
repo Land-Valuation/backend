@@ -4,6 +4,10 @@ export const listUser = async () => {
   return await apiClient.get(`/user-api/users`);
 };
 
+export const getUser = async (userId) => {
+  return await apiClient.get(`/user-api/users/${userId}`);
+}
+
 export const createUser = async (params) => {
   return await apiClient.post(`/user-api/users/create-user`, params, {
     headers: {'Content-Type': 'application/json'},
