@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../../components/Header";
 import {
   Box,
@@ -27,6 +27,11 @@ import ProgressIcon from "../../../assets/icons/land-valuation/ProgressIcon";
 import ApproveIcon from "../../../assets/icons/land-valuation/ApproveIcon";
 import RejectIcon from "../../../assets/icons/land-valuation/RejectIcon";
 import DataReceivedLocalGovernmentModal from "./detail/DataReceivedLocalGovernmentModal";
+import { useGetAllValuationMastersQuery } from "../../../state/valuationMasterApi";
+import CustomTable from "../../../components/customMUI/CustomTable";
+import { useGetAllProvincesQuery } from "../../../state/provinceApi";
+import dayjs from "dayjs";
+import { FORMAT_DATE } from "../../../utils/constant";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -75,19 +80,6 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-function createData(
-  year,
-  status,
-  province,
-  issue,
-  area,
-  title,
-  member,
-  duration,
-  date
-) {
-  return { year, status, province, issue, area, title, member, duration, date };
-}
 function createData2(
   year,
   status,
@@ -146,7 +138,7 @@ const getStatusStyleAndIcon = (status) => {
         },
         icon: <DraftIcon sx={{ marginRight: "4px", width: "12px" }} />,
       };
-    case "In Progress":
+    case "inProgress":
       return {
         style: {
           backgroundColor: "#E6F4FF",
@@ -203,77 +195,7 @@ const Valuation = () => {
   };
 
   const userRole = UserService.getTokenParsed().realm_access.roles;
-  console.log(userRole, " role");
   const hasCentralRole = userRole.some((role) => role.includes("CENTRAL"));
-  // const hasLocalRole = userRole.some(role => role.includes("LOCAL"));
-  const rows = [
-    createData(
-      "2024",
-      "Draft",
-      "Vientiane",
-      false,
-      "0/11",
-      "Title A",
-      "000,000,000,0000,000,000,000,0000",
-      "01-09-2024 to 09-11-2024",
-      "N/A"
-    ),
-    createData(
-      "2024",
-      "In Progress",
-      "Savannakhet",
-      false,
-      "2/15",
-      "Title B",
-      "000,000,000,0000,000,000,000,0000",
-      "01-09-2024 to 09-11-2024",
-      "N/A"
-    ),
-    createData(
-      "2024",
-      "Rejected",
-      "Champasak",
-      false,
-      "0/11",
-      "Title C",
-      "000,000,000,0000,000,000,000,0000",
-      "01-09-2024 to 09-11-2024",
-      "N/A"
-    ),
-    createData(
-      "2020",
-      "Approved",
-      "Xiangkhoang",
-      false,
-      "15/15",
-      "Title D",
-      "000,000,000,0000,000,000,000,0000",
-      "01-09-2020 to 09-11-2020",
-      "09-11-2020"
-    ),
-    createData(
-      "2016",
-      "Approved",
-      "Xaignabouli",
-      true,
-      "15/15",
-      "Title E",
-      "000,000,000,0000,000,000,000,0000",
-      "01-09-2016 to 09-11-2016",
-      "09-11-2016"
-    ),
-    createData(
-      "2014",
-      "Approved",
-      "Xaisomboun",
-      true,
-      "15/15",
-      "Title F",
-      "000,000,000,0000,000,000,000,0000",
-      "01-09-2014 to 09-11-2014",
-      "09-11-2014"
-    ),
-  ];
 
   const rows2 = [
     createData2(
@@ -337,6 +259,149 @@ const Valuation = () => {
       "09-11-2014"
     ),
   ];
+
+  const [listForCentral, setListForCentral] = useState([])
+  const [listProvince, setListProvince] = useState([])
+
+  const { data: allValuationMasters } = useGetAllValuationMastersQuery();
+  const { data: allProvinceData } = useGetAllProvincesQuery();
+  
+  useEffect(() => {
+    if (allValuationMasters && allValuationMasters.length > 0) {
+      setListForCentral(allValuationMasters)
+    }
+  }, [allValuationMasters])
+
+  useEffect(() => {
+    if (allProvinceData && allProvinceData.length > 0) {
+      setListProvince(allProvinceData)
+    }
+  }, [allProvinceData])
+  
+
+  const getStatusText = (status) => {
+    const statusMap = {
+      annulled: t("Annulled"),
+      approved: t("Approved"),
+      completed: t("Completed"),
+      draft: t("Draft"),
+      inProgress: t("In Progress"),
+      lodged: t("Lodged"),
+      rejected: t("Rejected"),
+      requisitioned: t("Requisitioned"),
+    };
+  
+    return statusMap[status] || "";
+  }
+
+  const getProvinceName = (proviceCode) => {
+    const province = listProvince.find(item => item.provinceCode === proviceCode)
+    return province ? province.provinceEnglish : ''
+  }
+
+  const columns = [
+    {
+      key: "baseYear",
+      title: t("baseYear"),
+      dataIndex: "baseYear",
+      align: "left",
+    },
+    {
+      key: "valuationStatusCode",
+      title: t("status"),
+      dataIndex: "valuationStatusCode",
+      align: "left",
+      render: (status) => {
+        const { style, icon } = getStatusStyleAndIcon(status);
+        return (
+          <Link to={`/land-valuation/detail`} style={{ textDecoration: "none" }}>
+            <Box
+              sx={{
+                ...style,
+                borderRadius: "4px",
+                padding: "0 8px",
+                display: "flex",
+                alignItems: "center",
+                width: "fit-content",
+                textWrap: "nowrap",
+                fontFamily: "Poppins",
+                fontSize: "12px",
+                fontWeight: 400,
+              }}
+            >
+              {icon} {getStatusText(status)}
+            </Box>
+          </Link>
+        );
+      },
+    },
+    {
+      key: "proviceCode",
+      title: t("province"),
+      dataIndex: "proviceCode",
+      align: "left",
+      sortable: true,
+      render: (proviceCode) => (
+        <Box>{getProvinceName(proviceCode)}</Box>
+      ),
+    },
+    {
+      key: "issuedToLocal",
+      title: t("issuedToLocal"),
+      dataIndex: "issue",
+      align: "center",
+      render: (issue) => (
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <AntSwitch
+            checked={issue}
+            inputProps={{ "aria-label": "ant design" }}
+          />
+        </Box>
+      ),
+    },
+    {
+      key: "zoneNumber",
+      title: t("appliedArea"),
+      dataIndex: "zoneNumber",
+      align: "center",
+      render: (zoneNumber) => (
+        <Box sx={{ cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} onClick={handleOpenDataReceivedLocalGovernmentModal}>
+          {zoneNumber}
+        </Box>
+      ),
+    },
+    {
+      key: "title",
+      title: t("title"),
+      dataIndex: "title",
+      align: "left",
+    },
+    {
+      key: "member",
+      title: t("Evaluation Member"),
+      dataIndex: "member",
+      align: "left",
+    },
+    {
+      key: "committeSdate",
+      title: t("Committee Duration"),
+      dataIndex: "committeSdate",
+      align: "left",
+      render: (committeSdate, record) => (
+        <Box>{committeSdate && record?.committeEdate ? `${dayjs(committeSdate).format(FORMAT_DATE.DMY)} to ${dayjs(record?.committeEdate).format(FORMAT_DATE.DMY)}` : ''}</Box>
+      )
+    },
+    {
+      key: "updatedAt",
+      title: t("Decision Date"),
+      dataIndex: "updatedAt",
+      align: "left",
+      render: (updatedAt) => (
+        <Box>{dayjs(updatedAt).format(FORMAT_DATE.DMY)}</Box>
+      )
+    },
+  ];
+
   return (
     <>
       {hasCentralRole ? (
@@ -403,103 +468,11 @@ const Valuation = () => {
                 </Button>
               </Box>
             </Box>
-            <TableContainer
-              sx={{ border: "1px solid #F0F0F0", borderRadius: "8px" }}
-              component={Paper}
-            >
-              <Table
-                sx={{
-                  minWidth: 650,
-                }}
-                aria-label="simple table"
-              >
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell>{t("baseYear")}</StyledTableCell>
-                    <StyledTableCell>{t("status")}</StyledTableCell>
-                    <StyledTableCell>{t("province")}</StyledTableCell>
-                    <StyledTableCell>{t("issuedToLocal")}</StyledTableCell>
-                    <StyledTableCell>{t("appliedArea")}</StyledTableCell>
-                    <StyledTableCell>{t("title")}</StyledTableCell>
-                    <StyledTableCell>{t("Evaluation Member")}</StyledTableCell>
-                    <StyledTableCell>{t("Committee Duration")}</StyledTableCell>
-                    <StyledTableCell>{t("Decision Date")}</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => {
-                    const { style, icon } = getStatusStyleAndIcon(row.status);
-                    return (
-                      <TableRow
-                        key={row.title}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row.year}
-                        </TableCell>
-                        <TableCell>
-                          <Link
-                            to={`/land-valuation/detail`}
-                            style={{ textDecoration: "none" }}
-                          >
-                            <Box
-                              sx={{
-                                ...style,
-                                borderRadius: "4px",
-                                padding: "0 8px",
-                                // fontWeight: 600,
-                                display: "flex",
-                                alignItems: "center",
-                                width: "fit-content",
-                                textWrap: "nowrap",
-                                fontFamily: "Poppins",
-                                fontSize: "12px",
-                                fontWeight: 400,
-                              }}
-                            >
-                              {icon} {t(row.status)}
-                            </Box>
-                          </Link>
-                        </TableCell>
-                        <TableCell>{t(row.province)}</TableCell>
-                        <TableCell>
-                          <AntSwitch
-                            // checked={row.issue}
-                            inputProps={{ "aria-label": "ant design" }}
-                          />
-                        </TableCell>
-                        <TableCell
-                          onClick={handleOpenDataReceivedLocalGovernmentModal}
-                          sx={{ cursor: "pointer" }}
-                        >
-                          {row.area}
-                        </TableCell>
-                        <TableCell sx={{ textWrap: "nowrap" }}>
-                          {row.title}
-                        </TableCell>
-                        <TableCell>{row.member}</TableCell>
-                        <TableCell sx={{ textWrap: "nowrap" }}>
-                          {row.duration}
-                        </TableCell>
-                        <TableCell>{row.date}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <CustomTable
+              dataSource={listForCentral}
+              columns={columns}
+            />
           </Box>
-
-          {/* <Box
-        mt="40px"
-        height="75.25vh"
-        border={`1px solid ${theme.palette.secondary[200]}`}
-        borderRadius="4px"
-      >
-        <BaseInside />        
-      </Box> */}
         </Box>
       ) : (
         <Box
