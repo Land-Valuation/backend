@@ -14,8 +14,8 @@ export const createUser = async (params) => {
   });
 };
 
-export const updateUser = async (params) => {
-  return await apiClient.put(`/user-api/users`, params, {
+export const updateUser = async (params, id) => {
+  return await apiClient.put(`/user-api/users/${id}`, params, {
     headers: {'Content-Type': 'application/json'},
   });
 };

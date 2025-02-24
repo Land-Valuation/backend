@@ -7,7 +7,7 @@ import {useTranslation} from 'react-i18next';
 import UserModal from '@/scenes/admin/user/modal';
 import {getListUser, deleteUser} from '@/service/user';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import EditIcon from "@mui/icons-material/Edit";
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function UseTabCustom() {
   const [searchText, setSearchText] = useState('');
@@ -17,12 +17,16 @@ export default function UseTabCustom() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [editUserId, setEditUserId] = useState(null);
+  const [createComplete, setCreateComplete] = useState(false);
+  const [filteredRows, setFilteredRows] = useState([]);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const handleSearchChange = (event) => {
     setSearchText(event.target.value);
   };
 
   const handleCreateCustomer = () => {
+    setEditUserId(null);
     setIsOpenCustomer(true);
   };
 
@@ -71,15 +75,63 @@ export default function UseTabCustom() {
 
   }, []);
 
+  useEffect(() => {
+    if (createComplete) {
+      const fetchUsers = async () => {
+        return await getListUser();
+      };
+
+      fetchUsers().then(response => {
+        setRows(response);
+      });
+
+      setCreateComplete(false);
+    }
+  }, [createComplete]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchText);
+    }, 300);
+
+    return () => clearTimeout(handler);
+  }, [searchText]);
+
+  useEffect(() => {
+    if (debouncedSearch.trim() === '') {
+      setFilteredRows(rows);
+    } else {
+      const lowerSearch = debouncedSearch.toLowerCase();
+      setFilteredRows(
+          rows.filter((user) =>
+              user.username.toLowerCase().includes(lowerSearch) ||
+              user.email.toLowerCase().includes(lowerSearch)
+          )
+      );
+    }
+  }, [debouncedSearch, rows]);
+
   const columns = [
     {
-      field: 'username', headerName: t('AdminTab.User.Form.Label.Username'), flex: 1, editable: false,
+      field: 'username',
+      headerName: t('AdminTab.User.Form.Label.Username'),
+      flex: 1,
+      editable: false,
     }, {
-      field: 'email', headerName: t('AdminTab.User.Form.Label.Email'), flex: 2, editable: false,
+      field: 'email',
+      headerName: t('AdminTab.User.Form.Label.Email'),
+      flex: 2,
+      editable: false,
     }, {
-      field: 'firstName', headerName: t('AdminTab.User.Form.Label.Firstname'), flex: 1, editable: false,
+      field: 'firstName',
+      headerName: t('AdminTab.User.Form.Label.Firstname'),
+      flex: 1,
+      editable: false,
     }, {
-      field: 'lastName', headerName: t('AdminTab.User.Form.Label.Lastname'), flex: 1, editable: false,
+      field: 'lastName',
+      headerName: t('AdminTab.User.Form.Label.Lastname'),
+      flex: 1,
+      editable: false,
     }, {
       field: 'fullName',
       headerName: t('AdminTab.User.Form.Label.Fullname'),
@@ -99,8 +151,9 @@ export default function UseTabCustom() {
         width: '100%',
         height: '100%',
       }}>
-        <IconButton sx={{color: 'blue'}} onClick={() => handleEditUser(params.row.id)}>
-          <EditIcon />
+        <IconButton sx={{color: 'blue'}}
+                    onClick={() => handleEditUser(params.row.id)}>
+          <EditIcon/>
         </IconButton>
         <IconButton color="error"
                     onClick={(event) => handleOpenConfirm(event,
@@ -187,7 +240,7 @@ export default function UseTabCustom() {
 
 
     <DataGrid
-        rows={rows}
+        rows={filteredRows}
         columns={columns}
         initialState={{
           pagination: {
@@ -198,6 +251,7 @@ export default function UseTabCustom() {
         }}
         checkboxSelection
         disableRowSelectionOnClick
+        pageSizeOptions={[10]}
         sx={{
           '& .MuiDataGrid-footerContainer': {
             backgroundColor: '#fff',
@@ -208,27 +262,30 @@ export default function UseTabCustom() {
           }, '& .MuiCheckbox-root.Mui-checked': {
             backgroundColor: '#fdfdfd !important',
           },
-            width: "100%",
-            "& .MuiDataGrid-columnHeaders": {
-                color: "#000000E0",
-            },
-            "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeader":
-                {
-                    background: "#FAFAFA",
-                },
-            "& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeaderTitle":
-                {
-                    fontFamily: "Poppins",
-                    fontSize: "14px",
-                    fontWeight: 500,
-                },
+          width: '100%',
+          '& .MuiDataGrid-columnHeaders': {
+            color: '#000000E0',
+          },
+          '& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeader':
+              {
+                background: '#FAFAFA',
+              },
+          '& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeaderTitle':
+              {
+                fontFamily: 'Poppins',
+                fontSize: '14px',
+                fontWeight: 500,
+              },
         }}
     />
 
     <UserModal open={isOpenCustomer}
-               title={t("AdminTab.User.Form.Label.Create")}
+               title={editUserId !== null ?
+                   t('AdminTab.User.Form.Label.Update') :
+                   t('AdminTab.User.Form.Label.Create')}
                onClose={handleCloseCreateCustomer}
                userId={editUserId}
+               createComplete={setCreateComplete}
     />
   </Box>);
 }

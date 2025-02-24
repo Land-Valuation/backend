@@ -322,7 +322,9 @@
         "Button": {
           "Cancel" : "Cancel",
           "Delete" : "Delete",
-          "Assign" : "Assign"
+          "Assign" : "Assign",
+          "Register": "Create",
+          "Edit" : "Edit"
         },
         "Label": {
           "Create": "Create User",
