@@ -95,7 +95,7 @@ const CommitteeTable = ({ onDataChange, initialData }) => {
       flex: 1,
     },
     {
-      field: "phone",
+      field: "mobile",
       headerName: t("Phone Number"),
       editable: true,
       flex: 1,
@@ -117,7 +117,7 @@ const CommitteeTable = ({ onDataChange, initialData }) => {
       organization: "",
       name: "",
       position: "",
-      phone: "",
+      mobile: "",
       email: "",
       isNew: true,
     };
@@ -140,8 +140,25 @@ const CommitteeTable = ({ onDataChange, initialData }) => {
     console.error("Lỗi khi cập nhật hàng:", error);
   };
 
+  const { data: allMemberTypes } = useGetAllMemberTypesQuery();
+  const [memberTypeList, setMemberTypeList] = useState([]);
+
   useEffect(() => {
-    onDataChange(rows);
+    if (allMemberTypes && allMemberTypes.length > 0) {
+      setMemberTypeList(allMemberTypes);
+    }
+  }, [allMemberTypes]);
+
+  useEffect(() => {
+    const convertData = rows.map(item => {
+      const memberType = memberTypeList.find(el => el.display_value === item.memberType)
+      return {
+        ...item,
+        memberTypeCode: memberType ? memberType?.code : '',
+        memberPosition: item.position,
+      }
+    })
+    onDataChange(convertData);
   }, [onDataChange, rows]);
 
   useEffect(() => {
@@ -205,11 +222,11 @@ CommitteeTable.propTypes = {
   onDataChange: PropTypes.func.isRequired,
   initialData: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    memberType: PropTypes.string,
+    memberTypeCode: PropTypes.string,
     organization: PropTypes.string,
     name: PropTypes.string,
-    position: PropTypes.string,
-    phone: PropTypes.string,
+    memberPosition: PropTypes.string,
+    mobile: PropTypes.string,
     email: PropTypes.string,
   })),
 };

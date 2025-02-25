@@ -13,8 +13,6 @@ import LandValuationDetail from "./scenes/maps/valuation/detail/detail";
 import Utilities from "./scenes/utilities";
 import HomePage from "./scenes/home";
 import PageNotFound from "./scenes/pagenotfound"
-import Welcome from "./Welcome";
-import RenderOnAnonymous from "./RenderOnAnonymous";
 import RenderOnAuthenticated from "./RenderOnAuthenticated";
 import NotRenderOnRole from "./NotRenderOnRole";
 import { initializeAuth } from "./state"
@@ -31,6 +29,7 @@ import RequestForInvesgationDetail from "./scenes/model-base/request-for-invesga
 import ParcelSurveyManagement from "./scenes/parcel-survey-management";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LandValuationCreate from "./scenes/maps/valuation/detail/create";
 
 const resources = {
   en: {
@@ -113,7 +112,8 @@ function App() {
                 <Route path="/model-base/create-new-model" element={<CreateNewModel />} />
                 <Route path="/model-base/detail" element={<RequestForInvesgationDetail />} />
                 <Route path="/land-valuation" element={<Valuation />} />
-                <Route path="/land-valuation/detail" element={<LandValuationDetail />} />
+                <Route path="/land-valuation/create" element={<LandValuationCreate />} />
+                <Route path="/land-valuation/detail/:id" element={<LandValuationDetail />} />
                 <Route path="/parcel-survey-management" element={<ParcelSurveyManagement />} />
                 <Route path="/customers" element={
                   <NotRenderOnRole roles={[]} showNotAllowed>

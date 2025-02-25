@@ -129,7 +129,7 @@ const getStatusStyleAndIcon2 = (status) => {
 
 const getStatusStyleAndIcon = (status) => {
   switch (status) {
-    case "Draft":
+    case "draft":
       return {
         style: {
           backgroundColor: "#FFFBE6",
@@ -147,7 +147,7 @@ const getStatusStyleAndIcon = (status) => {
         },
         icon: <ProgressIcon sx={{ marginRight: "4px", width: "12px" }} />,
       };
-    case "Rejected":
+    case "rejected":
       return {
         style: {
           backgroundColor: "#FFF1F0",
@@ -156,7 +156,7 @@ const getStatusStyleAndIcon = (status) => {
         },
         icon: <RejectIcon sx={{ marginRight: "4px", width: "12px" }} />,
       };
-    case "Approved":
+    case "approved":
       return {
         style: {
           backgroundColor: "#F6FFED",
@@ -311,10 +311,10 @@ const Valuation = () => {
       title: t("status"),
       dataIndex: "valuationStatusCode",
       align: "left",
-      render: (status) => {
+      render: (status, record) => {
         const { style, icon } = getStatusStyleAndIcon(status);
         return (
-          <Link to={`/land-valuation/detail`} style={{ textDecoration: "none" }}>
+          <Link to={`/land-valuation/detail/${record.id}`} style={{ textDecoration: "none" }}>
             <Box
               sx={{
                 ...style,
@@ -377,9 +377,9 @@ const Valuation = () => {
       align: "left",
     },
     {
-      key: "member",
+      key: "nameMembers",
       title: t("Evaluation Member"),
-      dataIndex: "member",
+      dataIndex: "nameMembers",
       align: "left",
     },
     {
@@ -428,7 +428,7 @@ const Valuation = () => {
               />
               <Box sx={{ display: "flex", flexDirection: "row", gap: "12px" }}>
                 <Link
-                  to={`/land-valuation/detail`}
+                  to={`/land-valuation/create`}
                   style={{ textDecoration: "none" }}
                 >
                   <Button

@@ -26,13 +26,12 @@ import { useGetAllCommitteeStatusTypesQuery } from "../../../../state/committeeS
 import { useGetAllValuationStatusTypesQuery } from "../../../../state/valuationStatusTypeApi";
 import CommitteeTable from "./CommitteeTable";
 import PropTypes from "prop-types";
-import { useCreateValuationMasterMutation, useGetValuationMasterByIdQuery } from "../../../../state/valuationMasterApi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useCreateValuationMasterMutation } from "../../../../state/valuationMasterApi";
+import { useNavigate } from "react-router-dom";
 
-const DetailForCentral = ({ formikRef }) => {
+const CreateForCentral = ({ formikRef }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { id } = useParams();
 
   const now = new Date();
   const year = now.getFullYear();
@@ -48,39 +47,11 @@ const DetailForCentral = ({ formikRef }) => {
   const [committeeStatusList, setCommitteeStatusList] = useState([])
   const [landValuationStatusList, setLandValuationStatusList] = useState([])
   const [committeeData, setCommitteeData] = useState([]);
-  const [initCommitteeData, setInitCommitteeData] = useState([]);
 
   const { data: allProvinceData } = useGetAllProvincesQuery();
   const { data: allCommitteeStatusTypes } = useGetAllCommitteeStatusTypesQuery();
   const { data: valuationStatusTypes } = useGetAllValuationStatusTypesQuery();
   const [createValuationMaster] = useCreateValuationMasterMutation();
-  const { data: valuationMaster } = useGetValuationMasterByIdQuery(id, { skip: !id });
-
-  useEffect(() => {
-    if (valuationMaster) {
-      const formattedData = {
-        baseYear: valuationMaster.baseYear ? new Date(valuationMaster.baseYear, 0, 1) : selectedYear,
-        title: valuationMaster.title,
-        note: valuationMaster.description,
-        province: valuationMaster.proviceCode,
-        committeeStatus: valuationMaster.commmitteeStatusCode,
-        landValuationStatus: valuationMaster.valuationStatusCode,
-        descriptionCommittee: valuationMaster?.committeeDescription ?? '',
-        dateRange: valuationMaster.committeSdate && valuationMaster.committeEdate ? [new Date(valuationMaster.committeSdate), new Date(valuationMaster.committeEdate)] : [null, null],
-      };
-      formik.setValues(formattedData);
-      const convertData = (valuationMaster?.committeeMembers ?? []).map(item => {
-        return {
-          ...item,
-          id: item.id,
-          memberType: item.memberTypeDisplayValue,
-          position: item.memberPosition,
-          isNew: false,
-        };
-      }) 
-      setInitCommitteeData(convertData);
-    }
-  }, [valuationMaster]);
 
   useEffect(() => {
     if (allProvinceData && allProvinceData.length > 0) {
@@ -875,7 +846,7 @@ const DetailForCentral = ({ formikRef }) => {
             <Box
               sx={{ height: "320px" }}
             >
-              <CommitteeTable onDataChange={handleCommitteeDataChange} initialData={initCommitteeData} />
+              <CommitteeTable onDataChange={handleCommitteeDataChange} />
             </Box>
           </Box>
           <Box
@@ -1538,7 +1509,7 @@ const DetailForCentral = ({ formikRef }) => {
   )
 }
 
-DetailForCentral.propTypes = {
+CreateForCentral.propTypes = {
   formikRef: PropTypes.shape({
     current: PropTypes.shape({
       handleSubmit: PropTypes.func,
@@ -1546,4 +1517,4 @@ DetailForCentral.propTypes = {
   }),
 };
 
-export default DetailForCentral
+export default CreateForCentral

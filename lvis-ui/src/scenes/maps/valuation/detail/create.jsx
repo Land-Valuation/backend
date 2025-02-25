@@ -13,11 +13,11 @@ import CloseIcon from "../../../../assets/icons/land-valuation/CloseIcon";
 import { useTranslation } from "react-i18next";
 import DetailForLocal from "./DetailForLocal";
 
-import DetailForCentral from "./DetailForCentral";
 import { useRef } from "react";
+import CreateForCentral from "./CreateForCentral";
 import { useNavigate } from "react-router-dom";
 
-const LandValuationDetail = () => {
+const LandValuationCreate = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -92,7 +92,7 @@ const LandValuationDetail = () => {
         }
       >
         {hasCentralRole ? (
-          <DetailForCentral formikRef={formikRef} />
+          <CreateForCentral formikRef={formikRef} />
         ) : (
           <DetailForLocal />
         )}
@@ -101,4 +101,4 @@ const LandValuationDetail = () => {
   );
 };
 
-export default LandValuationDetail;
+export default LandValuationCreate;
