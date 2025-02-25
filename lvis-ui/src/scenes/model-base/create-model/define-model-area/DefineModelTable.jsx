@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "../../../../state/prototypeApi";
 import { useTranslation } from "react-i18next";
 
-const DefineModelTable = () => {
+const DefineModelTable = ({ onSelectionChange }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   // values to be sent to the backend
@@ -145,6 +145,10 @@ const DefineModelTable = () => {
     >
       <DataGrid
         // loading={isLoading || !data}
+        onRowSelectionModelChange={(newSelection) => {
+          console.log("Selected:", newSelection); // Debug
+          onSelectionChange(newSelection)
+        }}
         getRowId={(row) => row.id}
         rows={data}
         columns={columns}

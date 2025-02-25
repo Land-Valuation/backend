@@ -8,7 +8,7 @@ import DefineModelMap from "./DefineModelMap";
 import TableIcon from "../../../../assets/icons/model-base/TableIcon";
 import { useTranslation } from 'react-i18next'; // Import translation hook
 
-const DefineModelArea = () => {
+const DefineModelArea = ({onSelectionChange}) => {
   const { t } = useTranslation(); // Initialize translation hook
 
   const [activeButton, setActiveButton] = useState('village');
@@ -136,7 +136,7 @@ const DefineModelArea = () => {
       </Box>
         <Box>
           {
-            tab === 0 ? <DefineModelTable /> : <DefineModelMap />
+            tab === 0 ? <DefineModelTable onSelectionChange={onSelectionChange} /> : <DefineModelMap />
           }
         </Box>
     </Box>
