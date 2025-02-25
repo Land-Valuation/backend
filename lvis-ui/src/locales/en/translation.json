@@ -351,11 +351,27 @@
         "Delete Confirm" : "Are you sure delete it ?"
       }
     },
+    "GroupTab": {
+      "Button": {
+        "Submit": "Create"
+      },
+      "Form": {
+        "Name": "Group Name"
+      }
+    },
     "Role": {
       "Title": "Roles"
     },
     "Group" : {
       "Title": "Groups"
+    }
+  },
+  "UserProfile" : {
+    "title": "USER PROFILE",
+    "Button" : {
+      "Edit": "Edit Profile",
+      "Save": "Save",
+      "Cancel" : "Cancel"
     }
   },
   "Create survey": "Create survey",

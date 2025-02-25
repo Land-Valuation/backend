@@ -233,6 +233,18 @@ export default function UseTabCustom() {
           variant="contained"
           color="primary"
           onClick={handleCreateCustomer}
+          sx={{
+            backgroundColor: "#1677FF",
+            color: "#fff",
+            textTransform: "none",
+            borderRadius: "6px",
+            fontFamily: "Poppins",
+            fontSize: "14px",
+            fontWeight: 400,
+            minWidth: "32px",
+            minHeight: "32px",
+            boxShadow: "none",
+          }}
       >
         {t('AdminTab.User.Create')}
       </Button>

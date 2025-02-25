@@ -286,7 +286,9 @@ function Sidebar() {
             </div>
           </div>
           <MenuItem
-              onClick={handleMenuClose}
+              onClick={() => {
+                navigate("/user-profile");
+              }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
               }}

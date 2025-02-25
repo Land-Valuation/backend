@@ -1,12 +1,16 @@
 import {listGroup} from '@/api/group';
 import {HTTP_CODE} from '@/utils/constant';
 
-export async function getListGroup() {
+export async function getListGroup(keepBaseData = false) {
   const response = await listGroup();
 
   if (response.status === HTTP_CODE.SUCCESS) {
-    const { data } = response.data;
-    return flattenGroups(data);
+    if (keepBaseData) {
+      return response;
+    } else {
+      const { data } = response.data;
+      return flattenGroups(data);
+    }
   }
 
   return [];

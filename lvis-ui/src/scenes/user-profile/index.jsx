@@ -1,209 +1,177 @@
-import React, { useState } from "react";
 import {
-  Container,
-  Grid,
   Avatar,
-  Typography,
-  TextField,
-  Button,
-  Card,
-  CardContent,
-  Switch,
-  IconButton,
   Box,
-  Chip,
-  Alert,
-  FormControlLabel,
-  styled
+  Button,
+  Grid,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { FiEdit2, FiMapPin, FiMail, FiPhone, FiGlobe, FiBriefcase, FiCalendar, FiUser } from "react-icons/fi";
-import { useDropzone } from "react-dropzone";
+import { styled } from "@mui/system";
+import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
+import {useEffect, useState} from 'react';
+import {getUser, updateUser} from '@/api/user.js';
+import UserService from '@/state/UserService';
+import Header from '@/components/Header.jsx';
+import {useTranslation} from 'react-i18next';
 
-const StyledAvatar = styled(Avatar)(({ theme }) => ({
+const ProfileAvatar = styled(Avatar)(({ theme }) => ({
   width: 150,
   height: 150,
-  border: "4px solid #fff",
-  boxShadow: theme.shadows[3],
+  position: "relative",
   margin: "0 auto",
-  cursor: "pointer",
-  transition: "transform 0.2s",
-  "&:hover": {
-    transform: "scale(1.05)"
-  }
+  border: `4px solid ${theme.palette.primary.main}`,
 }));
 
-const CoverPhoto = styled(Box)({
-  height: 200,
-  width: "100%",
-  backgroundImage: `url("https://images.unsplash.com/photo-1579546929518-9e396f3cc809")`,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  position: "relative"
-});
-
-const ProfilePage = () => {
+const UserProfile = () => {
   const [editMode, setEditMode] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1 234 567 8900",
-    location: "New York, USA",
-    jobTitle: "Senior Software Engineer",
-    company: "Tech Corp",
-    experience: "8+ years",
-    dob: "1990-01-01",
-    gender: "Male",
-    languages: ["English", "Spanish"],
-    avatar: "https://images.unsplash.com/photo-1633332755192-727a05c4013d"
-  });
+  const [snackbar, setSnackbar] = useState({ open: false, message: "" });
+  const [userData, setUserData] = useState({});
+  const {t} = useTranslation();
 
-  const [errors, setErrors] = useState({});
+  const currentToken = UserService.getTokenParsed();
 
-  const onDrop = (acceptedFiles) => {
-    const file = acceptedFiles[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setFormData({ ...formData, avatar: reader.result });
-      };
-      reader.readAsDataURL(file);
-    }
+  useEffect(() => {
+    const userId = currentToken.sub ?? '';
+    const RoleName = currentToken.realm_access?.roles[0];
+
+
+    getUser(userId).then(response => {
+      const {data} = response.data;
+
+      setUserData({
+        id: data.id ?? '',
+        fullName: `${data.firstName} ${data.lastName}`,
+        firstName: data.firstName ?? '',
+        lastName: data.lastName ?? '',
+        userName: data.username,
+        email: data.email ?? '',
+        role: `${RoleName.charAt(0).toUpperCase()}${RoleName.slice(1)}`,
+        avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d',
+        status: 'Enabled',
+      });
+    });
+  }, []);
+
+  const handleProfileUpdate = () => {
+    updateUser(
+        {firstname: userData.firstName, lastname: userData.lastName},
+        userData.id,
+    ).then(() => {
+      setUserData({
+        ...userData,
+        fullName: `${userData.firstName} ${userData.lastName}`,
+      });
+
+      setEditMode(false);
+    }).catch(err => console.error(err));
   };
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: { "image/*": [] },
-    maxSize: 5242880,
-    multiple: false
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    validateField(name, value);
-  };
-
-  const validateField = (name, value) => {
-    let newErrors = { ...errors };
-    switch (name) {
-      case "email":
-        newErrors.email = /^\S+@\S+\.\S+$/.test(value) ? "" : "Invalid email address";
-        break;
-      case "phone":
-        newErrors.phone = /^\+?[\d\s-]+$/.test(value) ? "" : "Invalid phone number";
-        break;
-      default:
-        break;
-    }
-    setErrors(newErrors);
-  };
-
-  const InfoItem = ({ icon: Icon, label, value, name }) => (
-      <Grid item xs={12} sm={6} md={4}>
-        <Box display="flex" alignItems="center" gap={2}>
-          <Icon size={20} />
-          {editMode ? (
-              <TextField
-                  fullWidth
-                  name={name}
-                  label={label}
-                  value={value}
-                  onChange={handleInputChange}
-                  error={Boolean(errors[name])}
-                  helperText={errors[name]}
-                  size="small"
-              />
-          ) : (
-              <Typography>
-                <strong>{label}:</strong> {value}
-              </Typography>
-          )}
-        </Box>
-      </Grid>
-  );
 
   return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Card sx={{ mb: 4, bgcolor: darkMode ? "grey.900" : "background.paper" }}>
-          <CoverPhoto>
-            <Box
-                sx={{
-                  position: "absolute",
-                  top: 16,
-                  right: 16,
-                  display: "flex",
-                  gap: 2
-                }}
-            >
-              <FormControlLabel
-                  control={
-                    <Switch
-                        checked={darkMode}
-                        onChange={(e) => setDarkMode(e.target.checked)}
-                    />
-                  }
-                  label="Dark Mode"
-              />
-              <IconButton
-                  onClick={() => setEditMode(!editMode)}
-                  sx={{ bgcolor: "background.paper" }}
-              >
-                <FiEdit2 />
-              </IconButton>
-            </Box>
-          </CoverPhoto>
-          <CardContent sx={{ mt: -10 }}>
-            <Grid container spacing={4}>
-              <Grid item xs={12} display="flex" justifyContent="center">
-                <div {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  <StyledAvatar src={formData.avatar} alt={formData.fullName} />
-                </div>
-              </Grid>
-              <Grid item xs={12} textAlign="center">
-                <Typography variant="h4" gutterBottom>
-                  {formData.fullName}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
-                  {formData.jobTitle} at {formData.company}
-                </Typography>
-                <Box sx={{ mt: 2, display: "flex", justifyContent: "center", gap: 1 }}>
-                  {formData.languages.map((lang) => (
-                      <Chip key={lang} label={lang} size="small" />
-                  ))}
-                </Box>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
+      <Box m="1.5rem 2.5rem">
+        <Header title={t('UserProfile.title')} subtitle="User information"/>
+        <Box sx={{ py: 4 }}>
+          <Paper elevation={3} sx={{ p: 3, position: "relative" }}>
+            <Stack spacing={4} alignItems="center">
+              <Box position="relative">
+                <ProfileAvatar src={userData.profilePic} alt="Profile Picture" />
+              </Box>
 
-        <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
-              Personal Information
-            </Typography>
+              <Typography variant="h4" fontWeight="bold">
+                {userData.fullName}
+              </Typography>
+            </Stack>
+
             <Grid container spacing={3}>
-              <InfoItem icon={FiUser} label="Full Name" value={formData.fullName} name="fullName" />
-              <InfoItem icon={FiMail} label="Email" value={formData.email} name="email" />
-              <InfoItem icon={FiPhone} label="Phone" value={formData.phone} name="phone" />
-              <InfoItem icon={FiMapPin} label="Location" value={formData.location} name="location" />
-              <InfoItem icon={FiBriefcase} label="Company" value={formData.company} name="company" />
-              <InfoItem icon={FiGlobe} label="Experience" value={formData.experience} name="experience" />
-              <InfoItem icon={FiCalendar} label="Date of Birth" value={formData.dob} name="dob" />
-            </Grid>
-          </Grid>
-
-          {editMode && (
-              <Grid item xs={12}>
-                <Alert severity="info">
-                  Click on the avatar to upload a new profile picture. Maximum file size: 5MB
-                </Alert>
+              <Grid item xs={12} display="flex" justifyContent="flex-end">
+                {!editMode ? (
+                    <Button
+                        startIcon={<FaEdit />}
+                        variant="contained"
+                        onClick={() => setEditMode(true)}
+                        sx={{
+                          backgroundColor: "#1677FF",
+                          color: "#fff",
+                          textTransform: "none",
+                          borderRadius: "6px",
+                          fontFamily: "Poppins",
+                          fontSize: "14px",
+                          fontWeight: 400,
+                          minWidth: "32px",
+                          minHeight: "32px",
+                          boxShadow: "none",
+                        }}
+                    >
+                      {t('UserProfile.Button.Edit')}
+                    </Button>
+                ) : (
+                    <Stack direction="row" spacing={2}>
+                      <Button
+                          startIcon={<FaTimes />}
+                          variant="outlined"
+                          onClick={() => setEditMode(false)}
+                          sx={{
+                            backgroundColor: "#CECECE",
+                            color: "#fff",
+                            textTransform: "none",
+                            borderRadius: "6px",
+                            fontFamily: "Poppins",
+                            fontSize: "14px",
+                            fontWeight: 400,
+                            minWidth: "32px",
+                            minHeight: "32px",
+                            boxShadow: "none",
+                          }}
+                      >
+                        {t('UserProfile.Button.Cancel')}
+                      </Button>
+                      <Button
+                          startIcon={<FaSave />}
+                          variant="contained"
+                          onClick={handleProfileUpdate}
+                          sx={{
+                            backgroundColor: "#1677FF",
+                            color: "#fff",
+                            textTransform: "none",
+                            borderRadius: "6px",
+                            fontFamily: "Poppins",
+                            fontSize: "14px",
+                            fontWeight: 400,
+                            minWidth: "32px",
+                            minHeight: "32px",
+                            boxShadow: "none",
+                          }}
+                      >
+                        {t('UserProfile.Button.Save')}
+                      </Button>
+                    </Stack>
+                )}
               </Grid>
-          )}
-        </Grid>
-      </Container>
+
+              {Object.entries(userData).map(([key, value]) => {
+                if (key !== "id" && key !== 'avatar' && key !== 'fullName') {
+                  return (
+                      <Grid item xs={12} sm={6} key={key}>
+                        <TextField
+                            fullWidth
+                            label={key.charAt(0).toUpperCase() + key.slice(1)}
+                            value={value}
+                            disabled={!editMode}
+                            onChange={(e) =>
+                                setUserData({ ...userData, [key]: e.target.value })
+                            }
+                        />
+                      </Grid>
+                  );
+                }
+                return null;
+              })}
+            </Grid>
+          </Paper>
+        </Box>
+      </Box>
   );
 };
 
-export default ProfilePage;
+export default UserProfile;

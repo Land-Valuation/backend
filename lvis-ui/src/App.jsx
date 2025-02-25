@@ -1,7 +1,7 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { useMemo, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "./theme";
 import Layout from "./scenes/layout";
@@ -14,7 +14,6 @@ import HomePage from "./scenes/home";
 import PageNotFound from "./scenes/pagenotfound"
 import RenderOnAuthenticated from "./RenderOnAuthenticated";
 import NotRenderOnRole from "./NotRenderOnRole";
-import { initializeAuth } from "./state"
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import translationEN from "./locales/en/translation.json";
@@ -29,6 +28,7 @@ import ParcelSurveyManagement from "./scenes/parcel-survey-management";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Admin from '@/scenes/admin/index.jsx';
+import UserProfile from '@/scenes/user-profile/index.jsx';
 
 const resources = {
   en: {
@@ -112,6 +112,7 @@ function App() {
                     <Admin />
                   </NotRenderOnRole>
                 } />
+                <Route path="/user-profile" element={<UserProfile />} />
                 <Route path="/tasks" element={<Utilities />} />
                 <Route path="/transactions" element={<Transactions />} />
 

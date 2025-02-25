@@ -25,6 +25,7 @@ export async function deleteUser(id) {
 }
 
 export async function registerUser(payload) {
+    // eslint-disable-next-line no-useless-catch
     try {
         return await createUser(payload);
     } catch (err) {

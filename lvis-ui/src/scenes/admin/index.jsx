@@ -6,6 +6,7 @@ import Header from '@/components/Header.jsx';
 import {Box, useTheme} from '@mui/material';
 import {useTranslation} from 'react-i18next';
 import UseTabCustom from '@/scenes/admin/user';
+import GroupManagement from '@/scenes/admin/group/index.jsx';
 
 function CustomTabPanel(props) {
   const {children, value, index, ...other} = props;
@@ -33,13 +34,32 @@ function a11yProps(index) {
   };
 }
 
+const tabNames = ['User', 'Group'];
+
+const getTabIndexFromHash = () => {
+  const hash = window.location.hash.replace('#', '');
+  const index = tabNames.indexOf(hash);
+  return index !== -1 ? index : 0;
+};
+
 export default function Admin() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(getTabIndexFromHash);
   const theme = useTheme();
   const {t} = useTranslation();
 
+
+  React.useEffect(() => {
+    const handleHashChange = () => {
+      setValue(getTabIndexFromHash());
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    window.location.hash = tabNames[newValue];
   };
 
   return (<Box m="1.5rem 2.5rem">
@@ -84,7 +104,7 @@ export default function Admin() {
                   },
                 }}
                 aria-label="basic tabs example">
-            {['User', 'Group'].map((tab, index) => (<Tab
+            {tabNames.map((tab, index) => (<Tab
                 key={index}
                 label={t(`AdminTab.${tab}.Title`)}
                 {...a11yProps(index)}
@@ -106,7 +126,7 @@ export default function Admin() {
           <UseTabCustom />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          Item Two
+          <GroupManagement />
         </CustomTabPanel>
       </Box>
     </Box>
