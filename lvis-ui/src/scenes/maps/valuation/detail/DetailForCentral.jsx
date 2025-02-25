@@ -35,8 +35,8 @@ const DetailForCentral = ({ formikRef }) => {
   const year = now.getFullYear();
   const currentYear = new Date(year, 0, 1)
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [uploadedFiles2, setUploadedFiles2] = useState([]);
+  const [uploadOverviewAttachFiles, setUploadOverviewAttachFiles] = useState([]);
+  const [uploadToLocalFiles, setUploadToLocalFiles] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [value, setValue] = useState(0);
   const [value1, setValue1] = useState(0);
@@ -174,29 +174,25 @@ const DetailForCentral = ({ formikRef }) => {
     formik.setFieldTouched('dateRange', true);
   };
 
-  const handleFileUpload = (event) => {
+  const onUploadOverviewAttachFile = (event) => {
     const files = Array.from(event.target.files);
-    setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
+    setUploadOverviewAttachFiles((prevFiles) => [...prevFiles, ...files]);
   };
-  const handleFileUpload2 = (event) => {
-    const files = Array.from(event.target.files).map((file) => ({
-      id: `${file.name}-${Date.now()}`,
-      name: file.name,
-      size: file.size,
-      uploadTime: new Date(),
-    }));
-    setUploadedFiles2((prevFiles) => [...prevFiles, ...files]);
+
+  const onUploadToLocalFile = (event) => {
+    const files = Array.from(event.target.files);
+    setUploadToLocalFiles((prevFiles) => [...prevFiles, ...files]);
   };
   
-  const handleDeleteFile = (fileId) => {
-    setUploadedFiles2((prevFiles) =>
+  const onDeleteToLocalFile = (fileId) => {
+    setUploadToLocalFiles((prevFiles) =>
       prevFiles.filter((file) => file.id !== fileId)
     );
   };
 
   const onDeleteApprovalStatus = (index) => {
-    const newFiles = uploadedFiles.filter((_, i) => i !== index);
-    setUploadedFiles(newFiles);
+    const newFiles = uploadOverviewAttachFiles.filter((_, i) => i !== index);
+    setUploadOverviewAttachFiles(newFiles);
   };
 
   const validationSchema = Yup.object({
@@ -250,9 +246,21 @@ const DetailForCentral = ({ formikRef }) => {
           committe_sdate: values.dateRange[0],
           committe_edate: values.dateRange[1],
         },
-        committeeMembers: committeeData
-      }
-      saveData(newData)
+        committeeMembers: committeeData,
+      };
+      
+      const formData = new FormData();
+      
+      formData.append('newData', JSON.stringify(newData));
+      
+      uploadOverviewAttachFiles.forEach(file => {
+        formData.append('overviewAttachFiles', file);
+      });
+      
+      uploadToLocalFiles.forEach(file => {
+        formData.append('toLocalFiles', file);
+      });
+      saveData(formData)
     },
   });
 
@@ -640,13 +648,13 @@ const DetailForCentral = ({ formikRef }) => {
                 {t("Attach")}
                 <VisuallyHiddenInput
                   type="file"
-                  onChange={handleFileUpload}
+                  onChange={onUploadOverviewAttachFile}
                   multiple
                 />
               </Button>
-              {uploadedFiles.length > 0 && (
+              {uploadOverviewAttachFiles.length > 0 && (
                 <List>
-                  {uploadedFiles.map((file, index) => {
+                  {uploadOverviewAttachFiles.map((file, index) => {
                     return (
                       <ListItem
                         key={index}
@@ -886,14 +894,14 @@ const DetailForCentral = ({ formikRef }) => {
               {t("Upload document")}
               <VisuallyHiddenInput
                 type="file"
-                onChange={handleFileUpload2}
+                onChange={onUploadToLocalFile}
                 id="fileInputId"
                 multiple
               />
             </Button>
             <CustomUploadFile
-              files={uploadedFiles2}
-              onDelete={handleDeleteFile}
+              files={uploadToLocalFiles}
+              onDelete={onDeleteToLocalFile}
             />
           </Box>
         </Box>
@@ -1321,8 +1329,8 @@ const DetailForCentral = ({ formikRef }) => {
                                     color: "#00000073",
                                   }}
                                 >
-                                  Vientiane / Phonhong
-                                </Typography>
+                                    {t("Vientiane")} / {t("Phonhong")}
+                                    </Typography>
                               </Box>
                               <Box sx={{ textAlign: "left" }}>
                                 <span style={{ fontWeight: 600 }}>A1</span>

@@ -7,6 +7,7 @@ import { IOSSwitch } from "../../../components/customMUI/CustomIOSSwitch";
 import AppliedAreasModal from "../modal/AppliedAreasModal";
 import FeatureModal from "../modal/FeatureModal";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const ListModel = () => {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ const ListModel = () => {
   const [isAppliedAreasModalOpen, setIsAppliedAreasModalOpen] = useState(false);
   const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
   const apiUrl = import.meta.env.VITE_DATA_MODEL_API_BASE_URL;
+  const navigate = useNavigate();
 
   const handleOpenAppliedAreasModal = () => {
     setIsAppliedAreasModalOpen(true);
@@ -33,6 +35,11 @@ const ListModel = () => {
   const handleCloseFeatureModal = () => {
     setIsFeatureModalOpen(false);
   };
+
+  const handleClickModel = () => {
+    navigate("/model-base/create-new-model");
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,11 +60,12 @@ const ListModel = () => {
         
         let formattedData = result.data.items.map((item)=>{
           return {
+            key: item.id,
             status: item.modelStatusType,
             // issuedToLocal: item.issuedToLocal,
-            // appliedArea: item.appliedArea,
+            appliedArea: "5/5",
             title: item.name,
-            // features: item.features,
+            features: "000,000,000,0000,000,000,000,0000",
             // adjRSquare: item.adjRSquare,
             // fStatistics: item.fStatistics,
             // region: item.region,
@@ -164,7 +172,9 @@ const ListModel = () => {
             fontSize: "12px",
             fontWeight: 400,
             fontFamily: "Poppins",
+            cursor:"pointer"
           }}
+          onClick={handleClickModel}
         >
           {status === t("approved") ? (
             <CheckCircleOutlineIcon

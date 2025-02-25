@@ -104,7 +104,7 @@ const LanguageSwitcher = ({
           <ListItemIcon>
             <KoreanIcon />
           </ListItemIcon>
-          <ListItemText>한국인</ListItemText>
+          <ListItemText>한국어</ListItemText>
         </MenuItem>
       </Menu>
     </FlexBetween>

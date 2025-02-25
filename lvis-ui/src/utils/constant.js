@@ -36,3 +36,15 @@ export const HTTP_CODE = {
   SUCCESS: 200
 }
 
+export const FORMAT_DATE = {
+  DMY : 'DD-MM-YYYY',
+  DMY2 : 'DD/MM/YYYY',
+  DMY_SLASH: 'DD/MM/YYYY',
+  MDY_HMS:'MM/DD/YYYY HH:mm:ss',
+  DMY_HMS:'DD-MM-YYYY HH:mm:ss',
+  HM_DMY:'HH:mm - DD/MM/YYYY',
+  DATE: 'YYYY-MM-DDTHH:mm:ss.ssssssZ',
+  DATE2: 'YYYY-MM-DD',
+  YYYYMMDD: "YYYYMMDD",
+  YYYY: 'YYYY'
+}
