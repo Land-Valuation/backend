@@ -10,6 +10,12 @@ export const createGroup = async (params) => {
   });
 };
 
+export const createChildGroup = async (params, parentId) => {
+  return await apiClient.post(`/user-api/groups/child/${parentId}`, params, {
+    headers: {'Content-Type': 'application/json'},
+  });
+}
+
 export const updateGroup = async (params, id) => {
   return await apiClient.put(`/user-api/groups/${id}`, params, {
     headers: {'Content-Type': 'application/json'},

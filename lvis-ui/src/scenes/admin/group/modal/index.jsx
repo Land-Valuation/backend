@@ -6,9 +6,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import {useMutation} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
 import {useTranslation} from 'react-i18next';
-import {createGroup} from '@/api/group.js';
+import {createChildGroup, createGroup} from '@/api/group.js';
+import {useEffect} from "react";
 
-const CreateGroup = ({open, onClose, createComplete}) => {
+const CreateGroup = ({open, onClose, parentId, createComplete}) => {
   const {t} = useTranslation();
 
   const validationSchema = Yup.object({
@@ -28,8 +29,16 @@ const CreateGroup = ({open, onClose, createComplete}) => {
     },
   });
 
+  useEffect(() => {
+    formik.resetForm();
+  }, [open]);
+
   const registerMutation = useMutation({
     mutationFn: async (values) => {
+      if (parentId) {
+        return await createChildGroup(values, parentId);
+      }
+
       return await createGroup(values);
     }, onSuccess: (response) => {
       const {data} = response;
@@ -214,6 +223,7 @@ CreateGroup.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   createComplete: PropTypes.func,
+  parentId: PropTypes.string
 };
 
 export default CreateGroup;
