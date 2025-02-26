@@ -1,43 +1,30 @@
 import { useState, useEffect } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-// import { useGetTransactionsQuery } from "../../../../state/prototypeApi";
-import { useGetZoneQuery } from "../../../../state/zoneApi";
 import { useTranslation } from "react-i18next";
 
-const DefineModelTable = ({ onSelectionChange }) => {
+const DefineModelTable = ({ onSelectionChange, data = [] }) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  // values to be sent to the backend
   const [sort, setSort] = useState({});
-  const [data, setData] = useState([]);
+  const [formattedData, setFormattedData] = useState([]);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 20,
   });
   const [selectedIds, setSelectedIds] = useState([]);
-  // const { data, isLoading } = useGetTransactionsQuery({
-  //   page: paginationModel.page,
-  //   pageSize: paginationModel.pageSize,
-  //   sort: JSON.stringify(sort),
-  // });
-  const { data: queryData } = useGetZoneQuery({
-    page: paginationModel.page + 1,
-    rpp: paginationModel.pageSize,
-  });
+
+  console.log(data);
   useEffect(() => {
-    if (queryData?.data?.items) {
-      const formattedData = queryData.data.items.map((item) => ({
-        id: item.zoneId,
-        name: item.zoneCode,
-        parcels: item.parcelCount,
-        province: "Vientiane",
-        district: item.districtName,
-      }));
-      console.log(formattedData);
-      setData(formattedData);
-    }
-  }, [queryData]);
+    const transformedData = data.map((item) => ({
+      id: item.id,
+      name: item.zcode,
+      // parcels: item.parcelCount,
+      province: "Vientiane",
+      // district: item.districtName,
+    }));
+    setFormattedData(transformedData);
+  }, [data]);
 
   const columns = [
     {
@@ -131,7 +118,7 @@ const DefineModelTable = ({ onSelectionChange }) => {
       <DataGrid
         // loading={isLoading || !data}
         onRowSelectionModelChange={(newSelection) => {
-          const selectedRows = data.filter((row) =>
+          const selectedRows = formattedData.filter((row) =>
             newSelection.includes(row.id)
           );
           console.log("Selected Rows:", selectedRows);
@@ -139,9 +126,9 @@ const DefineModelTable = ({ onSelectionChange }) => {
           onSelectionChange(selectedRows);
         }}
         getRowId={(row) => row.id}
-        rows={data}
+        rows={formattedData}
         columns={columns}
-        rowCount={(data && data.total) || 0} //in case of Unknown row count set it -1
+        rowCount={data.length} //in case of Unknown row count set it -1
         sortingMode="server"
         onSortModelChange={(newSortModel) => setSort(...newSortModel)}
         pagination
