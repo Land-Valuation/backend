@@ -261,7 +261,7 @@ export default function UseTabCustom() {
             },
           },
         }}
-        checkboxSelection
+        checkboxSelection={false}
         disableRowSelectionOnClick
         pageSizeOptions={[10]}
         sx={{

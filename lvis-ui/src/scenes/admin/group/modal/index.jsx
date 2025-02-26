@@ -155,7 +155,7 @@ const CreateGroup = ({open, onClose, parentId, createComplete}) => {
                 fontWeight: 'bold',
                 fontSize: '1.5em',
               }}>
-                Create Group
+                {t('AdminTab.GroupTab.Form.Create Group')}
               </Typography>
             </Box>
             <Box>
@@ -168,7 +168,6 @@ const CreateGroup = ({open, onClose, parentId, createComplete}) => {
               <Box sx={{display: 'flex', gap: 2}}>
                 <TextField
                     fullWidth
-                    id="nameCreate"
                     name="name"
                     placeholder=""
                     value={formik.values.firstname}

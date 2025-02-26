@@ -1,19 +1,17 @@
 import {useEffect, useState} from 'react';
 import {
-  Box,
-  Button,
-  TextField,
-  IconButton,
-  Popover, Typography,
+  Box, Button, TextField, IconButton, Popover, Typography,
 } from '@mui/material';
 import {DataGrid} from '@mui/x-data-grid';
-import {FaChevronRight, FaChevronDown, FaPlus} from 'react-icons/fa';
+import {
+  FaChevronRight, FaChevronDown, FaPlus, FaAlignJustify, FaTrashAlt,
+} from 'react-icons/fa';
 import {getListGroup} from '@/service/group';
 import CreateGroup from '@/scenes/admin/group/modal';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import {useTranslation} from 'react-i18next';
 import {deleteGroup, updateGroup} from '@/api/group.js';
 import {HTTP_CODE} from '@/utils/constant.js';
+import MemberModal from '@/scenes/admin/group/modal/member.jsx';
 
 function convertGroups(groups, parentId = null, level = 0) {
   return groups.map(group => {
@@ -37,6 +35,7 @@ function convertGroups(groups, parentId = null, level = 0) {
 const GroupManagement = () => {
   const [groups, setGroups] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenMember, setIsOpenMember] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [createComplete, setCreateComplete] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState({});
@@ -61,6 +60,10 @@ const GroupManagement = () => {
 
   const handleCloseModal = () => {
     setIsOpen(false);
+  };
+
+  const handleCloseModalMember = () => {
+    setIsOpenMember(false);
   };
 
   const handleSearch = (event) => {
@@ -95,13 +98,18 @@ const GroupManagement = () => {
     setIsOpen(true);
   };
 
+  const handleMember = (parentId) => {
+    setParentId(parentId);
+    setIsOpenMember(true);
+  }
+
   const handleProcessRowUpdate = async (newRow) => {
     const id = newRow.id;
     const name = newRow.name;
 
     await updateGroup({
-      name
-    }, id)
+      name,
+    }, id);
 
     return newRow;
   };
@@ -124,8 +132,10 @@ const GroupManagement = () => {
   const columns = [
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t('AdminTab.GroupTab.Form.Name'),
       editable: true,
+      sortable: false,
+      disableColumnMenu: true,
       flex: 1,
       renderCell: (params) => (<Box sx={{
         display: 'flex',
@@ -139,30 +149,49 @@ const GroupManagement = () => {
               [params.row.id]: !expandedGroups[params.row.id],
             })}
         >
-          {expandedGroups[params.row.id] ?
-              <FaChevronDown/> :
-              <FaChevronRight/>}
+          {expandedGroups[params.row.id] ? <FaChevronDown/> : <FaChevronRight/>}
         </IconButton>)}
         {params.value}
       </Box>),
     }, {
-      field: 'childCount', headerName: 'Total Child', width: 150,
+      field: 'members',
+      headerName: t('AdminTab.GroupTab.Form.Members'),
+      width: 150,
       sortable: false,
       disableColumnMenu: true,
       headerAlign: 'center',
-      renderCell: (params) => (
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-            height: '100%',
-          }}>
-            {params.row.childCount}
-          </Box>
-      ),
+      renderCell: (params) => (<Box sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+      }}>
+        <IconButton
+            onClick={() => handleMember(params.row.id)}>
+          <FaAlignJustify sx={{fontSize: '10px'}}/>
+        </IconButton>
+      </Box>),
     }, {
-      field: 'actions', headerName: '', width: 150,
+      field: 'childCount',
+      headerName: t('AdminTab.GroupTab.Form.Total Child'),
+      width: 150,
+      sortable: false,
+      disableColumnMenu: true,
+      headerAlign: 'center',
+      renderCell: (params) => (<Box sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+      }}>
+        {params.row.childCount}
+      </Box>),
+    }, {
+      field: 'actions',
+      headerName: '',
+      width: 150,
       renderCell: (params) => (<div style={{
         display: 'flex',
         justifyContent: 'center',
@@ -170,14 +199,11 @@ const GroupManagement = () => {
         width: '100%',
         height: '100%',
       }}>
-        <IconButton sx={{color: 'blue'}}
-                    onClick={() => handleAddChild(params.row.id)}>
-          <FaPlus sx={{ fontSize: '10px' }}/>
+        <IconButton onClick={() => handleAddChild(params.row.id)}>
+          <FaPlus sx={{fontSize: '10px'}}/>
         </IconButton>
-        <IconButton color="error"
-                    onClick={(event) => handleOpenConfirm(event,
-                        params.row)}>
-          <DeleteIcon/>
+        <IconButton onClick={(event) => handleOpenConfirm(event, params.row)}>
+          <FaTrashAlt/>
         </IconButton>
 
         <Popover
@@ -262,24 +288,17 @@ const GroupManagement = () => {
           sx={{
             '& .MuiDataGrid-footerContainer': {
               backgroundColor: '#fff',
-            },
-            '& .MuiCheckbox-root': {
+            }, '& .MuiCheckbox-root': {
               color: '#000',
-            },
-            '& .Mui-checked': {
+            }, '& .Mui-checked': {
               color: '#000 !important',
-            },
-            '& .MuiCheckbox-root.Mui-checked': {
+            }, '& .MuiCheckbox-root.Mui-checked': {
               backgroundColor: '#fdfdfd !important',
-            },
-            width: '100%',
-            '& .MuiDataGrid-columnHeaders': {
+            }, width: '100%', '& .MuiDataGrid-columnHeaders': {
               color: '#000000E0',
-            },
-            '& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeader': {
+            }, '& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeader': {
               background: '#FAFAFA',
-            },
-            '& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeaderTitle': {
+            }, '& .MuiDataGrid-columnHeaders .MuiDataGrid-columnHeaderTitle': {
               fontFamily: 'Poppins', fontSize: '14px', fontWeight: 500,
             },
           }}
@@ -288,6 +307,7 @@ const GroupManagement = () => {
 
     <CreateGroup open={isOpen} onClose={handleCloseModal} parentId={parentId}
                  createComplete={setCreateComplete}/>
+    <MemberModal open={isOpenMember} onClose={handleCloseModalMember} groupId={parentId}/>
   </Box>);
 };
 

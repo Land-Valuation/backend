@@ -352,11 +352,19 @@
       }
     },
     "GroupTab": {
+      "Title": {
+        "Group": "Group Members"
+      },
       "Button": {
         "Submit": "Create"
       },
       "Form": {
-        "Name": "Group Name"
+        "Name": "Group Name",
+        "Create Group": "Create Group",
+        "Members": "Members",
+        "Total Child": "Total Child",
+        "Username": "Username",
+        "Fullname": "Fullname"
       }
     },
     "Role": {

@@ -29,3 +29,7 @@ export const deleteGroup = async (id) => {
 export const getMembers = async (id) => {
   return await apiClient.get(`/user-api/groups/members/${id}`);
 };
+
+export const removeMemberFromGroup = async(memberId, groupId) => {
+  return await apiClient.delete(`/user-api/groups/members/${groupId}/${memberId}`);
+}

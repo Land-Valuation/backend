@@ -184,7 +184,6 @@ const LoginModal = ({open, onClose, onRegister}) => {
               }}>
                 <TextField
                     fullWidth
-                    id="username"
                     name="username"
                     value={formik.values.username}
                     onChange={formik.handleChange}
@@ -198,7 +197,6 @@ const LoginModal = ({open, onClose, onRegister}) => {
                 />
                 <TextField
                     fullWidth
-                    id="password"
                     name="password"
                     value={formik.values.password}
                     onChange={formik.handleChange}
