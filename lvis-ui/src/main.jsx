@@ -25,6 +25,8 @@ import { localSurveyInformationApi } from "./state/localSurveyInformationApi";
 import { provinceApi } from "./state/provinceApi";
 import { landValueZoneApi } from "./state/landValueZoneApi";
 import { parcelApi } from "./state/parcelApi";
+import { taskApi } from "./state/taskApi";
+import { zoneApi } from "./state/zoneApi";
 import { committeeStatusTypeApi } from "./state/committeeStatusTypeApi";
 import { valuationStatusTypeApi } from "./state/valuationStatusTypeApi";
 import { memberTypeApi } from "./state/memberTypeApi";
@@ -46,6 +48,8 @@ const appReducer = combineReducers( {
   [valuationStatusTypeApi.reducerPath]: valuationStatusTypeApi.reducer,
   [memberTypeApi.reducerPath]: memberTypeApi.reducer,
   [valuationMasterApi.reducerPath]: valuationMasterApi.reducer,
+  [taskApi.reducerPath]: taskApi.reducer,
+  [zoneApi.reducerPath]: zoneApi.reducer
 });
 
 const rootReducer = (state, action) => {
@@ -71,6 +75,8 @@ const store = configureStore({
     .concat(valuationStatusTypeApi.middleware)
     .concat(memberTypeApi.middleware)
     .concat(valuationMasterApi.middleware)
+    .concat(taskApi.middleware)
+    .concat(zoneApi.middleware)
 });
 
 const queryClient = new QueryClient();

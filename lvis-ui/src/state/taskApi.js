@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const taskApi = createApi({
   reducerPath: "taskApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_BASE_URL, // Cấu hình từ env
+    baseUrl: import.meta.env.VITE_DATA_MODEL_API_BASE_URL,
     // prepareHeaders: (headers) => {
     //   const cb = () => {
     //     if (UserService.isLoggedIn()) {
@@ -40,8 +40,8 @@ export const taskApi = createApi({
     }),
 
     // API lấy draft theo userId & taskId
-    getDraftByStep: builder.query({
-      query: ({ userId, taskId, step }) =>
+    getDraft: builder.query({
+      query: ({ userId, taskId }) =>
         `/drafts/${taskId}/user/${userId}`,
       providesTags: ["Draft"],
     }),
@@ -51,5 +51,5 @@ export const taskApi = createApi({
 export const {
   useCreateTaskMutation,
   useSaveDraftMutation,
-  useGetDraftByStepQuery,
+  useGetDraftQuery,
 } = taskApi;

@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import LayoutPageCommon from "../../../components/LayoutPageCommon";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Check } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import StepConnector, {
@@ -26,6 +26,11 @@ import SetModelVariables from "./set-model-variables/SetModelVariables";
 import SelectOptionalModel from "./select-optional-model/SelectOptionalModel";
 import FinalizeAdjustmentTable from "./finalize-adjustment-table/FinalizeAdjustmentTable";
 import { useTranslation } from "react-i18next";
+import {
+  useCreateTaskMutation,
+  useSaveDraftMutation,
+  useGetDraftQuery,
+} from "../../../state/taskApi";
 
 const steps = [
   "defineModelArea",
@@ -36,7 +41,7 @@ const steps = [
   "selectOptimalModel",
   "finalizeAdjustmentTable",
 ];
-const apiUrl = import.meta.env.VITE_DATA_MODEL_API_BASE_URL;
+// const apiUrl = import.meta.env.VITE_DATA_MODEL_API_BASE_URL;
 
 const StepperStyled = styled(Stepper)(({ theme }) => ({
   "& .MuiStepLabel-root": {
@@ -146,6 +151,17 @@ const ColorlibConnector = styled(StepConnector)(() => ({
 
 const CreateNewModel = () => {
   const { t } = useTranslation();
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [taskId, setTaskId] = useState(localStorage.getItem("taskId"));
+  const userId = "hoangdm";
+  const [createTask] = useCreateTaskMutation();
+  const [saveDraft] = useSaveDraftMutation();
+  const { data: existingDraftData } = useGetDraftQuery(
+    { userId, taskId },
+    { skip: !taskId }
+  );
+
+  const zoneNames = selectedRows.map((row) => row.zoneName);
 
   const breadcrumbData = [
     { name: t("home"), href: "/" },
@@ -164,98 +180,71 @@ const CreateNewModel = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-  const [selectedIds, setSelectedIds] = useState([]);
 
   const handleSelectionChange = (newSelection) => {
-    setSelectedIds(newSelection);
+    setSelectedRows(newSelection);
   };
 
   const handleSaveDraft = async () => {
+    const currentStep = activeStep + 1;
     console.log("Save draft for step:", activeStep + 1);
 
-    if (selectedIds.length === 0) {
+    if (selectedRows.length === 0) {
       console.log("No rows selected");
       return;
     }
-  
-    let taskId = localStorage.getItem("taskId"); 
-    const userId = "hoangdm";
-    const currentStep = activeStep + 1;
-  
+
     if (!taskId) {
       try {
-        const response = await fetch(`${apiUrl}/tasks`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: userId,
-            modelId: "test model 1",
-            title: "task 1",
-          }),
+        const response = await createTask({
+          userId: userId,
+          modelId: "test model 1",
+          title: "task 1",
         });
-  
-        if (!response.ok) throw new Error(`Task creation failed: ${response.status}`);
-        const data = await response.json();
-        taskId = data.id;
-        localStorage.setItem("taskId", taskId); 
-        console.log("Task created:", taskId);
+
+        if (response.error) {
+          console.error(`Task creation failed:`, response.error);
+          return;
+        }
+        const newTaskId = response.data.id;
+        setTaskId(newTaskId);
+        localStorage.setItem("taskId", newTaskId);
+        console.log("Task created:", newTaskId);
       } catch (error) {
         console.error("Error creating task:", error);
         return;
       }
     }
-  // Step 1
-    let zoneNames = [];
-    if (currentStep === 1) {
-      try {
-        for (const selectedId of selectedIds) {
-          const response = await fetch(`${apiUrl}/land-value-zones/${selectedId}`);
-          if (!response.ok) throw new Error(`Error fetching zone ${selectedId}`);
-          const data = await response.json();
-          zoneNames.push(data.zcode);
-        }
-        console.log("All Zone Names:", zoneNames);
-      } catch (error) {
-        console.error("Error fetching zone names:", error);
-      }
-    }
-  
-    let existingDraft = null;
-    try {
-      const response = await fetch(`${apiUrl}/drafts/${taskId}/user/${userId}`);
-      if (response.ok) {
-        existingDraft = await response.json();
-      }
-    } catch (error) {
-      console.error("Error fetching existing draft:", error);
-    }
-  
+
+    const zoneNames = selectedRows.map((row) => row.name);
+
     const draftUpdateData = {
       1: { modelArea: zoneNames },
-      2: { selectedParcels: ["Parcel 1", "Parcel 2"] }, 
+      2: { selectedParcels: ["Parcel 1", "Parcel 2"] },
       3: { preprocessingConfig: { normalize: true } },
       4: { verificationResults: "Passed" },
       5: { modelVariables: ["Variable A", "Variable B"] },
       6: { optimalModel: "Linear Regression" },
       7: { adjustmentTable: "Final Adjustments" },
     };
-  
+
     const draftData = {
-      ...(existingDraft?.draft_data || {}), 
+      ...(existingDraftData?.draft_data || {}),
       ...draftUpdateData[currentStep],
     };
-  
+
     try {
-      const response = await fetch(
-        `${apiUrl}/drafts/save?userId=${userId}&taskId=${taskId}&step=${currentStep}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(draftData),
-        }
-      );
-  
-      if (!response.ok) throw new Error(`Draft save failed: ${response.status}`);
+      const result = await saveDraft({
+        userId: userId,
+        taskId: taskId,
+        step: currentStep,
+        draftData: draftData,
+      });
+
+      if (result.error) {
+        console.error("Error saving draft:", result.error);
+        return;
+      }
       console.log(`Draft for step ${currentStep} saved successfully.`);
     } catch (error) {
       console.error("Error saving draft:", error);
