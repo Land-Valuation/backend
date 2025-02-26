@@ -27,6 +27,7 @@ import RequestForInvesgationDetail from "./scenes/model-base/request-for-invesga
 import ParcelSurveyManagement from "./scenes/parcel-survey-management";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LandValuationCreate from "./scenes/maps/valuation/detail/create";
 import Admin from '@/scenes/admin/index.jsx';
 import UserProfile from '@/scenes/user-profile/index.jsx';
 
@@ -105,7 +106,8 @@ function App() {
                 <Route path="/model-base/create-new-model" element={<CreateNewModel />} />
                 <Route path="/model-base/detail" element={<RequestForInvesgationDetail />} />
                 <Route path="/land-valuation" element={<Valuation />} />
-                <Route path="/land-valuation/detail" element={<LandValuationDetail />} />
+                <Route path="/land-valuation/create" element={<LandValuationCreate />} />
+                <Route path="/land-valuation/detail/:id" element={<LandValuationDetail />} />
                 <Route path="/parcel-survey-management" element={<ParcelSurveyManagement />} />
                 <Route path="/customers" element={
                   <NotRenderOnRole roles={[]} showNotAllowed>
