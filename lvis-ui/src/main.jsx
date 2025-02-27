@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import globalReducer from "./state";
+import loginReducer from "./state/loginState";
 import { Provider } from "react-redux";
 import { prototypeApi } from "./state/prototypeApi";
 import { egisApi } from "./state/egisApi";
@@ -38,6 +39,7 @@ const persistedReducer = persistReducer(persistConfig, globalReducer);
 
 const appReducer = combineReducers( {
   global: persistedReducer,
+  login: loginReducer,
   [prototypeApi.reducerPath]: prototypeApi.reducer,
   [egisApi.reducerPath]: egisApi.reducer,
   [localSurveyInformationApi.reducerPath]: localSurveyInformationApi.reducer,
@@ -53,7 +55,6 @@ const appReducer = combineReducers( {
 });
 
 const rootReducer = (state, action) => {
-
   return appReducer(state, action);
 };
 
