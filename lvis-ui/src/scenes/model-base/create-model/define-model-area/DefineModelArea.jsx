@@ -33,7 +33,7 @@ const DefineModelArea = ({ onSelectionChange }) => {
   const [tab, setTab] = useState(0);
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
-  const [zonePage] = useState(1);
+  const [zonePage, setZonePage] = useState(1);
   const [zonePageSize, setZonePageSize] = useState(10);
   const [landValueZones, setLandValueZones] = useState([]);
   const [parcels, setParcels] = useState([]);
@@ -42,7 +42,7 @@ const DefineModelArea = ({ onSelectionChange }) => {
   const { data: allProvinceData } = useGetAllProvincesQuery();
   const { data: listLandValueZonesByDistrictData } =
     useGetListLandValueZonesByDistrictQuery(
-      { distCode: district, page: zonePage, size: zonePageSize },
+      { distCode: district, page: zonePage + 1, size: zonePageSize },
       { skip: !district }
     );
   const { data: listParcelByZoneIdData } = useGetParcelDTOsByZoneIdQuery(
@@ -58,19 +58,24 @@ const DefineModelArea = ({ onSelectionChange }) => {
   }, [allProvinceData]);
 
   useEffect(() => {
-    setLandValueZones([]); 
+    setLandValueZones([]);
     if (listLandValueZonesByDistrictData?.data) {
       setLandValueZones(listLandValueZonesByDistrictData.data);
     }
-  }, [listLandValueZonesByDistrictData, district]); 
-  
+  }, [listLandValueZonesByDistrictData, district]);
+
   useEffect(() => {
     setParcels(listParcelByZoneIdData?.data ?? []);
   }, [listParcelByZoneIdData]);
 
+  const handlePaginationModelChange = (newPaginationModel) => {
+    setZonePage(newPaginationModel.page);
+    setZonePageSize(newPaginationModel.pageSize);
+  };
+
   const handleDistrictChange = (event) => {
     setDistrict(event.target.value);
-    setZonePageSize(20);
+    setZonePageSize(10);
     setZoneId("");
   };
 
@@ -253,6 +258,9 @@ const DefineModelArea = ({ onSelectionChange }) => {
           <DefineModelTable
             onSelectionChange={onSelectionChange}
             data={landValueZones}
+            paginationModel={{ page: zonePage, pageSize: zonePageSize }}
+            onPaginationModelChange={handlePaginationModelChange}
+            totalRows={listLandValueZonesByDistrictData?.totalElements || 0}
           />
         ) : (
           <DefineModelMap />
