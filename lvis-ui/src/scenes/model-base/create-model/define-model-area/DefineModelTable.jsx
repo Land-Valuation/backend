@@ -1,58 +1,36 @@
 import { useState, useEffect } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useGetTransactionsQuery } from "../../../../state/prototypeApi";
 import { useTranslation } from "react-i18next";
 
-const DefineModelTable = ({ onSelectionChange }) => {
+const DefineModelTable = ({
+  onSelectionChange,
+  data = [],
+  totalRows = 0,
+  paginationModel,
+  onPaginationModelChange,
+}) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  // values to be sent to the backend
   const [sort, setSort] = useState({});
-  const apiUrl = import.meta.env.VITE_DATA_MODEL_API_BASE_URL;
-  const [data, setData] = useState([]);
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 20,
-  });
-  // const { data, isLoading } = useGetTransactionsQuery({
-  //   page: paginationModel.page,
-  //   pageSize: paginationModel.pageSize,
-  //   sort: JSON.stringify(sort),
+  const [formattedData, setFormattedData] = useState([]);
+  // const [paginationModel, setPaginationModel] = useState({
+  //   page: 0,
+  //   pageSize: 20,
   // });
+  const [selectedIds, setSelectedIds] = useState([]);
+
+  console.log(data);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/parcels/zone?page=1&rpp=10`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText);
-        }
-        const result = await response.json();
-        console.log(result);
-
-        let formattedData = result.data.items.map((item) => {
-          return {
-            id: item.zoneId,
-            name: item.zoneCode,
-            parcels: item.parcelCount,
-            province: "Vientiane",
-            district: item.districtName
-          };
-        });
-        console.log(formattedData);
-
-        setData(formattedData);
-      } catch (error) {
-        console.error("There was a problem with the fetch operation:", error);
-      }
-    };
-    fetchData();
-  }, []);
+    const transformedData = data.map((item) => ({
+      id: item.id,
+      name: item.zcode,
+      // parcels: item.parcelCount,
+      province: "Vientiane",
+      // district: item.districtName,
+    }));
+    setFormattedData(transformedData);
+  }, [data]);
 
   const columns = [
     {
@@ -146,22 +124,24 @@ const DefineModelTable = ({ onSelectionChange }) => {
       <DataGrid
         // loading={isLoading || !data}
         onRowSelectionModelChange={(newSelection) => {
-          console.log("Selected:", newSelection); // Debug
-          onSelectionChange(newSelection)
+          const selectedRows = formattedData.filter((row) =>
+            newSelection.includes(row.id)
+          );
+          console.log("Selected Rows:", selectedRows);
+          setSelectedIds(newSelection);
+          onSelectionChange(selectedRows);
         }}
         getRowId={(row) => row.id}
-        rows={data}
+        rows={formattedData}
         columns={columns}
-        rowCount={(data && data.total) || 0} //in case of Unknown row count set it -1
+        rowCount={totalRows} //in case of Unknown row count set it -1
         sortingMode="server"
         onSortModelChange={(newSortModel) => setSort(...newSortModel)}
         pagination
         paginationMode="server"
         pageSizeOptions={[10, 20, 50]}
         paginationModel={paginationModel}
-        onPaginationModelChange={(newPaginationModel) =>
-          setPaginationModel(newPaginationModel)
-        }
+        onPaginationModelChange={onPaginationModelChange}
         checkboxSelection
         disableRowSelectionOnClick
         slotProps={{
