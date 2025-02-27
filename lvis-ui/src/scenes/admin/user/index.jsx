@@ -110,7 +110,6 @@ export default function UseTabCustom() {
       );
     }
   }, [debouncedSearch, rows]);
-
   const columns = [
     {
       field: 'username',
@@ -132,6 +131,12 @@ export default function UseTabCustom() {
       headerName: t('AdminTab.User.Form.Label.Lastname'),
       flex: 1,
       editable: false,
+    }, {
+      field: 'enabled',
+      headerName: t('AdminTab.User.Form.Label.Status'),
+      flex: 1,
+      editable: false,
+      valueGetter: (value, row) => `${row.enabled === true ? 'Active' : 'Inactive'}`,
     }, {
       field: 'fullName',
       headerName: t('AdminTab.User.Form.Label.Fullname'),
@@ -246,7 +251,7 @@ export default function UseTabCustom() {
             boxShadow: "none",
           }}
       >
-        {t('AdminTab.User.Create')}
+        {t('AdminTab.User.Form.Button.Register')}
       </Button>
     </Box>
 

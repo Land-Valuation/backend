@@ -339,7 +339,10 @@
           "Groupname": "Group name",
           "Rolename": "Role name",
           "JoinRole": "Assign Role",
-          "ChooseRole": "CHOOSE ROLE"
+          "ChooseRole": "CHOOSE ROLE",
+          "Status": "Status",
+          "Active": "Active",
+          "Inactive": "Inactive"
         },
         "Validate" : {
           "required": "is required",
@@ -380,6 +383,26 @@
       "Edit": "Edit Profile",
       "Save": "Save",
       "Cancel" : "Cancel"
+    }
+  },
+  "ChangePassword" : {
+    "title": "CHANGE PASSWORD",
+    "Button" : {
+      "Edit": "Edit Profile",
+      "Save": "Change Password"
+    },
+    "Label": {
+      "NewPassword": "New Password",
+      "ReNewPassword": "Confirm Password"
+    },
+    "Validate" : {
+      "required": "is required",
+      "must match": "must match",
+      "confirm required" : "Please confirm your password"
+    },
+    "Message" : {
+      "ChangePasswordSuccess": "Change password success",
+      "ChangePasswordFailed": "Change password fail"
     }
   },
   "Create survey": "Create survey",

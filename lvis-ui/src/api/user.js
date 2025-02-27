@@ -20,6 +20,18 @@ export const updateUser = async (params, id) => {
   });
 };
 
+export const updateProfile = async (params) => {
+  return await apiClient.put(`/user-api/users/change-profile`, params, {
+    headers: {'Content-Type': 'application/json'},
+  });
+};
+
+export const changePassword = async (params) => {
+  return await apiClient.put(`/user-api/users/change-password`, params, {
+    headers: {'Content-Type': 'application/json'},
+  });
+};
+
 export const deleteOneUser = async (id) => {
   return await apiClient.delete(`/user-api/users/${id}`);
 };

@@ -11,7 +11,7 @@ import {
 import {styled} from '@mui/system';
 import {FaEdit, FaSave, FaTimes} from 'react-icons/fa';
 import {useEffect, useState} from 'react';
-import {getUser, updateUser} from '@/api/user.js';
+import {getUser, updateProfile} from '@/api/user.js';
 import UserService from '@/state/UserService';
 import Header from '@/components/Header.jsx';
 import {useTranslation} from 'react-i18next';
@@ -46,15 +46,16 @@ const UserProfile = () => {
         userName: data.username,
         email: data.email ?? '',
         role: `${RoleName.charAt(0).toUpperCase()}${RoleName.slice(1)}`,
-        avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d',
-        status: 'Enabled',
+        avatar: '',
+        enabled: data.enabled,
+        status: data.enabled ? 'Enabled' : 'Disabled',
       });
     });
   }, []);
 
   const handleProfileUpdate = () => {
-    updateUser(
-        {firstname: userData.firstName, lastname: userData.lastName},
+    updateProfile(
+        {firstname: userData.firstName, lastname: userData.lastName, enabled: userData.enabled},
         userData.id,
     ).then(() => {
       setUserData({
@@ -150,7 +151,7 @@ const UserProfile = () => {
               {Object.entries(userData).map(([key, value]) => {
                 if (key !== 'id' && key !== 'avatar' && key !== 'fullName') {
                   return (
-                      <Grid item xs={12} sm={6} key={key}>
+                      <Grid item xs={12} sm={6} key={key} sx={{ maxWidth: 300 }}>
                         <TextField
                             fullWidth
                             label={key.charAt(0).toUpperCase() + key.slice(1)}

@@ -30,6 +30,7 @@ import "react-toastify/dist/ReactToastify.css";
 import LandValuationCreate from "./scenes/maps/valuation/detail/create";
 import Admin from '@/scenes/admin/index.jsx';
 import UserProfile from '@/scenes/user-profile/index.jsx';
+import ChangePassword from '@/scenes/change-password/index.jsx';
 
 const resources = {
   en: {
@@ -115,6 +116,7 @@ function App() {
                   </NotRenderOnRole>
                 } />
                 <Route path="/user-profile" element={<UserProfile />} />
+                <Route path="/change-password" element={<ChangePassword />} />
                 <Route path="/tasks" element={<Utilities />} />
                 <Route path="/transactions" element={<Transactions />} />
 

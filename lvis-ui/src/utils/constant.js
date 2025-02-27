@@ -13,6 +13,11 @@ export const USER_ROLES = {
   ROLE_CENTRAL_USER: 'ROLE_CENTRAL_USER',
 }
 
+export const ADMIN_ROLES = {
+  ROLE_ADMIN: 'admin',
+  ROLE_SUPER_ADMIN: 'Super Admin',
+}
+
 export const MODEL_BASE_MODE = {
   LOCAL: 'LOCAL',
   CENTRAL: 'CENTRAL',

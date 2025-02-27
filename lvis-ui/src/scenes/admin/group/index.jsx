@@ -4,14 +4,15 @@ import {
 } from '@mui/material';
 import {DataGrid} from '@mui/x-data-grid';
 import {
-  FaChevronRight, FaChevronDown, FaPlus, FaAlignJustify, FaTrashAlt,
+  FaChevronRight, FaChevronDown, FaPlus, FaTrashAlt, FaUsers
 } from 'react-icons/fa';
 import {getListGroup} from '@/service/group';
 import CreateGroup from '@/scenes/admin/group/modal';
 import {useTranslation} from 'react-i18next';
 import {deleteGroup, updateGroup} from '@/api/group.js';
-import {HTTP_CODE} from '@/utils/constant.js';
+import {ADMIN_ROLES, HTTP_CODE} from '@/utils/constant.js';
 import MemberModal from '@/scenes/admin/group/modal/member.jsx';
+import UserService from '@/state/UserService.js';
 
 function convertGroups(groups, parentId = null, level = 0) {
   return groups.map(group => {
@@ -43,6 +44,10 @@ const GroupManagement = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const {t} = useTranslation();
+
+  const userRole = UserService.getTokenParsed().realm_access.roles;
+  const hasAdminRole = userRole.some(
+      (role) => role.includes(ADMIN_ROLES.ROLE_SUPER_ADMIN));
 
   function getList() {
     getListGroup(true).then((response) => {
@@ -101,15 +106,18 @@ const GroupManagement = () => {
   const handleMember = (parentId) => {
     setParentId(parentId);
     setIsOpenMember(true);
-  }
+  };
 
   const handleProcessRowUpdate = async (newRow) => {
     const id = newRow.id;
     const name = newRow.name;
+    const level = newRow.level;
 
-    await updateGroup({
-      name,
-    }, id);
+    if (level !== 0) {
+      await updateGroup({
+        name,
+      }, id);
+    }
 
     return newRow;
   };
@@ -169,7 +177,7 @@ const GroupManagement = () => {
       }}>
         <IconButton
             onClick={() => handleMember(params.row.id)}>
-          <FaAlignJustify sx={{fontSize: '10px'}}/>
+          <FaUsers sx={{fontSize: '10px'}}/>
         </IconButton>
       </Box>),
     }, {
@@ -199,46 +207,52 @@ const GroupManagement = () => {
         width: '100%',
         height: '100%',
       }}>
-        <IconButton onClick={() => handleAddChild(params.row.id)}>
-          <FaPlus sx={{fontSize: '10px'}}/>
-        </IconButton>
-        <IconButton onClick={(event) => handleOpenConfirm(event, params.row)}>
-          <FaTrashAlt/>
-        </IconButton>
+        {(params.row.level !== 0 && params.row.level !== 2) && (<>
+              <IconButton onClick={() => handleAddChild(params.row.id)}>
+                <FaPlus sx={{fontSize: '10px'}}/>
+              </IconButton>
+              <IconButton
+                  onClick={(event) => handleOpenConfirm(event, params.row)}>
+                <FaTrashAlt/>
+              </IconButton>
 
-        <Popover
-            open={Boolean(anchorEl)}
-            anchorEl={anchorEl}
-            onClose={handleCloseConfirm}
-            anchorOrigin={{
-              vertical: 'center', horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'center', horizontal: 'left',
-            }}
-        >
-          <div style={{
-            padding: '10px', display: 'flex', flexDirection: 'column',
-          }}>
-            <Typography>{t('AdminTab.User.Message.Delete Confirm')}</Typography>
-            <div style={{
-              display: 'flex', justifyContent: 'flex-end', marginTop: '10px',
-            }}>
-              <Button size="small" color="primary"
-                      onClick={handleCloseConfirm} sx={{color: '#000'}}>
-                {t('AdminTab.User.Form.Button.Cancel')}
-              </Button>
-              <Button
-                  size="small"
-                  color="error"
-                  onClick={handleDeleteGroup}
-                  sx={{marginLeft: '10px'}}
+              <Popover
+                  open={Boolean(anchorEl)}
+                  anchorEl={anchorEl}
+                  onClose={handleCloseConfirm}
+                  anchorOrigin={{
+                    vertical: 'center', horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'center', horizontal: 'left',
+                  }}
               >
-                {t('AdminTab.User.Form.Button.Delete')}
-              </Button>
-            </div>
-          </div>
-        </Popover>
+                <div style={{
+                  padding: '10px', display: 'flex', flexDirection: 'column',
+                }}>
+                  <Typography>{t(
+                      'AdminTab.User.Message.Delete Confirm')}</Typography>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginTop: '10px',
+                  }}>
+                    <Button size="small" color="primary"
+                            onClick={handleCloseConfirm} sx={{color: '#000'}}>
+                      {t('AdminTab.User.Form.Button.Cancel')}
+                    </Button>
+                    <Button
+                        size="small"
+                        color="error"
+                        onClick={handleDeleteGroup}
+                        sx={{marginLeft: '10px'}}
+                    >
+                      {t('AdminTab.User.Form.Button.Delete')}
+                    </Button>
+                  </div>
+                </div>
+              </Popover>
+            </>)}
       </div>),
     }];
 
@@ -255,25 +269,28 @@ const GroupManagement = () => {
           size="small"
           sx={{width: 200}}
       />
-      <Button
-          variant="contained"
-          onClick={() => setIsOpen(true)}
-          size="small"
-          sx={{
-            backgroundColor: '#1677FF',
-            color: '#fff',
-            textTransform: 'none',
-            borderRadius: '6px',
-            fontFamily: 'Poppins',
-            fontSize: '14px',
-            fontWeight: 400,
-            minWidth: '32px',
-            minHeight: '32px',
-            boxShadow: 'none',
-          }}
-      >
-        Create
-      </Button>
+      {hasAdminRole && (<Button
+              variant="contained"
+              onClick={() => {
+                setIsOpen(true);
+                setParentId(null);
+              }}
+              size="small"
+              sx={{
+                backgroundColor: '#1677FF',
+                color: '#fff',
+                textTransform: 'none',
+                borderRadius: '6px',
+                fontFamily: 'Poppins',
+                fontSize: '14px',
+                fontWeight: 400,
+                minWidth: '32px',
+                minHeight: '32px',
+                boxShadow: 'none',
+              }}
+          >
+            {t('AdminTab.GroupTab.Button.Submit')}
+          </Button>)}
     </Box>
 
     <Box sx={{flex: 1, width: '100%'}}>
@@ -307,7 +324,8 @@ const GroupManagement = () => {
 
     <CreateGroup open={isOpen} onClose={handleCloseModal} parentId={parentId}
                  createComplete={setCreateComplete}/>
-    <MemberModal open={isOpenMember} onClose={handleCloseModalMember} groupId={parentId}/>
+    <MemberModal open={isOpenMember} onClose={handleCloseModalMember}
+                 groupId={parentId}/>
   </Box>);
 };
 

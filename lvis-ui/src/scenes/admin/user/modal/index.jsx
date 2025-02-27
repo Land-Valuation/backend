@@ -24,6 +24,9 @@ import {getRoleList} from '@/service/role.js';
 import {getListGroup} from '@/service/group.js';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
+import Switch from '@mui/material/Switch';
 
 const UserModal = ({open, onClose, title, userId, createComplete}) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -90,6 +93,7 @@ const UserModal = ({open, onClose, title, userId, createComplete}) => {
       firstname: '',
       lastname: '',
       email: '',
+      enabled: false,
       password: '',
       groupId: '',
       roleId: '',
@@ -118,6 +122,7 @@ const UserModal = ({open, onClose, title, userId, createComplete}) => {
         lastname: data?.lastName || '',
         email: data?.email || '',
         password: '',
+        enabled: data?.enabled || false,
         groupId: data?.groupIds?.[0] || '',
         roleId: data?.roleIds?.[0].id || '',
       });
@@ -149,6 +154,7 @@ const UserModal = ({open, onClose, title, userId, createComplete}) => {
       const {data} = response;
 
       toast.success(data.message);
+      createComplete(true);
 
       formik.resetForm();
       onClose();
@@ -156,6 +162,54 @@ const UserModal = ({open, onClose, title, userId, createComplete}) => {
       toast.error(error?.response.data.message);
     },
   });
+
+  const AntSwitch = styled(Switch)(({ theme }) => ({
+    width: 40, // Tăng chiều rộng
+    height: 22, // Tăng chiều cao
+    padding: 0,
+    display: 'flex',
+    '&:active': {
+      '& .MuiSwitch-thumb': {
+        width: 18, // Tăng kích thước thumb khi active
+      },
+      '& .MuiSwitch-switchBase.Mui-checked': {
+        transform: 'translateX(14px)', // Điều chỉnh khoảng di chuyển khi checked
+      },
+    },
+    '& .MuiSwitch-switchBase': {
+      padding: 3, // Điều chỉnh padding để tránh thumb bị vỡ
+      '&.Mui-checked': {
+        transform: 'translateX(18px)', // Điều chỉnh vị trí khi checked
+        color: '#fff',
+        '& + .MuiSwitch-track': {
+          opacity: 1,
+          backgroundColor: '#1890ff',
+          ...theme.applyStyles?.('dark', {
+            backgroundColor: '#177ddc',
+          }),
+        },
+      },
+    },
+    '& .MuiSwitch-thumb': {
+      boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+      width: 16, // Tăng kích thước thumb
+      height: 16,
+      borderRadius: 8,
+      transition: theme.transitions.create(['width'], {
+        duration: 200,
+      }),
+    },
+    '& .MuiSwitch-track': {
+      borderRadius: 22 / 2,
+      opacity: 1,
+      backgroundColor: 'rgba(0,0,0,.25)',
+      boxSizing: 'border-box',
+      ...theme.applyStyles?.('dark', {
+        backgroundColor: 'rgba(255,255,255,.35)',
+      }),
+    },
+  }));
+
 
   return (<Box sx={{
     display: open ? 'block' : 'none',
@@ -340,6 +394,22 @@ const UserModal = ({open, onClose, title, userId, createComplete}) => {
                       },
                     }}
                 />
+              </Box>
+            </Box>
+
+            <Box>
+              <Typography component="label" htmlFor="firstName"
+                          sx={{display: 'block', mb: 0.5}}>
+                <Typography component="span"
+                            sx={{color: 'red'}}>*</Typography> {t(
+                  'AdminTab.User.Form.Label.Status')}
+              </Typography>
+              <Box sx={{display: 'flex', gap: 2}}>
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                  <AntSwitch checked={formik.values.enabled}
+                             onChange={(event) => formik.setFieldValue('enabled', event.target.checked)}
+                             inputProps={{ 'aria-label': 'ant design' }} />
+                </Stack>
               </Box>
             </Box>
 

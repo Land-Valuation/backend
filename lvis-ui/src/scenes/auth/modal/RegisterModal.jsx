@@ -47,7 +47,9 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
 
   const registerMutation = useMutation({
     mutationFn: async (values) => {
-      return await registerUser(_.omit(values, ["confirmPassword"]));
+      const params = { ...values, enabled: true};
+
+      return await registerUser(_.omit(params, ["confirmPassword"]));
     },
     onSuccess: (response) => {
       const {data} = response;
