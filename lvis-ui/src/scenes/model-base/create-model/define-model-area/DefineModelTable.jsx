@@ -3,15 +3,21 @@ import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
 
-const DefineModelTable = ({ onSelectionChange, data = [] }) => {
+const DefineModelTable = ({
+  onSelectionChange,
+  data = [],
+  totalRows = 0,
+  paginationModel,
+  onPaginationModelChange,
+}) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [sort, setSort] = useState({});
   const [formattedData, setFormattedData] = useState([]);
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 20,
-  });
+  // const [paginationModel, setPaginationModel] = useState({
+  //   page: 0,
+  //   pageSize: 20,
+  // });
   const [selectedIds, setSelectedIds] = useState([]);
 
   console.log(data);
@@ -128,16 +134,14 @@ const DefineModelTable = ({ onSelectionChange, data = [] }) => {
         getRowId={(row) => row.id}
         rows={formattedData}
         columns={columns}
-        rowCount={data.length} //in case of Unknown row count set it -1
+        rowCount={totalRows} //in case of Unknown row count set it -1
         sortingMode="server"
         onSortModelChange={(newSortModel) => setSort(...newSortModel)}
         pagination
         paginationMode="server"
         pageSizeOptions={[10, 20, 50]}
         paginationModel={paginationModel}
-        onPaginationModelChange={(newPaginationModel) =>
-          setPaginationModel(newPaginationModel)
-        }
+        onPaginationModelChange={onPaginationModelChange}
         checkboxSelection
         disableRowSelectionOnClick
         slotProps={{
