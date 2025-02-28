@@ -1,13 +1,9 @@
 import React from "react";
-import Header from "../../components/Header";
-import {
-  Box,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
-import CrudDemo from "./CrudDemo"
-import Map from "../../components/map/Map"
-import { singlePostData } from "../../data/mockMapData";
+import Header from '../../components/Header';
+import {Box, useMediaQuery, useTheme} from '@mui/material';
+import CrudDemo from './CrudDemo';
+import Map from '../../components/map/Map';
+import {singlePostData} from '../../data/mockMapData';
 import UserService from "../../state/UserService";
 import { t } from "i18next";
 
@@ -32,7 +28,7 @@ const Egis0 = () => {
           gridColumn="span 6"
           gridRow="span 3"
         >
-          <Map items={[singlePostData]} />  
+          <Map items={[singlePostData]} />
         </Box>
         <Box
           gridColumn="span 6"
@@ -40,7 +36,7 @@ const Egis0 = () => {
           backgroundColor={theme.palette.background.alt}
           borderRadius="5px"
         >
-          <CrudDemo/>       
+          <CrudDemo/>
         </Box>
       </Box>
     </Box>

@@ -7,7 +7,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CloseIcon from '@mui/icons-material/Close';
 import { registerUser } from '@/state/authService';
 import { useMutation } from "@tanstack/react-query";
-import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
@@ -48,7 +47,9 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
 
   const registerMutation = useMutation({
     mutationFn: async (values) => {
-      return await registerUser(_.omit(values, ["confirmPassword"]));
+      const params = { ...values, enabled: true};
+
+      return await registerUser(_.omit(params, ["confirmPassword"]));
     },
     onSuccess: (response) => {
       const {data} = response;
@@ -198,7 +199,6 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
                 </Typography>
                 <TextField
                   fullWidth
-                  id="usernameRegister"
                   name="username"
                   value={formik.values.username}
                   onChange={formik.handleChange}
@@ -215,7 +215,6 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <TextField
                       fullWidth
-                      id="firstNameRegister"
                       name="firstname"
                       placeholder="First Name"
                       value={formik.values.firstname}
@@ -232,7 +231,6 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
 
                   <TextField
                       fullWidth
-                      id="lastNameRegister"
                       name="lastname"
                       placeholder="Last Name"
                       value={formik.values.lastname}
@@ -254,7 +252,6 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
                 </Typography>
                 <TextField
                   fullWidth
-                  id="email"
                   name="email"
                   value={formik.values.email}
                   onChange={formik.handleChange}
@@ -274,7 +271,6 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
                   </Typography>
                     <TextField
                     fullWidth
-                    id="passwordRegister"
                     name="password"
                     value={formik.values.password}
                     onChange={formik.handleChange}
@@ -308,7 +304,6 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
                   </Typography>
                     <TextField
                     fullWidth
-                    id="confirmPassword"
                     name="confirmPassword"
                     value={formik.values.confirmPassword}
                     onChange={formik.handleChange}

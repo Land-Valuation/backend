@@ -1,12 +1,11 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { useMemo, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "./theme";
 import Layout from "./scenes/layout";
 import Dashboard from "./scenes/dashboard";
-import Customers from "./scenes/customers";
 import Transactions from "./scenes/transactions";
 import Valuation from "./scenes/maps/valuation";
 import LandValuationDetail from "./scenes/maps/valuation/detail/detail";
@@ -15,7 +14,6 @@ import HomePage from "./scenes/home";
 import PageNotFound from "./scenes/pagenotfound"
 import RenderOnAuthenticated from "./RenderOnAuthenticated";
 import NotRenderOnRole from "./NotRenderOnRole";
-import { initializeAuth } from "./state"
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import translationEN from "./locales/en/translation.json";
@@ -30,6 +28,9 @@ import ParcelSurveyManagement from "./scenes/parcel-survey-management";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LandValuationCreate from "./scenes/maps/valuation/detail/create";
+import Admin from '@/scenes/admin/index.jsx';
+import UserProfile from '@/scenes/user-profile/index.jsx';
+import ChangePassword from '@/scenes/change-password/index.jsx';
 
 const resources = {
   en: {
@@ -56,12 +57,6 @@ i18n.use(initReactI18next).init({
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    // Dispatch the action once when the component mounts
-    dispatch(initializeAuth());
-  }, [dispatch]);
 
   const storedLanguage = localStorage.getItem("language");
   useEffect(() => {
@@ -117,9 +112,11 @@ function App() {
                 <Route path="/parcel-survey-management" element={<ParcelSurveyManagement />} />
                 <Route path="/customers" element={
                   <NotRenderOnRole roles={[]} showNotAllowed>
-                    <Customers />
+                    <Admin />
                   </NotRenderOnRole>
                 } />
+                <Route path="/user-profile" element={<UserProfile />} />
+                <Route path="/change-password" element={<ChangePassword />} />
                 <Route path="/tasks" element={<Utilities />} />
                 <Route path="/transactions" element={<Transactions />} />
 

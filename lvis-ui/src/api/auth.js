@@ -1,7 +1,5 @@
 import axios from 'axios';
-
-const BASE_URL = import.meta.env.VITE_REACT_APP_KEYCLOAK_URL;
-const USER_SERVICE_URL = import.meta.env.VITE_REACT_APP_USER_SERVICE_URL;
+import {BASE_URL, USER_SERVICE_URL} from '@/utils/constant';
 
 export const login = async (params) => {
   return await axios.post(

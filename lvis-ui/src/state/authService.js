@@ -1,11 +1,9 @@
-import axios from 'axios';
 import { setAuthState, logout } from '@/state';
 import {login, register} from "@/api/auth"
-
-const realm = import.meta.env.VITE_REACT_APP_REALM_NAME;
 const clientId = import.meta.env.VITE_REACT_APP_CLIENT_ID;
 
 export const loginUser = ({ username, password }) => async (dispatch) => {
+    // eslint-disable-next-line no-useless-catch
     try {
         const response = await login({
             client_id: clientId,
@@ -31,6 +29,7 @@ export const loginUser = ({ username, password }) => async (dispatch) => {
 };
 
 export const registerUser = async (params) => {
+    // eslint-disable-next-line no-useless-catch
     try {
         return await register(params);
     } catch (err) {

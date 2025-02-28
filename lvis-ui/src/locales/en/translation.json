@@ -311,6 +311,100 @@
   "View more": "View more",
   "Survey Information": "Survey Information",
   "Add new": "Add new",
+  "AdminTab" : {
+    "User": {
+      "Title" : "User",
+      "Search" : "Search ...",
+      "Create" : "Create User",
+      "Form" : {
+        "Button": {
+          "Cancel" : "Cancel",
+          "Delete" : "Delete",
+          "Assign" : "Assign",
+          "Register": "Create",
+          "Edit" : "Edit"
+        },
+        "Label": {
+          "Create": "Create User",
+          "Update": "Update User",
+          "Username": "Username",
+          "Fullname": "Full name",
+          "Firstname": "First name",
+          "Lastname": "Last name",
+          "Email": "Email",
+          "Password": "Password",
+          "Repassword": "Re-enter Password",
+          "Joingroup": "Join Group",
+          "Choosegroup": "CHOOSE GROUP",
+          "Groupname": "Group name",
+          "Rolename": "Role name",
+          "JoinRole": "Assign Role",
+          "ChooseRole": "CHOOSE ROLE",
+          "Status": "Status",
+          "Active": "Active",
+          "Inactive": "Inactive"
+        },
+        "Validate" : {
+          "required": "is required",
+          "email": "is not valid email",
+          "passwordMissMatch": "not match with password"
+        }
+      },
+      "Message": {
+        "Delete Confirm" : "Are you sure delete it ?"
+      }
+    },
+    "GroupTab": {
+      "Title": {
+        "Group": "Group Members"
+      },
+      "Button": {
+        "Submit": "Create"
+      },
+      "Form": {
+        "Name": "Group Name",
+        "Create Group": "Create Group",
+        "Members": "Members",
+        "Total Child": "Total Child",
+        "Username": "Username",
+        "Fullname": "Fullname"
+      }
+    },
+    "Role": {
+      "Title": "Roles"
+    },
+    "Group" : {
+      "Title": "Groups"
+    }
+  },
+  "UserProfile" : {
+    "title": "USER PROFILE",
+    "Button" : {
+      "Edit": "Edit Profile",
+      "Save": "Save",
+      "Cancel" : "Cancel"
+    }
+  },
+  "ChangePassword" : {
+    "title": "CHANGE PASSWORD",
+    "Button" : {
+      "Edit": "Edit Profile",
+      "Save": "Change Password"
+    },
+    "Label": {
+      "NewPassword": "New Password",
+      "ReNewPassword": "Confirm Password"
+    },
+    "Validate" : {
+      "required": "is required",
+      "must match": "must match",
+      "confirm required" : "Please confirm your password"
+    },
+    "Message" : {
+      "ChangePasswordSuccess": "Change password success",
+      "ChangePasswordFailed": "Change password fail"
+    }
+  },
   "Create survey": "Create survey",
   "in Lao PDR": "in Lao PDR",
   "Zone name or Village name": "Zone name or Village name",

@@ -1,9 +1,9 @@
-import { Box, Typography, useTheme, Link } from "@mui/material";
-import TopBox from "../../components/TopBox";
-import Sidebar from "../../components/Sidebar";
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import { useIsAuthenticated } from "@/hooks/useAuth";
+import {Box, Typography, useTheme, Link } from '@mui/material';
+import TopBox from '../../components/TopBox';
+import Sidebar from '../../components/Sidebar';
+import {useTranslation} from 'react-i18next';
+import {useState} from 'react';
+import {useIsAuthenticated} from '@/hooks/useAuth';
 import RequireLogin from  "@/scenes/auth/modal/RequireLogin";
 
 const notifications = [

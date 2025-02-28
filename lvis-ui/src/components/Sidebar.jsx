@@ -17,7 +17,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import UserService from "../state/UserService";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./LanguageSwitcher";
-import { LANGUAGE } from "../utils/constant";
+import {ADMIN_ROLES, LANGUAGE} from '../utils/constant';
 import {logoutUser} from '@/state/authService';
 import {useDispatch} from 'react-redux';
 
@@ -26,7 +26,7 @@ const drawerWidth = 64;
 function Sidebar() {
   const dispatch = useDispatch();
   const username = UserService.getUsername();
-  const email = UserService.getUsername();
+  const email = UserService.getEmail();
   const navigate = useNavigate();
   const location = useLocation();
   const {i18n, t} = useTranslation();
@@ -36,6 +36,10 @@ function Sidebar() {
   const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
 
   const [selectedLanguage, setSelectedLanguage] = useState("");
+  const userRole = UserService.getTokenParsed().realm_access.roles;
+  const hasAdminRole = userRole.some(
+      (role) => role.includes(ADMIN_ROLES.ROLE_SUPER_ADMIN) || role.includes(ADMIN_ROLES.ROLE_ADMIN)
+  );
 
   useEffect(() => {
     if (localStorage.getItem("language")) {
@@ -75,28 +79,15 @@ function Sidebar() {
 
   const menuItems = [
     { src: "/home ico.svg", alt: t("home"), path: "/home" },
-    {
-      src: "/land-price.svg",
-      alt: t("Land Price Explorer"),
-      path: "/montoring",
-    },
-    {
-      src: "/land-valuation.svg",
-      alt: t("Land Valuation"),
-      path: "/land-valuation",
-    },
-    {
-      src: "/model-based.svg",
-      alt: t("Model-based land Valuation"),
-      path: "/model-base",
-    },
-    {
-      src: "/parcel-survey.svg",
-      alt: t("Parcel Survey Management"),
-      path: "/parcel-survey-management",
-    },
-    { src: "/admin.svg", alt: t("Admin"), path: "/customers" },
+    { src: "/land-price.svg", alt: t("Land Price Explorer"), path: "/montoring" },
+    { src: "/land-valuation.svg", alt: t("Land Valuation"), path: "/land-valuation" },
+    { src: "/model-based.svg", alt: t("Model-based land Valuation"), path: "/model-base" },
+    { src: "/parcel-survey.svg", alt: t("Parcel Survey Management"), path: "/parcel-survey-management" },
   ];
+
+  if (hasAdminRole) {
+    menuItems.push({ src: "/admin.svg", alt: t("Admin"), path: "/customers" });
+  }
 
   const LightTooltip = styled(({className, ...props}) => (
       <Tooltip {...props} classes={{popper: className}}/>))(({theme}) => ({
@@ -286,7 +277,9 @@ function Sidebar() {
             </div>
           </div>
           <MenuItem
-              onClick={handleMenuClose}
+              onClick={() => {
+                navigate("/user-profile");
+              }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
               }}
@@ -295,7 +288,9 @@ function Sidebar() {
             <Typography>Personal Information</Typography>
           </MenuItem>
           <MenuItem
-              onClick={handleMenuClose}
+              onClick={() => {
+                navigate("/change-password");
+              }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
               }}
