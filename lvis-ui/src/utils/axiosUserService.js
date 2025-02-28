@@ -1,10 +1,5 @@
 import axios from 'axios';
 import {USER_SERVICE_URL} from '@/utils/constant';
-import store from '@/state/store';
-import {logoutUser} from '@/state/authService.js';
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory();
 
 const apiClient = axios.create({
   baseURL: USER_SERVICE_URL,
@@ -57,7 +52,7 @@ apiClient.interceptors.response.use(
           ...root,
           isAuthenticated: false,
           token: null,
-          user: null
+          user: null,
         }));
 
         location.href = '/home';
