@@ -4,19 +4,13 @@ import UserService from "./UserService";
 export const egisApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_EGIS_API_BASE_URL,
-    prepareHeaders: (headers) => {
-      const cb = () => {
-        // Retrieve token from Redux state or local storage
-        if (UserService.isLoggedIn()) {
-          const token = UserService.getToken() || localStorage.getItem('token');
-          // If we have a token, set the `Authorization` header
-          if (token) {
-            headers.set('Authorization', `Bearer ${token}`);
-          }
-        }
-        return headers;
+    // You can add prepareHeaders here if you have authentication
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().global.token; // Example: Get token from Redux state
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
       }
-      return UserService.updateToken(cb);
+      return headers;
     },
 
   }),
