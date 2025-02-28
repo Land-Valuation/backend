@@ -24,7 +24,7 @@ import { useGetAllProvincesQuery } from "../../../../state/provinceApi";
 import { useGetListLandValueZonesByDistrictQuery } from "../../../../state/landValueZoneApi";
 import { useGetParcelDTOsByZoneIdQuery } from "../../../../state/parcelApi";
 
-const DefineModelArea = ({ onSelectionChange }) => {
+const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
   const { t } = useTranslation(); // Initialize translation hook
 
   const [activeButton, setActiveButton] = useState("village");
@@ -100,7 +100,7 @@ const DefineModelArea = ({ onSelectionChange }) => {
   const handleTabChange = (event, newValue) => {
     setTab(newValue);
   };
-  console.log(landValueZones);
+  // console.log(landValueZones);
 
   return (
     <Box
@@ -256,6 +256,8 @@ const DefineModelArea = ({ onSelectionChange }) => {
       <Box>
         {tab === 0 ? (
           <DefineModelTable
+          selectedRows={selectedRows}
+            activeStep={activeStep}
             onSelectionChange={onSelectionChange}
             data={landValueZones}
             paginationModel={{ page: zonePage, pageSize: zonePageSize }}
