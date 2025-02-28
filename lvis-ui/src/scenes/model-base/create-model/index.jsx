@@ -31,6 +31,8 @@ import {
   useSaveDraftMutation,
   useGetDraftQuery,
 } from "../../../state/taskApi";
+import { useSelector, useDispatch } from "react-redux";
+import { initializeDraft, updateDraft } from "../../../state/draftSlice";
 
 const steps = [
   "defineModelArea",
@@ -153,6 +155,8 @@ const CreateNewModel = () => {
   const { t } = useTranslation();
   const [selectedRows, setSelectedRows] = useState([]);
   const [taskId, setTaskId] = useState(localStorage.getItem("taskId"));
+  const [activeStep, setActiveStep] = useState(0);
+  const latestDraftData = useSelector((state) => state.draft.data);
   const userId = "hoangdm";
   const [createTask] = useCreateTaskMutation();
   const [saveDraft] = useSaveDraftMutation();
@@ -160,34 +164,49 @@ const CreateNewModel = () => {
     { userId, taskId },
     { skip: !taskId }
   );
+  const dispatch = useDispatch();
+  const draftData = useSelector((state) => state.draft.data);
+  // const zoneNames = selectedRows.map((row) => row.zoneName);
+  useEffect(() => {
+    dispatch(initializeDraft());
+  }, [dispatch]);
 
-  const zoneNames = selectedRows.map((row) => row.zoneName);
+  useEffect(() => {
+    if (draftData[activeStep]) {
+      setSelectedRows(draftData[activeStep].selectedZoneIds || []);
+    }
+  }, [activeStep, draftData]);
 
   const breadcrumbData = [
     { name: t("home"), href: "/" },
     { name: t("modelBasedLandValuation"), href: "/model-base" },
   ];
 
-  const [activeStep, setActiveStep] = useState(0);
   const totalSteps = steps.length;
   const isFirstStep = activeStep === 0;
   const isLastStep = activeStep === totalSteps - 1;
 
-  const handleNext = () => {
+  const handleNext = (step, draftDataForStep) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    dispatch(
+      updateDraft({
+        step,
+        draftData: { ...draftData, [step]: draftDataForStep },
+      })
+    );
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleSelectionChange = (newSelection) => {
-    setSelectedRows(newSelection);
-  };
+  // const handleSelectionChange = (newSelection) => {
+  //   setSelectedRows(newSelection);
+  // };
 
   const handleSaveDraft = async () => {
     const currentStep = activeStep + 1;
-    console.log("Save draft for step:", activeStep + 1);
+    console.log("Save draft for step:", currentStep);
 
     if (selectedRows.length === 0) {
       console.log("No rows selected");
@@ -216,29 +235,30 @@ const CreateNewModel = () => {
       }
     }
 
-    const zoneNames = selectedRows.map((row) => row.name);
+    // const zoneNames = selectedRows.map((row) => row.name);
+    // const zoneIds = selectedRows.map((row) => row.id);
 
-    const draftUpdateData = {
-      1: { modelArea: zoneNames },
-      2: { selectedParcels: ["Parcel 1", "Parcel 2"] },
-      3: { preprocessingConfig: { normalize: true } },
-      4: { verificationResults: "Passed" },
-      5: { modelVariables: ["Variable A", "Variable B"] },
-      6: { optimalModel: "Linear Regression" },
-      7: { adjustmentTable: "Final Adjustments" },
-    };
+    // const draftUpdateData = {
+    //   1: { modelArea: zoneNames, selectedZoneIds: zoneIds },
+    //   2: { selectedParcels: ["Parcel 1", "Parcel 2"] },
+    //   3: { preprocessingConfig: { normalize: true } },
+    //   4: { verificationResults: "Passed" },
+    //   5: { modelVariables: ["Variable A", "Variable B"] },
+    //   6: { optimalModel: "Linear Regression" },
+    //   7: { adjustmentTable: "Final Adjustments" },
+    // };
 
-    const draftData = {
-      ...(existingDraftData?.draft_data || {}),
-      ...draftUpdateData[currentStep],
-    };
+    // const draftData = {
+    //   ...(existingDraftData?.draft_data || {}),
+    //   ...draftUpdateData[currentStep],
+    // };
 
     try {
       const result = await saveDraft({
         userId: userId,
         taskId: taskId,
         step: currentStep,
-        draftData: draftData,
+        draftData: latestDraftData,
       });
 
       if (result.error) {
@@ -254,7 +274,7 @@ const CreateNewModel = () => {
   const renderComponent = () => {
     switch (activeStep) {
       case 0:
-        return <DefineModelArea onSelectionChange={handleSelectionChange} />;
+        return <DefineModelArea activeStep={activeStep} onSelectionChange={setSelectedRows} selectedRows={selectedRows}/>;
       case 1:
         return <SelectSampleParcels />;
       case 2:
@@ -322,7 +342,7 @@ const CreateNewModel = () => {
               }}
               variant="contained"
               endIcon={<ArrowForwardIcon />}
-              onClick={handleNext}
+              onClick={() => handleNext(activeStep + 1, draftData)}
             >
               {t("next")}
             </Button>

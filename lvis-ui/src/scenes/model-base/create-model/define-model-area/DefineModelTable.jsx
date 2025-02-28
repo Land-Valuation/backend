@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
+import { useSelector, useDispatch } from "react-redux";
+import { updateDraft } from "../../../../state/draftSlice";
 
 const DefineModelTable = ({
   onSelectionChange,
@@ -9,18 +11,21 @@ const DefineModelTable = ({
   totalRows = 0,
   paginationModel,
   onPaginationModelChange,
+  activeStep,
+  selectedRows
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [sort, setSort] = useState({});
   const [formattedData, setFormattedData] = useState([]);
-  // const [paginationModel, setPaginationModel] = useState({
-  //   page: 0,
-  //   pageSize: 20,
-  // });
-  const [selectedIds, setSelectedIds] = useState([]);
+  const draftData = useSelector((state) => state.draft.data);
+  const dispatch = useDispatch();
+  const selectionModel = useSelector((state) => state.draft.data[activeStep]?.selectedZoneIds || []);
 
-  console.log(data);
+  useEffect(() => {
+    console.log("Redux draft data updated:", draftData);
+  }, [draftData]);
+
   useEffect(() => {
     const transformedData = data.map((item) => ({
       id: item.id,
@@ -64,6 +69,24 @@ const DefineModelTable = ({
       editable: true,
     },
   ];
+
+  const handleSelectionChange = (newSelectionModel) => {
+    const selectedRows = formattedData.filter((row) =>
+      newSelectionModel.includes(row.id)
+    );
+
+    dispatch(
+      updateDraft({
+        step: activeStep,
+        draftData: {
+          selectedZoneIds: newSelectionModel,
+          modelArea: selectedRows.map((r) => r.name),
+        },
+      })
+    );
+
+    onSelectionChange(newSelectionModel);
+  };
 
   return (
     <Box
@@ -123,14 +146,8 @@ const DefineModelTable = ({
     >
       <DataGrid
         // loading={isLoading || !data}
-        onRowSelectionModelChange={(newSelection) => {
-          const selectedRows = formattedData.filter((row) =>
-            newSelection.includes(row.id)
-          );
-          console.log("Selected Rows:", selectedRows);
-          setSelectedIds(newSelection);
-          onSelectionChange(selectedRows);
-        }}
+        selectionModel={selectionModel}
+        onRowSelectionModelChange={handleSelectionChange}
         getRowId={(row) => row.id}
         rows={formattedData}
         columns={columns}
