@@ -86,7 +86,7 @@ function Sidebar() {
   ];
 
   if (hasAdminRole) {
-    menuItems.push({ src: "/admin.svg", alt: t("Admin"), path: "/customers" });
+    menuItems.push({ src: "/admin.svg", alt: t("Admin"), path: "/administrator" });
   }
 
   const LightTooltip = styled(({className, ...props}) => (

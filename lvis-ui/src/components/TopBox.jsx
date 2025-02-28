@@ -255,12 +255,10 @@ const TopBox = () => {
                   <LoginModal
                       open={isLogin}
                       onClose={handleLoginClose}
-                      onRegister={() => {
-                      }}
+                      onRegister={setIsRegister}
                   />
                   <RegisterModal open={isRegister} onClose={handleRegisterClose}
-                                 onLogin={() => {
-                                 }}/>
+                                 onLogin={setIsLogin}/>
                   <RequireLogin
                       open={isRequireLogin}
                       onClose={handleRequireLoginClose}

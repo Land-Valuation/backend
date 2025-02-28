@@ -312,7 +312,10 @@ const LoginModal = ({open, onClose, onRegister}) => {
                   sx={{
                     color: '#1677FF',
                   }}
-                  onClick={onRegister}
+                  onClick={() => {
+                    onRegister(true);
+                    onClose()
+                  }}
               >
                 Register now.
               </Typography>

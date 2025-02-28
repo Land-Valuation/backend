@@ -110,7 +110,7 @@ function App() {
                 <Route path="/land-valuation/create" element={<LandValuationCreate />} />
                 <Route path="/land-valuation/detail/:id" element={<LandValuationDetail />} />
                 <Route path="/parcel-survey-management" element={<ParcelSurveyManagement />} />
-                <Route path="/customers" element={
+                <Route path="/administrator" element={
                   <NotRenderOnRole roles={[]} showNotAllowed>
                     <Admin />
                   </NotRenderOnRole>

@@ -340,7 +340,7 @@
           "Rolename": "Role name",
           "JoinRole": "Assign Role",
           "ChooseRole": "CHOOSE ROLE",
-          "Status": "Status",
+          "Status": "Active",
           "Active": "Active",
           "Inactive": "Inactive"
         },
@@ -420,5 +420,6 @@
   "Duration": "Duration",
   "Land type": "Land type",
   "Area Name": "Area Name",
-  "Completion Date": "Completion Date"
+  "Completion Date": "Completion Date",
+  "Register now": "Register now"
 }

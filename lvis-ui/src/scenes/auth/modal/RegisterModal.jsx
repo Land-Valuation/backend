@@ -378,7 +378,10 @@ const RegisterModal = ({ open, onClose, onLogin }) => {
               sx={{
                 color: '#1677FF',
               }}
-              onClick={onLogin}
+              onClick={() => {
+                onLogin(true);
+                onClose();
+              }}
             >
               Log in
             </Typography>

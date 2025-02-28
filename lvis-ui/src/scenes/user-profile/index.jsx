@@ -149,7 +149,7 @@ const UserProfile = () => {
               </Grid>
 
               {Object.entries(userData).map(([key, value]) => {
-                if (key !== 'id' && key !== 'avatar' && key !== 'fullName') {
+                if (key !== 'id' && key !== 'avatar' && key !== 'fullName' && key !== 'enabled') {
                   return (
                       <Grid item xs={12} sm={6} key={key} sx={{ maxWidth: 300 }}>
                         <TextField
