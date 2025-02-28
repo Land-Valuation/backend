@@ -6,13 +6,13 @@ export const localSurveyInformationApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL.DATA_MODEL_API,
     // You can add prepareHeaders here if you have authentication
-    // prepareHeaders: (headers, { getState }) => {
-    //   const token = getState().auth.token; // Example: Get token from Redux state
-    //   if (token) {
-    //     headers.set("Authorization", `Bearer ${token}`);
-    //   }
-    //   return headers;
-    // },
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().global.token; // Example: Get token from Redux state
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: ["LocalSurveyInformation", "AllListData"], // Define tag types
   endpoints: (builder) => ({
