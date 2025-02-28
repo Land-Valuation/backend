@@ -8,6 +8,7 @@ import {
   TableRow,
   Box,
   TableSortLabel,
+  Typography, // Import Typography
 } from "@mui/material";
 import { useState, useMemo } from "react";
 
@@ -193,43 +194,60 @@ const CustomTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {memoizedDataSource.map((row, rowIndex) => {
-            return (
-              <TableRow
-                key={row.key || row.id}
-                sx={rowStyle ? rowStyle(row, rowIndex) : {}}
-              >
-                {columns.map((column, colIndex) => {
-                  const cellValue = row[column.dataIndex];
-                  if (column.dataIndex) {
-                    return (
-                      <TableCell
-                        key={`${row.key || row.id}-${column.key}`}
-                        align={column.align}
-                        sx={{
-                          ...defaultCellStyle,
-                          ...(cellStyle
-                            ? cellStyle(
-                                cellValue,
-                                row,
-                                rowIndex,
-                                column,
-                                colIndex
-                              )
-                            : {}),
-                        }}
-                      >
-                        {column.render
-                          ? column.render(cellValue, row)
-                          : cellValue}
-                      </TableCell>
-                    );
-                  }
-                  return null;
-                })}
-              </TableRow>
-            );
-          })}
+          {memoizedDataSource.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={columns.length} align="center">
+                <Box
+                  sx={{
+                    padding: "20px",
+                    textAlign: "center",
+                  }}
+                >
+                  <Typography variant="body1" sx={{ fontStyle: "italic" }}>
+                    No data available
+                  </Typography>
+                </Box>
+              </TableCell>
+            </TableRow>
+          ) : (
+            memoizedDataSource.map((row, rowIndex) => {
+              return (
+                <TableRow
+                  key={row.key || row.id}
+                  sx={rowStyle ? rowStyle(row, rowIndex) : {}}
+                >
+                  {columns.map((column, colIndex) => {
+                    const cellValue = row[column.dataIndex];
+                    if (column.dataIndex) {
+                      return (
+                        <TableCell
+                          key={`${row.key || row.id}-${column.key}`}
+                          align={column.align}
+                          sx={{
+                            ...defaultCellStyle,
+                            ...(cellStyle
+                              ? cellStyle(
+                                  cellValue,
+                                  row,
+                                  rowIndex,
+                                  column,
+                                  colIndex
+                                )
+                              : {}),
+                          }}
+                        >
+                          {column.render
+                            ? column.render(cellValue, row)
+                            : cellValue}
+                        </TableCell>
+                      );
+                    }
+                    return null;
+                  })}
+                </TableRow>
+              );
+            })
+          )}
         </TableBody>
       </Table>
     </TableContainer>

@@ -47,7 +47,7 @@ export const FORMAT_DATE = {
   DMY_SLASH: 'DD/MM/YYYY',
   MDY_HMS:'MM/DD/YYYY HH:mm:ss',
   DMY_HMS:'DD-MM-YYYY HH:mm:ss',
-  HM_DMY:'HH:mm - DD/MM/YYYY',
+  HM_DMY:'HH:mm, DD/MM/YYYY',
   DATE: 'YYYY-MM-DDTHH:mm:ss.ssssssZ',
   DATE2: 'YYYY-MM-DD',
   YYYYMMDD: "YYYYMMDD",

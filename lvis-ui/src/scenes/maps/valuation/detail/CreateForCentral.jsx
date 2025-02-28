@@ -178,6 +178,7 @@ const CreateForCentral = ({ formikRef }) => {
 
   const onUploadOverviewAttachFile = (event) => {
     const files = Array.from(event.target.files);
+    console.log('files :>> ', files);
     setUploadOverviewAttachFiles((prevFiles) => [...prevFiles, ...files]);
   };
 

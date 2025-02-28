@@ -18,7 +18,7 @@ import ParcelList2 from "./ParcelList2";
 import { MapContainer, Marker, Popup, TileLayer, GeoJSON } from "react-leaflet";
 import ZoomControl from "./ZoomControl";
 import MinimapControl from "./MinimapControl";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import { useGetAllProvincesQuery } from "../../../../state/provinceApi";
@@ -26,8 +26,9 @@ import { useGetAllCommitteeStatusTypesQuery } from "../../../../state/committeeS
 import { useGetAllValuationStatusTypesQuery } from "../../../../state/valuationStatusTypeApi";
 import CommitteeTable from "./CommitteeTable";
 import PropTypes from "prop-types";
-import { useCreateValuationMasterMutation, useGetValuationMasterByIdQuery } from "../../../../state/valuationMasterApi";
+import { useGetValuationMasterByIdQuery, useUpdateValuationMasterMutation } from "../../../../state/valuationMasterApi";
 import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../../../../utils/env";
 
 const DetailForCentral = ({ formikRef }) => {
   const { t } = useTranslation();
@@ -49,26 +50,33 @@ const DetailForCentral = ({ formikRef }) => {
   const [landValuationStatusList, setLandValuationStatusList] = useState([])
   const [committeeData, setCommitteeData] = useState([]);
   const [initCommitteeData, setInitCommitteeData] = useState([]);
+  const [committeeMemberIdsToDelete, setCommitteeMemberIdsToDelete] = useState([])
+  const [fileIdsToDelete, setFileIdsToDelete] = useState([])
 
   const { data: allProvinceData } = useGetAllProvincesQuery();
   const { data: allCommitteeStatusTypes } = useGetAllCommitteeStatusTypesQuery();
   const { data: valuationStatusTypes } = useGetAllValuationStatusTypesQuery();
-  const [createValuationMaster] = useCreateValuationMasterMutation();
+  const [updateValuationMaster] = useUpdateValuationMasterMutation();
   const { data: valuationMaster } = useGetValuationMasterByIdQuery(id, { skip: !id });
 
   useEffect(() => {
     if (valuationMaster) {
-      const formattedData = {
-        baseYear: valuationMaster.baseYear ? new Date(valuationMaster.baseYear, 0, 1) : selectedYear,
-        title: valuationMaster.title,
-        note: valuationMaster.description,
-        province: valuationMaster.proviceCode,
-        committeeStatus: valuationMaster.commmitteeStatusCode,
-        landValuationStatus: valuationMaster.valuationStatusCode,
-        descriptionCommittee: valuationMaster?.committeeDescription ?? '',
-        dateRange: valuationMaster.committeSdate && valuationMaster.committeEdate ? [new Date(valuationMaster.committeSdate), new Date(valuationMaster.committeEdate)] : [null, null],
-      };
-      formik.setValues(formattedData);
+      const convertOverviewAttachFiles = (valuationMaster?.overviewAttachFiles ?? []).map(item => {
+        return {
+          ...item,
+          size: item.fileSize,
+          url: `${BASE_URL.FILE_API}${item.filePath}`
+        }
+      })
+      const convertToLocalFiles = (valuationMaster?.toLocalFiles ?? []).map(item => {
+        return {
+          ...item,
+          size: item.fileSize,
+          url: `${BASE_URL.FILE_API}${item.filePath}`
+        }
+      })
+      setUploadOverviewAttachFiles(convertOverviewAttachFiles ?? []);
+      setUploadToLocalFiles(convertToLocalFiles ?? []);
       const convertData = (valuationMaster?.committeeMembers ?? []).map(item => {
         return {
           ...item,
@@ -206,24 +214,34 @@ const DetailForCentral = ({ formikRef }) => {
   };
 
   const onUploadOverviewAttachFile = (event) => {
-    const files = Array.from(event.target.files);
+    const files = Array.from(event.target.files)
     setUploadOverviewAttachFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
   const onUploadToLocalFile = (event) => {
-    const files = Array.from(event.target.files);
+    const files = Array.from(event.target.files)
     setUploadToLocalFiles((prevFiles) => [...prevFiles, ...files]);
   };
   
-  const onDeleteToLocalFile = (fileId) => {
-    setUploadToLocalFiles((prevFiles) =>
-      prevFiles.filter((file) => file.id !== fileId)
-    );
-  };
+  const onDeleteToLocalFile = useCallback((file) => {
+    if (file?.id) {
+      setFileIdsToDelete((prevIds) => [...prevIds, file.id]);
+      setUploadToLocalFiles((prevFiles) =>
+        prevFiles.filter((prevFile) => prevFile.id !== file.id)
+      );
+    } else {
+      setUploadToLocalFiles((prevFiles) =>
+        prevFiles.filter((prevFile) => prevFile !== file)
+      );
+    }
+  },[])
 
-  const onDeleteApprovalStatus = (index) => {
-    const newFiles = uploadOverviewAttachFiles.filter((_, i) => i !== index);
-    setUploadOverviewAttachFiles(newFiles);
+  const onDeleteApprovalStatus = (file) => {
+    if (file?.id) {
+      setFileIdsToDelete((prevIds) => [...prevIds, file.id]);
+    }
+    const deletedFiles = uploadOverviewAttachFiles.filter((item) => item.name !== file.name);
+    setUploadOverviewAttachFiles(deletedFiles);
   };
 
   const validationSchema = Yup.object({
@@ -253,14 +271,14 @@ const DetailForCentral = ({ formikRef }) => {
 
   const formik = useFormik({
     initialValues: {
-      baseYear: selectedYear,
-      title: '',
-      note: '',
-      province: firstProvinceCode ?? '',
-      committeeStatus: '',
-      landValuationStatus: '',
-      descriptionCommittee: '',
-      dateRange: [null, null],
+      baseYear: valuationMaster?.baseYear ? new Date(valuationMaster?.baseYear, 0, 1) : selectedYear,
+      title: valuationMaster?.title ?? '',
+      note: valuationMaster?.description ?? '',
+      province: valuationMaster?.proviceCode ? valuationMaster?.proviceCode : firstProvinceCode ?? '',
+      committeeStatus: valuationMaster?.commmitteeStatusCode ?? '',
+      landValuationStatus: valuationMaster?.valuationStatusCode ?? '',
+      descriptionCommittee: valuationMaster?.committeeDescription ?? '',
+      dateRange: valuationMaster?.committeSdate && valuationMaster?.committeEdate ? [new Date(valuationMaster?.committeSdate), new Date(valuationMaster?.committeEdate)] : [null, null],
     },
     validationSchema: validationSchema,
     enableReinitialize: true,
@@ -278,8 +296,9 @@ const DetailForCentral = ({ formikRef }) => {
           committe_edate: values.dateRange[1],
         },
         committeeMembers: committeeData,
+        committeeMemberIdsToDelete: committeeMemberIdsToDelete,
+        fileIdsToDelete: fileIdsToDelete,
       };
-      
       const formData = new FormData();
       
       formData.append('newData', JSON.stringify(newData));
@@ -297,16 +316,16 @@ const DetailForCentral = ({ formikRef }) => {
 
   const saveData = async (data) => {
     try {
-      await createValuationMaster(data).unwrap();
+      await updateValuationMaster({ id: valuationMaster.id, body: data }).unwrap();
       navigate('/land-valuation')
     } catch (error) {
       console.log('error :>> ', error);
     }
   }
 
-  const handleCommitteeDataChange = (data) => {
+  const handleCommitteeDataChange = useCallback((data) => {
     setCommitteeData(data);
-  };
+  },[])
 
   useEffect(() => {
     if (formikRef) {
@@ -314,6 +333,11 @@ const DetailForCentral = ({ formikRef }) => {
     }
   }, [formikRef, formik]);
 
+  const handleDeleteCommittee = (id) => {
+    setCommitteeMemberIdsToDelete((prevIds) => [...prevIds, id]);
+  };
+
+  console.log('test')
   return (
     <Box sx={{ padding: '24px 0'}}>
       <form onSubmit={formik.handleSubmit}>
@@ -712,7 +736,7 @@ const DetailForCentral = ({ formikRef }) => {
                         <ListItemText primary={file.name} />
                         {hoveredIndex === index && (
                           <IconButton
-                            onClick={() => onDeleteApprovalStatus(index)}
+                            onClick={() => onDeleteApprovalStatus(file)}
                             size="small"
                             sx={{ marginLeft: "auto" }}
                           >
@@ -727,6 +751,7 @@ const DetailForCentral = ({ formikRef }) => {
             </Box>
           </Box>
         </Box>
+
         <Box>
           <Typography
             sx={{
@@ -875,7 +900,7 @@ const DetailForCentral = ({ formikRef }) => {
             <Box
               sx={{ height: "320px" }}
             >
-              <CommitteeTable onDataChange={handleCommitteeDataChange} initialData={initCommitteeData} />
+              <CommitteeTable onDataChange={handleCommitteeDataChange} initialData={initCommitteeData} onDelete={handleDeleteCommittee} />
             </Box>
           </Box>
           <Box
@@ -888,7 +913,9 @@ const DetailForCentral = ({ formikRef }) => {
               paddingLeft: "24px",
               paddingRight: "24px",
               paddingBottom: "24px",
-              // overflowY:"auto"
+              display: "flex",
+              flexDirection: "column",
+              gap: "24px",
             }}
           >
             <Typography
@@ -908,33 +935,36 @@ const DetailForCentral = ({ formikRef }) => {
               {t("Land Valuation Reference Data (To Local Government)")}
               {/* <span style={{ fontWeight: 400 }}> (To Local Government)</span> */}
             </Typography>
-            <Button
-              component="label"
-              role={undefined}
-              variant="outlined"
-              tabIndex={-1}
-              startIcon={<UploadIcon />}
-              sx={{
-                textTransform: "none",
-                marginTop: "32px",
-                // marginBottom: "24px",
-                borderRadius: "6px",
-                border: "1px solid #1677FF",
-                color: "#1677FF",
-              }}
-            >
-              {t("Upload document")}
-              <VisuallyHiddenInput
-                type="file"
-                onChange={onUploadToLocalFile}
-                id="fileInputId"
-                multiple
+            <Box>
+              <Button
+                component="label"
+                role={undefined}
+                variant="outlined"
+                tabIndex={-1}
+                startIcon={<UploadIcon />}
+                sx={{
+                  textTransform: "none",
+                  marginTop: "32px",
+                  borderRadius: "6px",
+                  border: "1px solid #1677FF",
+                  color: "#1677FF",
+                }}
+              >
+                {t("Upload document")}
+                <VisuallyHiddenInput
+                  type="file"
+                  onChange={onUploadToLocalFile}
+                  id="fileInputId"
+                  multiple
+                />
+              </Button>
+            </Box>
+            {uploadToLocalFiles && uploadToLocalFiles.length > 0 && (
+              <CustomUploadFile
+                files={uploadToLocalFiles}
+                onDelete={onDeleteToLocalFile}
               />
-            </Button>
-            <CustomUploadFile
-              files={uploadToLocalFiles}
-              onDelete={onDeleteToLocalFile}
-            />
+            )}
           </Box>
         </Box>
         <Box>

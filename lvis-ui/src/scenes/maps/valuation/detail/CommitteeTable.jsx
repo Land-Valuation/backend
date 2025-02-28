@@ -47,7 +47,7 @@ CustomSelectEditCell.propTypes = {
   }).isRequired,
 };
 
-const CommitteeTable = ({ onDataChange, initialData }) => {
+const CommitteeTable = ({ onDataChange, initialData, onDelete }) => {
   const { t } = useTranslation();
 
   const columns = [
@@ -125,6 +125,10 @@ const CommitteeTable = ({ onDataChange, initialData }) => {
   };
 
   const handleRemoveRow = (id) => {
+    const deleteRows = rows.find((row) => row.id === id);
+    if (onDelete && !deleteRows.isNew) {
+      onDelete(id);
+    }
     setRows((prevRows) => prevRows.filter((row) => row.id !== id));
   };
 
@@ -229,6 +233,7 @@ CommitteeTable.propTypes = {
     mobile: PropTypes.string,
     email: PropTypes.string,
   })),
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default CommitteeTable;

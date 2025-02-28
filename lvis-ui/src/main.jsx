@@ -34,6 +34,7 @@ import { memberTypeApi } from "./state/memberTypeApi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { valuationMasterApi } from "./state/valuationMasterApi";
 import draftReducer from "./state/draftSlice"
+import { documentApi } from "./state/documentApi";
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, globalReducer);
@@ -54,6 +55,7 @@ const appReducer = combineReducers( {
   [taskApi.reducerPath]: taskApi.reducer,
   [zoneApi.reducerPath]: zoneApi.reducer,
   draft: draftReducer,
+  [documentApi.reducerPath]: documentApi.reducer,
 });
 
 const rootReducer = (state, action) => {
@@ -80,6 +82,7 @@ const store = configureStore({
     .concat(valuationMasterApi.middleware)
     .concat(taskApi.middleware)
     .concat(zoneApi.middleware)
+    .concat(documentApi.middleware)
 });
 
 const queryClient = new QueryClient();
