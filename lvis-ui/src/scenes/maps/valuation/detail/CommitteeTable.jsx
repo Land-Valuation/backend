@@ -6,6 +6,7 @@ import RemoveRowIcon from '../../../../assets/icons/land-valuation/RemoveRowIcon
 import AddNewRowIcon from '../../../../assets/icons/land-valuation/AddNewRowIcon';
 import PropTypes from 'prop-types';
 import { useGetAllMemberTypesQuery } from '../../../../state/memberTypeApi';
+import { v1 as uuidv1 } from "uuid";
 
 const CustomSelectEditCell = (props) => {
   const { id, value, field, api } = props;
@@ -112,7 +113,8 @@ const CommitteeTable = ({ onDataChange, initialData, onDelete }) => {
   const [rows, setRows] = useState(initialData || []);
   const handleAddRow = () => {
     const newRow = {
-      id: Date.now().toString(),
+      //id: Date.now().toString(),
+      id: uuidv1(),
       memberType: "",
       organization: "",
       name: "",
