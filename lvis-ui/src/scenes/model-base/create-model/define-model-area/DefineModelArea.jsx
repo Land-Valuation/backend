@@ -19,13 +19,14 @@ import MapIcon from "@mui/icons-material/Map";
 import DefineModelTable from "./DefineModelTable";
 import DefineModelMap from "./DefineModelMap";
 import TableIcon from "../../../../assets/icons/model-base/TableIcon";
-import { useTranslation } from "react-i18next"; // Import translation hook
+import { useTranslation } from "react-i18next";
 import { useGetAllProvincesQuery } from "../../../../state/provinceApi";
 import { useGetListLandValueZonesByDistrictQuery } from "../../../../state/landValueZoneApi";
 import { useGetParcelDTOsByZoneIdQuery } from "../../../../state/parcelApi";
+import { useSelector, useDispatch } from "react-redux";
 
 const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
-  const { t } = useTranslation(); // Initialize translation hook
+  const { t } = useTranslation();
 
   const [activeButton, setActiveButton] = useState("village");
   const [district, setDistrict] = useState("");
@@ -33,11 +34,14 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
   const [tab, setTab] = useState(0);
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
-  const [zonePage, setZonePage] = useState(1);
+  const [zonePage, setZonePage] = useState(0);
   const [zonePageSize, setZonePageSize] = useState(10);
   const [landValueZones, setLandValueZones] = useState([]);
   const [parcels, setParcels] = useState([]);
   const [zoneId, setZoneId] = useState("");
+  const draftData = useSelector((state) => state.draft.data);
+  const selectedZoneDetails = draftData[activeStep]?.selectedZoneDetails || [];
+  const selectedZoneIds = draftData[activeStep]?.selectedZoneIds || [];
 
   const { data: allProvinceData } = useGetAllProvincesQuery();
   const { data: listLandValueZonesByDistrictData } =
@@ -49,6 +53,10 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
     { zoneId: zoneId },
     { skip: !zoneId }
   );
+  
+  useEffect(() => {
+    onSelectionChange([]); 
+  }, [district, province]);
 
   useEffect(() => {
     setProvinces(allProvinceData || []);
@@ -61,6 +69,8 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
     setLandValueZones([]);
     if (listLandValueZonesByDistrictData?.data) {
       setLandValueZones(listLandValueZonesByDistrictData.data);
+    } else {
+      setLandValueZones([]);
     }
   }, [listLandValueZonesByDistrictData, district]);
 
@@ -74,7 +84,9 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
   };
 
   const handleDistrictChange = (event) => {
+    console.log("change dist");
     setDistrict(event.target.value);
+    setLandValueZones([]);
     setZonePageSize(10);
     setZoneId("");
   };
@@ -89,6 +101,7 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
       provinces.find((item) => item.provinceCode === event.target.value)
         ?.districts[0]?.districtcode || ""
     );
+    setLandValueZones([]);
     setZonePageSize(20);
     setZoneId("");
   };
@@ -100,7 +113,10 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
   const handleTabChange = (event, newValue) => {
     setTab(newValue);
   };
-  // console.log(landValueZones);
+  const handleReloadButtonClick = () => {
+    onSelectionChange([]);
+  };
+  // console.log(landValueZones[0].zcode);
 
   return (
     <Box
@@ -212,6 +228,7 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
                 sx={{ color: "#00000073", transform: "scaleX(-1)" }}
               />
             }
+            onClick={handleReloadButtonClick}
           >
             {t("reload")}
           </Button>
@@ -224,7 +241,12 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
               lineHeight: "16px",
             }}
           >
-            {t("selectedItems", { count: 3 })}
+            {t("selectedItems", {
+              count: draftData[activeStep]?.selectedZoneIds?.length || 0,
+            })}{" "}
+            {draftData[activeStep]?.selectedZoneIds?.length > 1
+              ? "items"
+              : "item"}
           </Typography>
         </Box>
         <Box>
@@ -256,7 +278,7 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
       <Box>
         {tab === 0 ? (
           <DefineModelTable
-          selectedRows={selectedRows}
+            selectedRows={selectedRows}
             activeStep={activeStep}
             onSelectionChange={onSelectionChange}
             data={landValueZones}

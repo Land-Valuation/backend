@@ -20,22 +20,30 @@ const DefineModelTable = ({
   const [formattedData, setFormattedData] = useState([]);
   const draftData = useSelector((state) => state.draft.data);
   const dispatch = useDispatch();
-  const selectionModel = useSelector((state) => state.draft.data[activeStep]?.selectedZoneIds || []);
+  const draftFormattedData = useSelector((state) => state.draft.formattedData[activeStep] || []);
+  const selectionModel = useSelector(
+    (state) => state.draft.data[activeStep]?.selectedZoneIds || []
+  );
 
   useEffect(() => {
     console.log("Redux draft data updated:", draftData);
+    console.log(selectionModel);
   }, [draftData]);
 
   useEffect(() => {
+    if (draftFormattedData && draftFormattedData.length > 0) {
+      setFormattedData(draftFormattedData);
+    } else {
     const transformedData = data.map((item) => ({
       id: item.id,
       name: item.zcode,
       // parcels: item.parcelCount,
       province: "Vientiane",
-      // district: item.districtName,
+      district: item.distCode,
     }));
     setFormattedData(transformedData);
-  }, [data]);
+  }
+  }, [data, draftFormattedData]);
 
   const columns = [
     {
@@ -74,14 +82,24 @@ const DefineModelTable = ({
     const selectedRows = formattedData.filter((row) =>
       newSelectionModel.includes(row.id)
     );
+    console.log(selectedRows);
+    
+    const selectedZoneDetails = selectedRows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      province: row.province,
+      district: row.district,
+    }));
+    // const newFormattedData = formattedData.filter((row) => newSelectionModel.includes(row.id));
 
     dispatch(
       updateDraft({
         step: activeStep,
         draftData: {
           selectedZoneIds: newSelectionModel,
-          modelArea: selectedRows.map((r) => r.name),
+          selectedZoneDetails: selectedZoneDetails,
         },
+        formattedData: formattedData,
       })
     );
 
@@ -148,10 +166,11 @@ const DefineModelTable = ({
         // loading={isLoading || !data}
         selectionModel={selectionModel}
         onRowSelectionModelChange={handleSelectionChange}
+        rowSelectionModel={selectionModel}
         getRowId={(row) => row.id}
         rows={formattedData}
         columns={columns}
-        rowCount={totalRows} //in case of Unknown row count set it -1
+        rowCount={totalRows}
         sortingMode="server"
         onSortModelChange={(newSortModel) => setSort(...newSortModel)}
         pagination
@@ -160,6 +179,7 @@ const DefineModelTable = ({
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}
         checkboxSelection
+        keepNonExistentRowsSelected
         disableRowSelectionOnClick
         slotProps={{
           loadingOverlay: {

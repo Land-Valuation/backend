@@ -43,7 +43,6 @@ const steps = [
   "selectOptimalModel",
   "finalizeAdjustmentTable",
 ];
-// const apiUrl = import.meta.env.VITE_DATA_MODEL_API_BASE_URL;
 
 const StepperStyled = styled(Stepper)(({ theme }) => ({
   "& .MuiStepLabel-root": {
