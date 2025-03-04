@@ -12,7 +12,7 @@ const DefineModelTable = ({
   paginationModel,
   onPaginationModelChange,
   activeStep,
-  selectedRows
+  // selectedRows
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();

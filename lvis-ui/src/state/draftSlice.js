@@ -9,11 +9,11 @@ const draftSlice = createSlice({
   initialState,
   reducers: {
     initializeDraft: (state) => {
-      const steps = [1, 2, 3, 4, 5, 6, 7]; // ✅ Ensure all steps are initialized
+      const steps = [0, 1, 2, 3, 4, 5, 6]; 
       state.data = {
         ...state.data,
         ...steps.reduce((acc, step) => {
-          acc[step] = state.data[step] || {}; // Keep existing or initialize
+          acc[step] = state.data[step] || {}; 
           return acc;
         }, {}),
       };
