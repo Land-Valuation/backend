@@ -167,7 +167,7 @@
   "districtB": "District B",
   "districtC": "District C",
   "reload": "Reload",
-  "selectedItems": "Selected {{count}} items",
+  "selectedItems": "Selected {{count}}",
   "selectFrom": "Select from",
   "table": "Table",
   "map": "Map",

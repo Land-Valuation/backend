@@ -90,19 +90,19 @@ const BoxPlotChart = ({ data, ...props }) => (
 BoxPlotChart.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.string,
       data: PropTypes.arrayOf(
         PropTypes.shape({
-          group: PropTypes.string.isRequired,
-          subgroup: PropTypes.string.isRequired,
-          mu: PropTypes.number.isRequired,
-          sd: PropTypes.number.isRequired,
-          n: PropTypes.number.isRequired,
-          value: PropTypes.number.isRequired,
+          group: PropTypes.string,
+          subgroup: PropTypes.string,
+          mu: PropTypes.number,
+          sd: PropTypes.number,
+          n: PropTypes.number,
+          value: PropTypes.number,
         })
-      ).isRequired,
+      ),
     })
-  ).isRequired,
+  ),
 };
 
 export default BoxPlotChart;

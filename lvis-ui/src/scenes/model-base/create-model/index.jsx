@@ -43,7 +43,6 @@ const steps = [
   "selectOptimalModel",
   "finalizeAdjustmentTable",
 ];
-// const apiUrl = import.meta.env.VITE_DATA_MODEL_API_BASE_URL;
 
 const StepperStyled = styled(Stepper)(({ theme }) => ({
   "& .MuiStepLabel-root": {
@@ -166,10 +165,14 @@ const CreateNewModel = () => {
   );
   const dispatch = useDispatch();
   const draftData = useSelector((state) => state.draft.data);
+  const draftInitialized = useSelector((state) => state.draft.initialized);
+
   // const zoneNames = selectedRows.map((row) => row.zoneName);
   useEffect(() => {
-    dispatch(initializeDraft());
-  }, [dispatch]);
+    if (!draftInitialized) {
+      dispatch(initializeDraft());
+    }
+  }, [dispatch, draftInitialized]);
 
   useEffect(() => {
     if (draftData[activeStep]) {
@@ -186,14 +189,8 @@ const CreateNewModel = () => {
   const isFirstStep = activeStep === 0;
   const isLastStep = activeStep === totalSteps - 1;
 
-  const handleNext = (step, draftDataForStep) => {
+  const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    dispatch(
-      updateDraft({
-        step,
-        draftData: { ...draftData, [step]: draftDataForStep },
-      })
-    );
   };
 
   const handleBack = () => {
@@ -274,7 +271,13 @@ const CreateNewModel = () => {
   const renderComponent = () => {
     switch (activeStep) {
       case 0:
-        return <DefineModelArea activeStep={activeStep} onSelectionChange={setSelectedRows} selectedRows={selectedRows}/>;
+        return (
+          <DefineModelArea
+            activeStep={activeStep}
+            onSelectionChange={setSelectedRows}
+            selectedRows={selectedRows}
+          />
+        );
       case 1:
         return <SelectSampleParcels />;
       case 2:
