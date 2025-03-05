@@ -58,7 +58,8 @@ const DefineModelTable = ({
       id: item.id,
       name: item.zcode,
       province: "Vientiane",
-      district: item.distCode,
+      district: item.districtEnglish,
+      parcels: item.parcelCount
     }));
   
     // Only use draftFormattedData if it matches current district
@@ -125,7 +126,7 @@ const DefineModelTable = ({
         draftData: {
           selectedZoneIds: newSelectionModel,
           selectedZoneDetails: selectedZoneDetails,
-          district: district,
+          district: selectedZoneDetails[0]?.district,
         },
         formattedData: formattedData,
       })
