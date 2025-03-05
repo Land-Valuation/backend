@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, createTheme, Table, TableBody, TableCell, TableContainer, TableRow, Tabs, TextField, ThemeProvider, Typography } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, createTheme, Table, TableBody, TableCell, TableContainer, TableRow, Tabs, ThemeProvider, Typography } from "@mui/material"
 import UploadIcon from "../../../../assets/icons/land-valuation/UploadIcon"
 import { customIcon, CustomTab, position, VisuallyHiddenInput } from "../common"
 import CustomUploadFile from "../../../../components/customMUI/CustomUploadFile"
@@ -11,14 +11,19 @@ import DownloadIcon from "../../../../assets/icons/land-valuation/DownloadIcon"
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CachedIcon from "@mui/icons-material/Cached";
-import CustomDataGrid from "../../../../components/customMUI/CustomDataGrid"
-import { useState } from "react"
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import CopyIcon from "../../../../assets/icons/land-valuation/CopyIcon"
 import { DataGrid } from "@mui/x-data-grid"
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import ZoomControl from "./ZoomControl"
 import MinimapControl from "./MinimapControl"
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from "react-router-dom"
+import CommitteeTableForLocal from "./CommitteeTableForLocal"
+import dayjs from "dayjs"
+import { FORMAT_DATE } from "../../../../utils/constant"
+import { useGetLocalValuationByIdQuery, useUpdateLocalValuationMutation } from "../../../../state/localValuationApi"
+import { BASE_URL } from "../../../../utils/env"
 
 const theme = createTheme({
   components: {
@@ -107,18 +112,72 @@ const backgroundGreyCellStyle = {
   backgroundColor: "#FAFAFA",
 };
 
-const DetailForLocal = () => {
+const DetailForLocal = forwardRef((props, ref) => {
   const [dateRange, setDateRange] = useState([null, null]);
 
-  const [value2, setValue2] = useState(0);
   const [showBox, setShowBox] = useState(true);
   const [showBox2, setShowBox2] = useState(true);
   const [showMarker, setShowMarker] = useState(false);
-  const [uploadedFiles3, setUploadedFiles3] = useState([]);
   const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  
+  const [committeeData, setCommitteeData] = useState([]);
+  const [fromLocalUploadedFiles, setFromLocalUploadedFiles] = useState([]);
+  const [tabInformationIndex, setTabInformationIndex] = useState(0);
+  const [valuationMaster, setValuationMaster] = useState(null)
+  const [overviewAttachFiles, setOverviewAttachFiles] = useState([])
 
-  const handleChange2 = (event, newValue) => {
-    setValue2(newValue);
+  const { data: localValuation } = useGetLocalValuationByIdQuery(id, { skip: !id });
+  const [updateLocalValuation] = useUpdateLocalValuationMutation();
+
+  useEffect(() => {
+    if (localValuation) {
+      setValuationMaster(localValuation?.data?.valuationMaster)
+      const convertOverviewAttachFiles = (localValuation?.data?.valuationMaster?.overviewAttachFiles ?? []).map(item => {
+        return {
+          ...item,
+          size: item.fileSize,
+          url: `${BASE_URL.FILE_API}${item.filePath}`
+        }
+      })
+      setOverviewAttachFiles(convertOverviewAttachFiles)
+      const convertData = (localValuation?.data?.valuationMaster?.committeeMembers ?? []).map(item => {
+        return {
+          ...item,
+          id: item.id,
+          memberType: item.memberTypeDisplayValue,
+          position: item.memberPosition,
+          isNew: false,
+        };
+      })
+      setCommitteeData(convertData);
+    }
+  }, [localValuation]);
+
+  const submit = () => {
+    const formData = new FormData();
+    fromLocalUploadedFiles.forEach(file => {
+      formData.append('fromLocalUploadedFiles', file);
+    });
+    handleSave(formData);
+  };
+
+  const handleSave = async (data) => {
+    try {
+      await updateLocalValuation({ id: id, body: data }).unwrap();
+      navigate('/land-valuation')
+    } catch (error) {
+      console.log('error :>> ', error);
+    }
+  }
+
+  useImperativeHandle(ref, () => ({
+    submit
+  }));
+  
+  const handleTabInformationChange = (event, newValue) => {
+    setTabInformationIndex(newValue);
   };
 
   const handleCloneButton = () => {
@@ -139,18 +198,13 @@ const DetailForLocal = () => {
     setDateRange(range);
   };
 
-  const handleFileUpload3 = (event) => {
-    const files = Array.from(event.target.files).map((file) => ({
-      id: `${file.name}-${Date.now()}`,
-      name: file.name,
-      size: file.size,
-      uploadTime: new Date(),
-    }));
-    setUploadedFiles3((prevFiles) => [...prevFiles, ...files]);
+  const handleFromLocalFileUpload = (event) => {
+    const files = Array.from(event.target.files)
+    setFromLocalUploadedFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
-  const handleDeleteFile3 = (fileId) => {
-    setUploadedFiles3((prevFiles) =>
+  const handleFromLocalUploadFileDelete = (fileId) => {
+    setFromLocalUploadedFiles((prevFiles) =>
       prevFiles.filter((file) => file.id !== fileId)
     );
   };
@@ -428,334 +482,298 @@ const DetailForLocal = () => {
   const visibleColumns2 = columns2.filter((column) => column.field != "id");
 
   return (
-    <Box>
-      <ThemeProvider theme={theme}>
-        <Accordion
-          defaultExpanded
-          sx={{
-            "&.MuiAccordionSummary-content.Mui-expanded": {
-              alignItems: "center",
-            },
-            "&.MuiAccordionSummary-content": {
-              alignItems: "center !important",
-            },
-          }}
-        >
-          <AccordionSummary
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+    <Box sx={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "32px",
+    }}>
+      <Box>
+        <ThemeProvider theme={theme}>
+          <Accordion
+            defaultExpanded
+            sx={{
+              "&.MuiAccordionSummary-content.Mui-expanded": {
+                alignItems: "center",
+              },
+              "&.MuiAccordionSummary-content": {
+                alignItems: "center !important",
+              },
+            }}
           >
-            <ExpandIcon style={{ marginRight: "8px", width: "16px" }} />
-            <Typography variant="h6">{t("Overview")}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Box>
-              <TableContainer
-                sx={{ border: "1px solid #F0F0F0", borderRadius: "8px" }}
-              >
-                <Table aria-label="simple table">
-                  <TableBody>
-                    <TableRow>
-                      <TableCell
-                        sx={{
-                          ...defaultCellStyle,
-                          ...backgroundGreyCellStyle,
-                        }}
-                      >
-                        {t("status")}
-                      </TableCell>
-                      <TableCell sx={{ ...defaultCellStyle }}>
-                        {renderStatus("Requested")}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          ...defaultCellStyle,
-                          ...backgroundGreyCellStyle,
-                        }}
-                      >
-                        {t("Decision Date")}
-                      </TableCell>
-                      <TableCell sx={{ ...defaultCellStyle }}>
-                        N/A
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          ...defaultCellStyle,
-                          ...backgroundGreyCellStyle,
-                        }}
-                      >
-                        {t("baseYear")}
-                      </TableCell>
-                      <TableCell sx={{ ...defaultCellStyle }}>
-                        2024
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          ...defaultCellStyle,
-                          ...backgroundGreyCellStyle,
-                        }}
-                      >
-                        {t("province")}
-                      </TableCell>
-                      <TableCell sx={{ ...defaultCellStyle }}>
-                        {t("Vientiane")}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        sx={{
-                          ...defaultCellStyle,
-                          ...backgroundGreyCellStyle,
-                        }}
-                      >
-                        {t("Evaluation Member")}
-                      </TableCell>
-                      <TableCell colSpan={3} sx={{ ...defaultCellStyle }}>
-                        000,000,000,0000,000,000,000,0000
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          ...defaultCellStyle,
-                          ...backgroundGreyCellStyle,
-                        }}
-                      >
-                        {t("Committee Duration")}
-                      </TableCell>
-                      <TableCell colSpan={3} sx={{ ...defaultCellStyle }}>
-                        01-09-2024 to 09-11-2024
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        sx={{
-                          ...defaultCellStyle,
-                          ...backgroundGreyCellStyle,
-                        }}
-                      >
-                        {t("title")}
-                      </TableCell>
-                      <TableCell colSpan={7} sx={{ ...defaultCellStyle }}>
-                        <Box
+            <AccordionSummary
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <ExpandIcon style={{ marginRight: "8px", width: "16px" }} />
+              <Typography variant="h6">{t("Overview")}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Box>
+                <TableContainer
+                  sx={{ border: "1px solid #F0F0F0", borderRadius: "8px" }}
+                >
+                  <Table aria-label="simple table">
+                    <TableBody>
+                      <TableRow>
+                        <TableCell
                           sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            gap: "8px",
+                            ...defaultCellStyle,
+                            ...backgroundGreyCellStyle,
                           }}
                         >
-                          <Typography
-                            sx={{
-                              color: "#1F1F1F",
-                              fontFamily: "Poppins",
-                              fontSize: "14px",
-                              fontWeight: 400,
-                              lineHeight: "22px",
-                            }}
-                          >
-                            Title name
-                          </Typography>
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        sx={{
-                          ...defaultCellStyle,
-                          ...backgroundGreyCellStyle,
-                        }}
-                      >
-                        {t("note")}
-                      </TableCell>
-                      <TableCell colSpan={7} sx={{ ...defaultCellStyle }}>
-                        <Box
+                          {t("status")}
+                        </TableCell>
+                        <TableCell sx={{ ...defaultCellStyle }}>
+                          {renderStatus("Requested")}
+                        </TableCell>
+                        <TableCell
                           sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            gap: "8px",
+                            ...defaultCellStyle,
+                            ...backgroundGreyCellStyle,
                           }}
                         >
-                          Lorem ipsum dolor sit amet consectetur. Enim est
-                          in odio nulla felis morbi at sit eget. Enim
-                          aliquam non quis egestas risus aliquet arcu.
-                          Nullam dapibus blandit sed sit diam. Rhoncus nec
-                          sed hendrerit a nam tellus proin. At tincidunt
-                          arcu eget ut nibh. Leo rhoncus mauris tortor
-                          tristique tortor fames fermentum vel. Vulputate
-                          adipiscing id lacus eu viverra. Et id
-                          suspendisse tristique mi enim sit elit.
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        sx={{
-                          ...defaultCellStyle,
-                          ...backgroundGreyCellStyle,
-                        }}
-                      >
-                        {t("Attach")}
-                      </TableCell>
-                      <TableCell
-                        colSpan={7}
-                        sx={{
-                          ...defaultCellStyle,
-                        }}
-                      >
-                        <Box sx={{ display: "flex", gap: "8px" }}>
+                          {t("Decision Date")}
+                        </TableCell>
+                        <TableCell sx={{ ...defaultCellStyle }}>
+                          {dayjs(valuationMaster?.updatedAt).format(FORMAT_DATE.DMY)}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            ...defaultCellStyle,
+                            ...backgroundGreyCellStyle,
+                          }}
+                        >
+                          {t("baseYear")}
+                        </TableCell>
+                        <TableCell sx={{ ...defaultCellStyle }}>
+                          {valuationMaster?.baseYear}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            ...defaultCellStyle,
+                            ...backgroundGreyCellStyle,
+                          }}
+                        >
+                          {t("province")}
+                        </TableCell>
+                        <TableCell sx={{ ...defaultCellStyle }}>
+                          {t("Vientiane")}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell
+                          sx={{
+                            ...defaultCellStyle,
+                            ...backgroundGreyCellStyle,
+                          }}
+                        >
+                          {t("Evaluation Member")}
+                        </TableCell>
+                        <TableCell colSpan={3} sx={{ ...defaultCellStyle }}>
+                          {valuationMaster?.nameMembers ?? ''}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            ...defaultCellStyle,
+                            ...backgroundGreyCellStyle,
+                          }}
+                        >
+                          {t("Committee Duration")}
+                        </TableCell>
+                        <TableCell colSpan={3} sx={{ ...defaultCellStyle }}>
+                          {valuationMaster && valuationMaster?.committeEdate ? `${dayjs(valuationMaster?.committeSdate).format(FORMAT_DATE.DMY)} to ${dayjs(valuationMaster?.committeEdate).format(FORMAT_DATE.DMY)}` : ''}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell
+                          sx={{
+                            ...defaultCellStyle,
+                            ...backgroundGreyCellStyle,
+                          }}
+                        >
+                          {t("title")}
+                        </TableCell>
+                        <TableCell colSpan={7} sx={{ ...defaultCellStyle }}>
                           <Box
                             sx={{
                               display: "flex",
-                              gap: "9px",
                               alignItems: "center",
-                              width: "fit-content",
-                              paddingLeft: "5px",
-                              paddingRight: "19px",
-                              marginRight: "33px",
-                              "&:hover": {
-                                backgroundColor: "#F5F5F5",
-                                borderRadius: "4px",
-                                paddingRight: "5px",
-                                marginRight: "24px",
-                                "& .download-icon": {
-                                  display: "block",
-                                },
-                              },
+                              justifyContent: "space-between",
+                              gap: "8px",
                             }}
                           >
-                            <Box sx={{
-                              width: 16,
-                              height: 16,
-                              mr: '5px',
-                            }}>
-                              <AttachIcon color="#8C8C8C" />
-                            </Box>
-                            <Typography>Approval decision.pdf</Typography>
-                            <DownloadIcon
-                              className="download-icon"
-                              sx={{ fontSize: 14, display: "none" }}
-                            />
-                          </Box>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              gap: "9px",
-                              alignItems: "center",
-                              width: "fit-content",
-                              padding: "0 5px",
-                              "&:hover": {
-                                backgroundColor: "#F5F5F5",
-                                borderRadius: "4px",
-                                "& .download-icon": {
-                                  display: "block",
-                                },
-                              },
-                            }}
-                          >
-                            <Box sx={{
-                              width: 16,
-                              height: 16,
-                              mr: '5px',
-                            }}>
-                              <AttachIcon color="#8C8C8C" />
-                            </Box>
-                            <Typography>
-                              Introduction and User Guide.pdf
+                            <Typography
+                              sx={{
+                                color: "#1F1F1F",
+                                fontFamily: "Poppins",
+                                fontSize: "14px",
+                                fontWeight: 400,
+                                lineHeight: "22px",
+                              }}
+                            >
+                              {valuationMaster?.title ?? ''}
                             </Typography>
-                            <DownloadIcon className="download-icon" sx={{ fontSize: 14, display: "none" }} />
                           </Box>
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          defaultExpanded
-          sx={{
-            "&.MuiAccordionSummary-content.Mui-expanded": {
-              alignItems: "center",
-            },
-            "&.MuiAccordionSummary-content": {
-              alignItems: "center !important",
-            },
-          }}
-        >
-          <AccordionSummary
-            aria-controls="panel1a-content1"
-            id="panel1a-header1"
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell
+                          sx={{
+                            ...defaultCellStyle,
+                            ...backgroundGreyCellStyle,
+                          }}
+                        >
+                          {t("note")}
+                        </TableCell>
+                        <TableCell colSpan={7} sx={{ ...defaultCellStyle }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              gap: "8px",
+                            }}
+                          >
+                            {valuationMaster?.description ?? ''}
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell
+                          sx={{
+                            ...defaultCellStyle,
+                            ...backgroundGreyCellStyle,
+                          }}
+                        >
+                          {t("Attach")}
+                        </TableCell>
+                        <TableCell
+                          colSpan={7}
+                          sx={{
+                            ...defaultCellStyle,
+                          }}
+                        >
+                          <Box sx={{ display: "flex", gap: "8px" }}>
+                            {
+                              overviewAttachFiles.map((item, index) => {
+                                return (
+                                  <Box
+                                    key={index}
+                                    sx={{
+                                      display: "flex",
+                                      gap: "9px",
+                                      alignItems: "center",
+                                      width: "fit-content",
+                                      paddingLeft: "5px",
+                                      paddingRight: "19px",
+                                      marginRight: "33px",
+                                      "&:hover": {
+                                        backgroundColor: "#F5F5F5",
+                                        borderRadius: "4px",
+                                        paddingRight: "5px",
+                                        marginRight: "24px",
+                                        "& .download-icon": {
+                                          display: "block",
+                                        },
+                                      },
+                                    }}
+                                  >
+                                    <Box sx={{
+                                      width: 16,
+                                      height: 16,
+                                      mr: '5px',
+                                    }}>
+                                      <AttachIcon color="#8C8C8C" />
+                                    </Box>
+                                    <Typography>{item.name}</Typography>
+                                    <DownloadIcon
+                                      className="download-icon"
+                                      sx={{ fontSize: 14, display: "none" }}
+                                    />
+                                  </Box>
+                                )
+                              })
+                            }
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            defaultExpanded
+            sx={{
+              "&.MuiAccordionSummary-content.Mui-expanded": {
+                alignItems: "center",
+              },
+              "&.MuiAccordionSummary-content": {
+                alignItems: "center !important",
+              },
+            }}
           >
-            <ExpandIcon style={{ marginRight: "8px", width: "16px" }} />
-            <Typography variant="h6">{t("Committee Information")}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "24px",
-                marginBottom: "24px",
-              }}
+            <AccordionSummary
+              aria-controls="panel1a-content1"
+              id="panel1a-header1"
             >
+              <ExpandIcon style={{ marginRight: "8px", width: "16px" }} />
+              <Typography variant="h6">{t("Committee Information")}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  width: "70%",
+                  gap: "24px",
                 }}
               >
-                <label>
-                  <span style={{ color: "red" }}>*</span> {t("Description")}
-                </label>
-                <TextField
+                <Box
                   sx={{
-                    "& .MuiInputBase-root": {
-                      height: "40px",
-                    },
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: '8px'
                   }}
-                  placeholder="Enter title"
-                ></TextField>
+                >
+                  <Typography
+                    sx={{ 
+                      display: 'block', 
+                      fontFamily: "Poppins",
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      lineHeight: "22px",
+                    }}
+                  >
+                    {t('Description')}
+                  </Typography>
+                  { valuationMaster?.committeeDescription && 
+                    <Typography
+                      sx={{ 
+                        display: 'block', 
+                        fontFamily: "Poppins",
+                        fontSize: "14px",
+                        fontWeight: 400,
+                        lineHeight: "22px",
+                      }}
+                    >
+                      {valuationMaster?.committeeDescription}
+                    </Typography>
+                  }
+                </Box>
+                <Box sx={{ height: "320px" }} >
+                  <CommitteeTableForLocal initialData={committeeData} />
+                </Box>
               </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "30%",
-                }}
-              >
-                <label>
-                  <span style={{ color: "red" }}>*</span> {t("Committee Duration")}
-                </label>
-                <DateRangePicker
-                  clearIcon={null}
-                  onChange={handleDateChange}
-                  value={dateRange}
-                  calendarIcon={<CalendarIcon />}
-                  rangeDivider={<CustomDateDivider />}
-                />
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                height: "320px",
-                // margin: "24px",
-                // paddingBottom: "12px",
-              }}
-            >
-              <CustomDataGrid />
-            </Box>
-          </AccordionDetails>
-        </Accordion>
-      </ThemeProvider>
+            </AccordionDetails>
+          </Accordion>
+        </ThemeProvider>
+      </Box>
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           gap: "24px",
-          marginTop: "32px",
         }}
       >
         <Typography
@@ -809,7 +827,7 @@ const DetailForLocal = () => {
                     marginTop: "8px",
                   }}
                 >
-                  {t("To register an evaluation area you can either upload a new GIS file or clone a previous land valuation area.")}"
+                  {t("To register an evaluation area you can either upload a new GIS file or clone a previous land valuation area.")}
                 </Typography>
                 <Button
                   sx={{
@@ -853,8 +871,8 @@ const DetailForLocal = () => {
               >
                 <Box sx={{ width: "100%", height: "100%" }}>
                   <Tabs
-                    value={value2}
-                    onChange={handleChange2}
+                    value={tabInformationIndex}
+                    onChange={handleTabInformationChange}
                     textColor="inherit"
                     indicatorColor="transparent"
                     sx={{
@@ -881,7 +899,7 @@ const DetailForLocal = () => {
                       sx={{ width: "fit-content", minWidth: "0" }}
                     />
                   </Tabs>
-                  {value2 === 0 && (
+                  {tabInformationIndex === 0 && (
                     <Box
                       sx={{
                         width: "100%",
@@ -923,7 +941,7 @@ const DetailForLocal = () => {
                       />
                     </Box>
                   )}
-                  {value2 === 1 && (
+                  {tabInformationIndex === 1 && (
                     <Box sx={{ height: "100%" }}>
                       {showBox2 ? (
                         <Box
@@ -1304,10 +1322,10 @@ const DetailForLocal = () => {
           border: "1px solid #D9D9D9",
           borderRadius: "12px",
           position: "relative",
-          marginTop: "32px",
-          paddingLeft: "24px",
-          paddingRight: "24px",
-          paddingBottom: "24px",
+          padding: "24px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "24px",
         }}
       >
         <Typography
@@ -1326,35 +1344,41 @@ const DetailForLocal = () => {
         >
           {t("Attachments")}
         </Typography>
-        <Button
-          component="label"
-          role={undefined}
-          variant="outlined"
-          tabIndex={-1}
-          startIcon={<UploadIcon />}
-          sx={{
-            textTransform: "none",
-            marginTop: "32px",
-            borderRadius: "6px",
-            border: "1px solid #1677FF",
-            color: "#1677FF",
-          }}
-        >
-          {t("Upload")}
-          <VisuallyHiddenInput
-            type="file"
-            onChange={handleFileUpload3}
-            id="fileInputId2"
-            multiple
+        <Box>
+          <Button
+            component="label"
+            role={undefined}
+            variant="outlined"
+            tabIndex={-1}
+            startIcon={<UploadIcon />}
+            sx={{
+              textTransform: "none",
+              borderRadius: "6px",
+              border: "1px solid #1677FF",
+              color: "#1677FF",
+            }}
+          >
+            {t("Upload")}
+            <VisuallyHiddenInput
+              type="file"
+              onChange={handleFromLocalFileUpload}
+              id="fileInputId2"
+              multiple
+            />
+          </Button>
+        </Box>
+        {
+          fromLocalUploadedFiles.length > 0 && 
+          <CustomUploadFile
+            files={fromLocalUploadedFiles}
+            onDelete={handleFromLocalUploadFileDelete}
           />
-        </Button>
-        <CustomUploadFile
-          files={uploadedFiles3}
-          onDelete={handleDeleteFile3}
-        />
+        }
       </Box>
     </Box>
   )
-}
+})
+
+DetailForLocal.displayName = 'DetailForLocal'
 
 export default DetailForLocal

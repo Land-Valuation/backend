@@ -113,7 +113,6 @@ const CommitteeTable = ({ onDataChange, initialData, onDelete }) => {
   const [rows, setRows] = useState(initialData || []);
   const handleAddRow = () => {
     const newRow = {
-      //id: Date.now().toString(),
       id: uuidv1(),
       memberType: "",
       organization: "",

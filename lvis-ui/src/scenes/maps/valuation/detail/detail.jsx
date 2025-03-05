@@ -22,6 +22,7 @@ const LandValuationDetail = () => {
   const navigate = useNavigate();
 
   const formikRef = useRef(null);
+  const detailRef = useRef(null);
 
   const userRole = UserService.getTokenParsed().realm_access.roles;
   const hasCentralRole = userRole.some((role) => role.includes("CENTRAL"));
@@ -32,10 +33,18 @@ const LandValuationDetail = () => {
   ];
 
   const handleSave = () => {
-    if (formikRef.current && formikRef.current.handleSubmit) {
-      formikRef.current.handleSubmit();
+    if (hasCentralRole) {
+      if (formikRef.current && formikRef.current.handleSubmit) {
+        formikRef.current.handleSubmit();
+      } else {
+        console.warn("handleSubmit not available in DetailForCentral");
+      }
     } else {
-      console.warn("handleSubmit not available in DetailForCentral");
+      if (detailRef.current && detailRef.current.submit) {
+        detailRef.current.submit();
+      } else {
+        console.warn("Submit function not available");
+      }
     }
   };
 
@@ -94,7 +103,7 @@ const LandValuationDetail = () => {
         {hasCentralRole ? (
           <DetailForCentral formikRef={formikRef} />
         ) : (
-          <DetailForLocal />
+          <DetailForLocal ref={detailRef} />
         )}
       </LayoutPageCommon>
     </>

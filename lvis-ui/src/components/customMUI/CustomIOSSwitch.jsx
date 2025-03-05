@@ -49,7 +49,7 @@ export const IOSSwitch = styled((props) => (
   },
   '& .MuiSwitch-track': {
     borderRadius: 16 / 2, // Điều chỉnh borderRadius theo height
-    backgroundColor: '#E9E9EA',
+    backgroundColor: 'rgba(0,0,0,.25)',
     opacity: 1,
     transition: theme.transitions.create(['background-color'], {
       duration: 500,
