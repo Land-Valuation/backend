@@ -40,9 +40,6 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
   const [parcels, setParcels] = useState([]);
   const [zoneId, setZoneId] = useState("");
   const draftData = useSelector((state) => state.draft.data);
-  const selectedZoneDetails = draftData[activeStep]?.selectedZoneDetails || [];
-  const selectedZoneIds = draftData[activeStep]?.selectedZoneIds || [];
-
   const { data: allProvinceData } = useGetAllProvincesQuery();
   const { data: listLandValueZonesByDistrictData } =
     useGetListLandValueZonesByDistrictQuery(
@@ -53,10 +50,12 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
     { zoneId: zoneId },
     { skip: !zoneId }
   );
-  
+
   useEffect(() => {
-    onSelectionChange([]); 
-  }, [district, province]);
+    if (!draftData[activeStep]?.selectedZoneIds) {
+      onSelectionChange([]);
+    }
+  }, [district, province, draftData, activeStep]);
 
   useEffect(() => {
     setProvinces(allProvinceData || []);
@@ -278,6 +277,8 @@ const DefineModelArea = ({ activeStep, onSelectionChange, selectedRows }) => {
       <Box>
         {tab === 0 ? (
           <DefineModelTable
+            province={province}
+            district={district}
             selectedRows={selectedRows}
             activeStep={activeStep}
             onSelectionChange={onSelectionChange}

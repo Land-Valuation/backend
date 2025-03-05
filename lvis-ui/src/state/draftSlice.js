@@ -28,19 +28,28 @@ const draftSlice = createSlice({
     },
     updateDraft: (state, action) => {
       const { step, draftData, formattedData } = action.payload;
-      state.data = {
-        ...state.data,
-        [step]: { ...state.data[step], ...draftData },
-      };
-      if (formattedData) {
-        state.formattedData = {
-          ...state.formattedData,
-          [step]: formattedData,
-        };
+      console.log("Updating Redux draft:", { step, draftData, formattedData });
+
+      if (!state.data[step]) {
+        state.data[step] = {};
       }
+    
+      Object.assign(state.data[step], draftData);
+    
+      if (formattedData) {
+        state.formattedData[step] = [...formattedData];
+      }
+    },
+    
+    updateDraftSelection: (state, action) => {
+      const { step, selectedZoneIds } = action.payload;
+      if (!state.data[step]) {
+        state.data[step] = {};
+      }
+      state.data[step].selectedZoneIds = selectedZoneIds;
     },
   },
 });
 
-export const { initializeDraft, updateDraft } = draftSlice.actions;
+export const { initializeDraft, updateDraft, updateDraftSelection } = draftSlice.actions;
 export default draftSlice.reducer;

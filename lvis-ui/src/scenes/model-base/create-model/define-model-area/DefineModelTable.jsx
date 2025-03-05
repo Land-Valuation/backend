@@ -3,47 +3,74 @@ import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
-import { updateDraft } from "../../../../state/draftSlice";
+import {
+  updateDraft,
+  updateDraftSelection,
+} from "../../../../state/draftSlice";
 
 const DefineModelTable = ({
+  province,
+  district,
   onSelectionChange,
   data = [],
   totalRows = 0,
   paginationModel,
   onPaginationModelChange,
   activeStep,
-  // selectedRows
+  selectedRows,
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [sort, setSort] = useState({});
   const [formattedData, setFormattedData] = useState([]);
+  const [selectionModel, setSelectionModel] = useState([]);
   const draftData = useSelector((state) => state.draft.data);
   const dispatch = useDispatch();
-  const draftFormattedData = useSelector((state) => state.draft.formattedData[activeStep] || []);
-  const selectionModel = useSelector(
-    (state) => state.draft.data[activeStep]?.selectedZoneIds || []
+  const draftFormattedData = useSelector(
+    (state) => state.draft.formattedData[activeStep] || []
   );
+  // const selectionModel = useSelector(
+  //   (state) => state.draft.data[activeStep]?.selectedZoneIds || []
+  // );
 
   useEffect(() => {
-    console.log("Redux draft data updated:", draftData);
-    console.log(selectionModel);
-  }, [draftData]);
-
-  useEffect(() => {
-    if (draftFormattedData && draftFormattedData.length > 0) {
-      setFormattedData(draftFormattedData);
+    if (draftData[activeStep]?.selectedZoneIds && data.length > 0) {
+      // Filter out selections that don't exist in current data
+      const validSelections = draftData[activeStep].selectedZoneIds.filter(id => 
+        data.some(item => item.id === id)
+      );
+      setSelectionModel(validSelections);
     } else {
+      setSelectionModel([]);
+    }
+  }, [activeStep, draftData, data]);
+
+  // useEffect(() => {
+  //   if (province || district) {
+  //     dispatch(updateDraftSelection({ step: activeStep, selectedZoneIds: [] }));
+  //   }
+  // }, [province, district, dispatch]);
+
+  useEffect(() => {
+    console.log(province +"-"+ district);
+    
     const transformedData = data.map((item) => ({
       id: item.id,
       name: item.zcode,
-      // parcels: item.parcelCount,
       province: "Vientiane",
       district: item.distCode,
     }));
-    setFormattedData(transformedData);
-  }
-  }, [data, draftFormattedData]);
+  
+    // Only use draftFormattedData if it matches current district
+    if (
+      draftFormattedData.length > 0 && 
+      draftData[activeStep]?.district === district
+    ) {
+      setFormattedData(draftFormattedData);
+    } else {
+      setFormattedData(transformedData);
+    }
+  }, [data, draftFormattedData, province, district, draftData, activeStep]);
 
   const columns = [
     {
@@ -79,18 +106,18 @@ const DefineModelTable = ({
   ];
 
   const handleSelectionChange = (newSelectionModel) => {
+    setSelectionModel(newSelectionModel);
     const selectedRows = formattedData.filter((row) =>
       newSelectionModel.includes(row.id)
     );
     console.log(selectedRows);
-    
+
     const selectedZoneDetails = selectedRows.map((row) => ({
       id: row.id,
       name: row.name,
       province: row.province,
       district: row.district,
     }));
-    // const newFormattedData = formattedData.filter((row) => newSelectionModel.includes(row.id));
 
     dispatch(
       updateDraft({
@@ -98,11 +125,12 @@ const DefineModelTable = ({
         draftData: {
           selectedZoneIds: newSelectionModel,
           selectedZoneDetails: selectedZoneDetails,
+          district: district,
         },
         formattedData: formattedData,
       })
     );
-
+    setSelectionModel(newSelectionModel);
     onSelectionChange(newSelectionModel);
   };
 
@@ -164,7 +192,7 @@ const DefineModelTable = ({
     >
       <DataGrid
         // loading={isLoading || !data}
-        selectionModel={selectionModel}
+        // selectionModel={selectionModel}
         onRowSelectionModelChange={handleSelectionChange}
         rowSelectionModel={selectionModel}
         getRowId={(row) => row.id}
@@ -179,7 +207,7 @@ const DefineModelTable = ({
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}
         checkboxSelection
-        keepNonExistentRowsSelected
+        // keepNonExistentRowsSelected
         disableRowSelectionOnClick
         slotProps={{
           loadingOverlay: {
