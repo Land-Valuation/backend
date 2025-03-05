@@ -7,6 +7,9 @@ import {singlePostData} from '../../data/mockMapData';
 import UserService from "../../state/UserService";
 import { t } from "i18next";
 
+//** [EGIS 수정]
+import MainFrame from "./components/layout/mainFrame";
+
 const Egis0 = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
@@ -14,6 +17,7 @@ const Egis0 = () => {
   return (
     <Box m="1.5rem 2.5rem">
       <Header title={t("Land Price Explorer")} subtitle="See real price info managed from EGIS System" />
+      {/* ** [EGIS 수정]
       <Box
         mt="20px"
         display="grid"
@@ -39,6 +43,8 @@ const Egis0 = () => {
           <CrudDemo/>
         </Box>
       </Box>
+      */}
+      <MainFrame />
     </Box>
   );
 };
